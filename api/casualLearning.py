@@ -1,11 +1,9 @@
 # Import Libraries
 import os
-import openai
 
 # Langchain
 from langchain.chains import LLMChain, SimpleSequentialChain, RouterChain, ConversationChain
 from langchain.prompts import PromptTemplate
-from langchain.llms import OpenAI
 from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationSummaryMemory
 

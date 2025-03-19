@@ -12,6 +12,20 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0', transform: 'scale(0.9)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        'bounce-slow': {
+          '0%, 100%': { transform: 'translateY(-5%)' },
+          '50%': { transform: 'translateY(5%)' },
+        },
+      },
+      animation: {
+        fadeIn: 'fadeIn 0.8s ease-in-out',
+        'bounce-slow': 'bounce-slow 3s infinite',
+      },
     },
   },
   plugins: [],

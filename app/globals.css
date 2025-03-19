@@ -9,7 +9,7 @@
 
 /* Set a default font, background, and text color for the body */
 body {
-  @apply bg-white text-gray-800;
+  @apply bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 text-gray-800;
   font-family: 'Inter', sans-serif;
 }
 

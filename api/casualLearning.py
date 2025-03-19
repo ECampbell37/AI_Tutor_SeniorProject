@@ -4,8 +4,11 @@ import os
 # Langchain
 from langchain.chains import LLMChain, SimpleSequentialChain, RouterChain, ConversationChain
 from langchain.prompts import PromptTemplate
-from langchain.chat_models import ChatOpenAI
+from langchain_community.chat_models import ChatOpenAI
 from langchain.memory import ConversationSummaryMemory
+
+import warnings
+warnings.filterwarnings("ignore")
 
 # Load API key from env variables
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -21,7 +24,7 @@ llm = ChatOpenAI(temperature=0.7, model=llm_model, streaming=True)
 memory = ConversationSummaryMemory(llm=llm, memory_key="chat_history", input_key="userResponse")
 
 # Define subject (to be determined in js app menu)
-subject = "Astronomy"
+subject = None
 
 
 

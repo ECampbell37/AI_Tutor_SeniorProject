@@ -2,7 +2,7 @@
 'use client'
 import { useState } from 'react';
 import Link from 'next/link';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, BotMessageSquare } from 'lucide-react';
 
 export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,8 +12,9 @@ export default function NavBar() {
       {/* Top Navigation Bar */}
       <nav className="bg-gray-800 text-white p-4 flex justify-between items-center">
         {/* Home Button as text */}
-        <Link href="/" className="text-xl font-bold text-white">
-          AI Tutor
+        <Link href="/" className="flex items-center text-xl font-bold text-white hover:no-underline">
+          <BotMessageSquare size={28} />
+          <span className="ml-2">AI Tutor</span>
         </Link>
 
         {/* Desktop Toggle Button */}

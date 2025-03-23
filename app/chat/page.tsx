@@ -3,7 +3,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { SendHorizonal, ClipboardCheck, XCircle, Loader2 } from 'lucide-react';
+import { SendHorizonal, ClipboardCheck, X, Loader2 } from 'lucide-react';
 
 declare global {
   interface Window {
@@ -161,12 +161,12 @@ export default function Chat() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 overflow-auto">
           <div className="bg-white p-6 rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
             <h3 className="text-2xl font-semibold mb-4">Quiz</h3>
-            <pre className="bg-gray-100 p-4 mb-4 rounded whitespace-pre-wrap">{quizText}</pre>
+            <pre className="bg-gray-100 p-4 mb-3 rounded whitespace-pre-wrap">{quizText}</pre>
             {quizAnswers.map((answer, i) => (
               <input
                 key={i}
                 type="text"
-                className="w-full border border-gray-300 rounded p-2 mb-3"
+                className="w-full border border-gray-300 rounded p-2 mb-4 mt-2"
                 placeholder={`Answer for question ${i + 1}`}
                 value={answer}
                 onChange={(e) => {
@@ -176,7 +176,7 @@ export default function Chat() {
                 }}
               />
             ))}
-            <button onClick={submitQuiz} className="bg-blue-500 text-white rounded-xl p-2 hover:bg-blue-600 shadow-md">
+            <button onClick={submitQuiz} className="bg-blue-500 text-white rounded-xl p-2 hover:bg-blue-600 shadow-md mt-1">
               {quizLoading ? <Loader2 className="animate-spin h-5 w-5 mx-auto" /> : 'Submit Answers'}
             </button>
             {quizFeedback && (
@@ -186,8 +186,8 @@ export default function Chat() {
                 <strong className="mt-4 block">Grade:</strong> {quizGrade}
               </div>
             )}
-            <button onClick={closeQuizModal} className="mt-4 bg-red-500 text-white rounded-xl p-2 hover:bg-red-600 shadow-md flex items-center">
-              Close <XCircle className="ml-2 h-5 w-5" />
+            <button onClick={closeQuizModal} className="mt-5 bg-red-500 text-white rounded-xl p-2 hover:bg-red-600 shadow-md flex items-center">
+              Close <X className="ml-2 h-5 w-5" />
             </button>
           </div>
         </div>

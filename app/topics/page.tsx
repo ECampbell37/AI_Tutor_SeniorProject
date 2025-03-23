@@ -7,7 +7,7 @@ export default function Topics() {
     { name: 'History', href: '/chat?subject=History' },
     { name: 'Mythology', href: '/chat?subject=Mythology' },
     { name: 'Psychology', href: '/chat?subject=Psychology' },
-    { name: 'Astronomy', href: '/chat?subject=Astr://chat?subject=Astronomy' },
+    { name: 'Astronomy', href: '/chat?subject=Astronomy' },
     { name: 'AI/ML', href: '/chat?subject=AI/ML' },
     { name: 'Computer Science', href: '/chat?subject=Computer%20Science' },
     { name: 'Physics', href: '/chat?subject=Physics' },

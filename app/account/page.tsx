@@ -11,7 +11,7 @@ export default function AccountPage() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 text-center px-6">
         <div className="bg-white bg-opacity-90 p-10 rounded-2xl shadow-xl">
-          <h1 className="text-3xl font-bold text-gray-800 mb-4">You're not signed in</h1>
+          <h1 className="text-3xl font-bold text-gray-800 mb-4">You&apos;re not signed in</h1>
           <p className="text-gray-600">Please log in to access your account.</p>
         </div>
       </div>

@@ -12,7 +12,7 @@ export async function POST(request: Request) {
     }
 
     // Check if the username already exists
-    const { data: existingUser, error: selectError } = await supabaseServer
+    const { data: existingUser } = await supabaseServer
       .from('users')
       .select('id')
       .eq('username', username)
@@ -26,10 +26,9 @@ export async function POST(request: Request) {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Insert new user into Supabase
-    const { data, error: insertError } = await supabaseServer
+    const { error: insertError } = await supabaseServer
       .from('users')
-      .insert([{ username, hashed_password: hashedPassword }])
-      .select();
+      .insert([{ username, hashed_password: hashedPassword }]);
 
     if (insertError) {
       console.error(insertError);

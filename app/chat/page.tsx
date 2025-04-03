@@ -40,7 +40,7 @@ export default function Chat() {
     }
   
     setLoading(true); // <-- show typing indicator before intro
-    fetch(`http://localhost:8000/intro?subject=${encodeURIComponent(subject)}`)
+    fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/intro?subject=${encodeURIComponent(subject)}`)
       .then((res) => res.json())
       .then((data) => {
         setMessages([{ sender: 'AI', text: data.message }]);
@@ -57,7 +57,7 @@ export default function Chat() {
     setLoading(true);
 
     try {
-      const res = await fetch(`http://localhost:8000/chat?subject=${encodeURIComponent(subject)}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/chat?subject=${encodeURIComponent(subject)}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: userInput }),
@@ -71,14 +71,14 @@ export default function Chat() {
 
   const openQuizModal = async () => {
     setShowQuizModal(true);
-    const res = await fetch(`http://localhost:8000/quiz/start?subject=${encodeURIComponent(subject)}`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/quiz/start?subject=${encodeURIComponent(subject)}`);
     const data = await res.json();
     setQuizText(data.quiz);
   };
 
   const submitQuiz = async () => {
     setQuizLoading(true);
-    const res = await fetch(`http://localhost:8000/quiz/submit?subject=${encodeURIComponent(subject)}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/quiz/submit?subject=${encodeURIComponent(subject)}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ answers: quizAnswers }),
@@ -93,7 +93,7 @@ export default function Chat() {
     setShowQuizModal(false);
     
     setLoading(true); // <-- show typing indicator for continuation message
-    fetch(`http://localhost:8000/continue?subject=${encodeURIComponent(subject)}`)
+    fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/continue?subject=${encodeURIComponent(subject)}`)
       .then((res) => res.json())
       .then((data) => {
         setMessages((prev) => [

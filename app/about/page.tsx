@@ -2,7 +2,7 @@
 'use client';
 
 import Link from 'next/link';
-import { BookOpen, BotMessageSquare, ArrowLeft } from 'lucide-react';
+import { BotMessageSquare, ArrowLeft } from 'lucide-react';
 
 export default function AboutPage() {
   return (

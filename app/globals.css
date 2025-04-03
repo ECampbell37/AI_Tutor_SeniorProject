@@ -8,6 +8,7 @@
 /* Custom Global Styles */
 
 /* Set a default font, background, and text color for the body */
+
 body {
   @apply bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 text-gray-800;
   font-family: 'Inter', sans-serif;
@@ -48,3 +49,4 @@ button {
   background-color: #b3d4fc;
   color: #000;
 }
+

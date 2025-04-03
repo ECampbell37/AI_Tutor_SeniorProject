@@ -2,7 +2,7 @@ import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import urlparse, parse_qs
 
-import casualLearning  # This imports your casualLearning.py module
+import casualLearning
 
 import warnings
 warnings.filterwarnings("ignore")

@@ -1,36 +1,147 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🧠 AI Tutor Frontend (Next.js + Supabase + LangChain)
 
-## Getting Started
+This is the **frontend** of the AI Tutor project, built with **Next.js**, **TypeScript**, and **Tailwind CSS**, and powered by **Supabase** for authentication and a custom **Python LangChain API** for AI tutoring.
 
-First, run the development server:
+Users can choose a subject, receive engaging lessons from an AI tutor, take quizzes, and receive feedback based on their performance. This frontend is optimized for mobile-first use and deployed via **Vercel**.
+
+---
+
+## 🌐 Live Demo
+
+> Check it out! — [Deployed via Vercel](https://ai-tutor-senior-project.vercel.app/)
+
+---
+
+## 📁 Folder Overview
+
+```
+AI_Tutor_SeniorProject/
+├── app/                   # Next.js app directory with routes (e.g. /chat, /signin)
+├── components/            # Reusable React components
+├── lib/                   # Supabase client, utilities
+├── public/                # Static assets
+├── styles/                # Tailwind & global CSS
+├── .env.local             # Local environment variables (not committed)
+├── next.config.js         # Next.js config
+└── tsconfig.json          # TypeScript settings
+```
+
+---
+
+## ⚙️ Technologies Used
+
+- **Next.js 14+ (App Router)**
+- **React + TypeScript**
+- **Tailwind CSS**
+- **Supabase** (auth & DB)
+- **Vercel** (deployment)
+- **Custom LangChain Python API** (hosted on Render)
+
+---
+
+## 🚀 Running Locally
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/ECampbell37/AI_Tutor_SeniorProject.git
+cd AI_Tutor_SeniorProject
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+# or
+yarn install
+```
+
+### 3. Add environment variables
+
+Create a `.env.local` file in the root:
+
+```
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+NEXTAUTH_SECRET=your_auth_secret
+NEXTAUTH_URL=http://localhost:3000
+NEXT_PUBLIC_PYTHON_API=https://your-python-api.onrender.com
+```
+
+### 4. Start the dev server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit:  
+`http://localhost:3000`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🔐 Authentication
 
-## Learn More
+This app uses **NextAuth.js** with Supabase as the user database and `CredentialsProvider` for manual login.
 
-To learn more about Next.js, take a look at the following resources:
+> You can configure additional providers or use Supabase OAuth.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📡 API Connection
 
-## Deploy on Vercel
+The app sends requests to a **Python LangChain API** hosted separately (e.g., Render):
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```ts
+fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/intro?subject=Biology`)
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Update the `NEXT_PUBLIC_PYTHON_API` value in `.env.local` when deploying.
+
+---
+
+## 📦 Deployment
+
+### ✅ Frontend (Vercel)
+
+1. Push to GitHub
+2. Go to [vercel.com](https://vercel.com)
+3. Import project → Add environment variables
+4. Click **Deploy**
+
+### ✅ Backend (Render)
+
+Your LangChain API is deployed separately to [Render](https://render.com).
+
+---
+
+## 🧠 Features
+
+- AI tutoring with custom subject support
+- Adaptive quiz generation & grading
+- Memory-based conversations
+- Mobile-friendly chat UI
+- Auth-protected routes and sessions
+
+---
+
+## 📈 Planned Features
+
+- Analytics dashboard
+- Mastery tracking with badges
+- Kids vs Adults mode
+- Offline mode with caching
+
+---
+
+## 🙌 Credits
+
+Built by [Elijah Campbell-Ihim](https://github.com/ECampbell37) as a senior project for Computer Science.
+
+Powered by:
+- OpenAI
+- LangChain
+- Supabase
+- Vercel
+- Render
+
+---

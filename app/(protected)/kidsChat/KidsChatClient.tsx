@@ -3,14 +3,13 @@ import React, { useState, useEffect, useRef } from "react";
 import { SendHorizonal, ClipboardCheck, X, Loader2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { withAuth } from '@/lib/withAuth';
 
 interface Message {
   sender: "AI" | "You" | "separator";
   text: string;
 }
 
-function KidsChat() {
+export default function KidsChat() {
   const searchParams = useSearchParams();
   const subject = searchParams.get("subject") || "Nature";
   const { data: session } = useSession();
@@ -253,4 +252,3 @@ function KidsChat() {
   );
 }
 
-export default withAuth(KidsChat);

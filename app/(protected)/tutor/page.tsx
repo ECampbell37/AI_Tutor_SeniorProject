@@ -2,9 +2,8 @@
 
 'use client';
 import Link from 'next/link';
-import { withAuth } from '@/lib/withAuth';
 
-function TutorSelection() {
+export default function TutorSelection() {
   return (
     <div className="h-screen flex overflow-x-auto snap-x snap-mandatory bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300">
       <Link 
@@ -44,4 +43,3 @@ function TutorSelection() {
   );
 }
 
-export default withAuth(TutorSelection);

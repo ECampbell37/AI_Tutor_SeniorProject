@@ -4,14 +4,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { SendHorizonal } from 'lucide-react';
 import { useSession } from 'next-auth/react';
-import { withAuth } from '@/lib/withAuth';
 
 interface Message {
   sender: 'AI' | 'User';
   text: string;
 }
 
-function FreeChat() {
+export default function FreeChat() {
   const { data: session } = useSession();
 
   const [messages, setMessages] = useState<Message[]>([]);
@@ -119,4 +118,3 @@ function FreeChat() {
   );
 }
 
-export default withAuth(FreeChat);

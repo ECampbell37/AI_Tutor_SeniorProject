@@ -2,10 +2,9 @@
 
 'use client';
 import Link from 'next/link';
-import { withAuth } from '@/lib/withAuth';
 
 
-function KidsTopics() {
+export default function KidsTopics() {
   const kidsTopics = [
     { name: 'Science', href: '/kidsChat?subject=Science' },
     { name: 'Nature', href: '/kidsChat?subject=Nature' },
@@ -37,4 +36,3 @@ function KidsTopics() {
   );
 }
 
-export default withAuth(KidsTopics);

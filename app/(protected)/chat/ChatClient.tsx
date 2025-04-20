@@ -3,14 +3,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { SendHorizonal, ClipboardCheck, X, Loader2 } from 'lucide-react';
-import { withAuth } from '@/lib/withAuth';
 
 interface Message {
   sender: 'AI' | 'User' | 'separator';
   text: string;
 }
 
-function Chat() {
+export default function Chat() {
   const searchParams = useSearchParams();
   const subject = searchParams.get('subject') || 'Astronomy';
   const { data: session } = useSession();
@@ -250,4 +249,3 @@ function Chat() {
   );
 }
 
-export default withAuth(Chat);

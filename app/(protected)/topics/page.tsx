@@ -2,9 +2,8 @@
 
 'use client';
 import Link from 'next/link';
-import { withAuth } from '@/lib/withAuth';
 
-function Topics() {
+export default function Topics() {
   const topics = [
     { name: 'English', href: '/chat?subject=English' },
     { name: 'History', href: '/chat?subject=History' },
@@ -40,4 +39,3 @@ function Topics() {
   );
 }
 
-export default withAuth(Topics);

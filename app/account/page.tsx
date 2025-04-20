@@ -1,22 +1,34 @@
 // app/account/page.tsx
-'use client';
 
+'use client';
 import { useSession, signOut } from 'next-auth/react';
-import { LogOut, UserCircle, Sparkles } from 'lucide-react';
+import { LogOut, UserCircle, Sparkles, Lock } from 'lucide-react';
+import Link from 'next/link';
+
 
 export default function AccountPage() {
   const { data: session } = useSession();
 
   if (!session) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 text-center px-6">
-        <div className="bg-white bg-opacity-90 p-10 rounded-2xl shadow-xl">
-          <h1 className="text-3xl font-bold text-gray-800 mb-4">You&apos;re not signed in</h1>
-          <p className="text-gray-600">Please log in to access your account.</p>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 px-4">
+        <div className="bg-white bg-opacity-95 backdrop-blur-md p-10 sm:p-14 rounded-3xl shadow-2xl text-center max-w-md w-full transition-transform duration-300 ease-in-out animate-fade-in">
+          <h1 className="text-4xl font-extrabold text-gray-800 mb-4 flex items-center justify-center gap-2">
+            <Lock className="ml-1 h-16 w-16" /> You&apos;re not signed in
+          </h1>
+          <p className="mt-6 text-gray-700 mb-8 text-base sm:text-lg">
+          To access your account and enjoy all the features, please log in.
+          </p>
+          <Link href="/signin" className="inline-block w-full hover:no-underline">
+            <button className="w-full bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-400 text-white font-bold py-3 px-6 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center justify-center gap-2">
+              Log In
+            </button>
+          </Link>
         </div>
       </div>
     );
   }
+  
 
   const user = session.user;
 

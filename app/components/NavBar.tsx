@@ -12,11 +12,9 @@ export default function NavBar() {
 
   const menuItems = [
     { label: 'Account', href: '/account' },
-    { label: 'Home', href: '/' },
     { label: 'Select Tutor', href: '/tutor' },
-    { label: 'Topics', href: '/topics' },
-    { label: 'Chat', href: '/chat' },
     { label: 'About', href: '/about' },
+    { label: 'Free Chat', href: '/freeChat' },
   ];
 
   return (

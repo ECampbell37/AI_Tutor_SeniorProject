@@ -1,9 +1,9 @@
 // app/chat/page.tsx
 
 import { Suspense } from 'react';
-import ChatClient from './ChatClient';
+import KidsChatClient from './KidsChatClient';
 
-export default function ChatPage() {
+export default function KidsChatPage() {
   return (
     <Suspense
       fallback={
@@ -12,7 +12,7 @@ export default function ChatPage() {
         </div>
       }
     >
-      <ChatClient />
+      <KidsChatClient />
     </Suspense>
   );
 }

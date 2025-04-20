@@ -1,24 +1,19 @@
-// app/chat/page.tsx
-
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { SendHorizonal, ClipboardCheck, X, Loader2 } from 'lucide-react';
-
-declare global {
-  interface Window {
-    __introFetched?: Record<string, boolean>;
-  }
-}
+import { withAuth } from '@/lib/withAuth';
 
 interface Message {
   sender: 'AI' | 'User' | 'separator';
   text: string;
 }
 
-export default function Chat() {
+function Chat() {
   const searchParams = useSearchParams();
   const subject = searchParams.get('subject') || 'Astronomy';
+  const { data: session } = useSession();
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [userInput, setUserInput] = useState('');
@@ -31,26 +26,42 @@ export default function Chat() {
   const [quizGrade, setQuizGrade] = useState('');
   const [quizLoading, setQuizLoading] = useState(false);
 
+  const hasInitialized = useRef(false); // ✅ prevents reinitializing on remount
+
   useEffect(() => {
-    const key = `introFetched_${subject}`;
-    if (typeof window !== 'undefined') {
-      window.__introFetched = window.__introFetched || {};
-      if (window.__introFetched[key]) return;
-      window.__introFetched[key] = true;
-    }
-  
-    setLoading(true); // <-- show typing indicator before intro
-    fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/intro?subject=${encodeURIComponent(subject)}`)
-      .then((res) => res.json())
-      .then((data) => {
+    if (!session?.user?.id || hasInitialized.current) return;
+
+    const clearAndFetchIntro = async () => {
+      try {
+        await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/memory/clear`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-user-id': session.user.id,
+          },
+        });
+
+        setLoading(true);
+
+        const res = await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/intro?subject=${encodeURIComponent(subject)}`, {
+          headers: { 'x-user-id': session.user.id },
+        });
+
+        const data = await res.json();
         setMessages([{ sender: 'AI', text: data.message }]);
-        setLoading(false); // <-- hide typing indicator once loaded
-      });
-  }, [subject]);
-  
+        hasInitialized.current = true; // ✅ mark as initialized
+      } catch {
+        setMessages([{ sender: 'AI', text: "Sorry, I couldn't load the introduction." }]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    clearAndFetchIntro();
+  }, [subject, session]);
 
   const sendMessage = async () => {
-    if (!userInput.trim()) return;
+    if (!userInput.trim() || !session?.user?.id) return;
 
     setMessages((prev) => [...prev, { sender: 'User', text: userInput }]);
     setUserInput('');
@@ -59,70 +70,106 @@ export default function Chat() {
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/chat?subject=${encodeURIComponent(subject)}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-user-id': session.user.id,
+        },
         body: JSON.stringify({ message: userInput }),
       });
       const data = await res.json();
       setMessages((prev) => [...prev, { sender: 'AI', text: data.message }]);
-    } catch {}
+    } catch {
+      setMessages((prev) => [...prev, { sender: 'AI', text: 'Oops! Something went wrong.' }]);
+    }
 
     setLoading(false);
   };
 
   const openQuizModal = async () => {
+    if (!session?.user?.id) return;
     setShowQuizModal(true);
-    const res = await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/quiz/start?subject=${encodeURIComponent(subject)}`);
-    const data = await res.json();
-    setQuizText(data.quiz);
+
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/quiz/start?subject=${encodeURIComponent(subject)}`, {
+        headers: { 'x-user-id': session.user.id },
+      });
+
+      const data = await res.json();
+      setQuizText(data.quiz);
+    } catch {
+      setQuizText('Sorry, something went wrong generating the quiz.');
+    }
   };
 
   const submitQuiz = async () => {
+    if (!session?.user?.id) return;
     setQuizLoading(true);
-    const res = await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/quiz/submit?subject=${encodeURIComponent(subject)}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ answers: quizAnswers }),
-    });
-    const data = await res.json();
-    setQuizFeedback(data.feedback);
-    setQuizGrade(data.grade);
+
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/quiz/submit?subject=${encodeURIComponent(subject)}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-user-id': session.user.id,
+        },
+        body: JSON.stringify({ answers: quizAnswers }),
+      });
+
+      const data = await res.json();
+      setQuizFeedback(data.feedback);
+      setQuizGrade(data.grade);
+    } catch {
+      setQuizFeedback('Something went wrong submitting your answers.');
+      setQuizGrade('');
+    }
+
     setQuizLoading(false);
   };
 
-  const closeQuizModal = () => {
+  const closeQuizModal = async () => {
     setShowQuizModal(false);
-    
-    setLoading(true); // <-- show typing indicator for continuation message
-    fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/continue?subject=${encodeURIComponent(subject)}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setMessages((prev) => [
-          ...prev,
-          { sender: 'separator', text: '--- Welcome Back from the Quiz! ---' },
-          { sender: 'AI', text: data.message },
-        ]);
-        setLoading(false); // <-- hide typing indicator once loaded
+
+    // ✅ Reset quiz state so it works again
+    setQuizText('');
+    setQuizAnswers(['', '', '', '', '']);
+    setQuizFeedback('');
+    setQuizGrade('');
+
+    if (!session?.user?.id) return;
+
+    setLoading(true);
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/continue?subject=${encodeURIComponent(subject)}`, {
+        headers: { 'x-user-id': session.user.id },
       });
+
+      const data = await res.json();
+      setMessages((prev) => [
+        ...prev,
+        { sender: 'separator', text: '--- Welcome Back from the Quiz! ---' },
+        { sender: 'AI', text: data.message },
+      ]);
+    } catch {
+      setMessages((prev) => [...prev, { sender: 'AI', text: 'Oops! Couldn’t continue the lesson.' }]);
+    }
+
+    setLoading(false);
   };
-  
-  
 
   return (
     <div className="min-h-screen flex flex-col items-center container mx-auto p-6 bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300">
-      <h2 className="text-4xl font-semibold mb-6 text-gray-800">Casual Learning: {subject}</h2>
+      <h2 className="text-4xl font-semibold mb-6 text-gray-800">📖 Casual Learning: {subject}</h2>
 
       <div className="w-full max-w-4xl bg-white bg-opacity-95 border border-gray-200 rounded-2xl shadow-xl p-6 flex flex-col flex-grow">
         <div className="overflow-y-auto mb-4 flex-1 space-y-2" style={{ maxHeight: '60vh' }}>
           {messages.map((msg, idx) =>
             msg.sender === 'separator' ? (
-              <div key={idx} className="text-center text-gray-400 py-2">
-                {msg.text}
-              </div>
+              <div key={idx} className="text-center text-gray-400 py-2">{msg.text}</div>
             ) : (
               <div
                 key={idx}
                 className={`p-3 rounded-xl shadow-sm ${
-                  msg.sender === 'AI' ? 'bg-blue-50 text-blue-700' : 'bg-green-50 text-green-700'
+                  msg.sender === 'AI' ? 'bg-blue-50 text-blue-700' : 'bg-teal-50 text-gray-700'
                 }`}
               >
                 <strong>{msg.sender}:</strong> {msg.text}
@@ -131,6 +178,7 @@ export default function Chat() {
           )}
           {loading && <div className="text-blue-600 animate-pulse">AI is typing...</div>}
         </div>
+
         <div className="flex items-center">
           <textarea
             className="flex-1 border border-gray-300 rounded-xl p-3 mr-2 shadow-sm resize-y overflow-y-auto"
@@ -176,7 +224,10 @@ export default function Chat() {
                 }}
               />
             ))}
-            <button onClick={submitQuiz} className="bg-blue-500 text-white rounded-xl p-2 hover:bg-blue-600 shadow-md mt-1">
+            <button
+              onClick={submitQuiz}
+              className="bg-blue-500 text-white rounded-xl p-2 hover:bg-blue-600 shadow-md mt-1"
+            >
               {quizLoading ? <Loader2 className="animate-spin h-5 w-5 mx-auto" /> : 'Submit Answers'}
             </button>
             {quizFeedback && (
@@ -186,7 +237,10 @@ export default function Chat() {
                 <strong className="mt-4 block">Grade:</strong> {quizGrade}
               </div>
             )}
-            <button onClick={closeQuizModal} className="mt-5 bg-red-500 text-white rounded-xl p-2 hover:bg-red-600 shadow-md flex items-center">
+            <button
+              onClick={closeQuizModal}
+              className="mt-5 bg-red-500 text-white rounded-xl p-2 hover:bg-red-600 shadow-md flex items-center"
+            >
               Close <X className="ml-2 h-5 w-5" />
             </button>
           </div>
@@ -195,3 +249,5 @@ export default function Chat() {
     </div>
   );
 }
+
+export default withAuth(Chat);

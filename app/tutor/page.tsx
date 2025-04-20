@@ -1,11 +1,14 @@
 // app/tutor/page.tsx
-import Link from 'next/link';
 
-export default function TutorSelection() {
+'use client';
+import Link from 'next/link';
+import { withAuth } from '@/lib/withAuth';
+
+function TutorSelection() {
   return (
     <div className="h-screen flex overflow-x-auto snap-x snap-mandatory bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300">
       <Link 
-        href="/topics" 
+        href="/kidsTopics" 
         className="flex-none w-screen md:w-auto md:flex-1 snap-center group relative overflow-hidden hover:no-underline"
       >
         <div className="h-full bg-gradient-to-br from-green-300 via-green-400 to-cyan-500 flex flex-col items-center justify-center text-white text-4xl font-bold transition duration-300 group-hover:from-green-400 group-hover:to-cyan-500">
@@ -40,3 +43,5 @@ export default function TutorSelection() {
     </div>
   );
 }
+
+export default withAuth(TutorSelection);

@@ -1,7 +1,10 @@
 // app/topics/page.tsx
-import Link from 'next/link';
 
-export default function Topics() {
+'use client';
+import Link from 'next/link';
+import { withAuth } from '@/lib/withAuth';
+
+function Topics() {
   const topics = [
     { name: 'English', href: '/chat?subject=English' },
     { name: 'History', href: '/chat?subject=History' },
@@ -36,3 +39,5 @@ export default function Topics() {
     </div>
   );
 }
+
+export default withAuth(Topics);

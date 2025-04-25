@@ -44,11 +44,22 @@ export default function AboutPage() {
         </div>
 
         <p className="text-sm text-gray-500 mb-10">
-          Created with 💡 by Elijah Campbell-Ihim using Next.js, LangChain, and the OpenAI API.
+          Created with 💡 by {" "}
+          <a 
+            href="https://www.elijahcampbellihimportfolio.com" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="font-medium text-blue-600 hover:text-blue-800 hover:underline transition-all duration-200"
+          >
+            Elijah Campbell-Ihim
+          </a>
+          {" "} using Next.js, LangChain, and Supabase.
         </p>
 
+
+
         <Link href="/" className="hover:no-underline">
-          <button className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white font-semibold py-3 px-8 rounded-full flex items-center shadow-md hover:shadow-lg hover:scale-105 transition-transform duration-300 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600">
+          <button className="bg-transparent text-rose-500 hover:bg-gradient-to-r hover:from-rose-400 hover:via-pink-500 hover:to-rose-500 hover:text-white font-semibold py-3 px-8 rounded-full flex items-center hover:scale-105 transition-all duration-300">
             <ArrowLeft className="mr-2 h-5 w-5" />
             Back to Home
           </button>

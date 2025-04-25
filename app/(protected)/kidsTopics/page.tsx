@@ -19,7 +19,7 @@ export default function KidsTopics() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col"> 
+    <div className="min-h-screen flex flex-col animate-fadeIn"> 
       <div className="container mx-auto p-4 flex-grow">
         <h2 className="text-center text-3xl font-semibold mb-6">Select a Topic</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

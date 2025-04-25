@@ -25,7 +25,18 @@ export default function Chat() {
   const [quizGrade, setQuizGrade] = useState('');
   const [quizLoading, setQuizLoading] = useState(false);
 
-  const hasInitialized = useRef(false); // ✅ prevents reinitializing on remount
+  const hasInitialized = useRef(false);
+
+  async function checkApiAllowance(userId: string): Promise<boolean> {
+    const res = await fetch('/api/usage/check', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId }),
+    });
+
+    const data = await res.json();
+    return data.allowed === true;
+  }
 
   useEffect(() => {
     if (!session?.user?.id || hasInitialized.current) return;
@@ -40,15 +51,20 @@ export default function Chat() {
           },
         });
 
-        setLoading(true);
+        const allowed = await checkApiAllowance(session.user.id);
+        if (!allowed) {
+          setMessages([{ sender: 'AI', text: "🚫 You've reached your daily API limit. Try again tomorrow!" }]);
+          return;
+        }
 
+        setLoading(true);
         const res = await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/intro?subject=${encodeURIComponent(subject)}`, {
           headers: { 'x-user-id': session.user.id },
         });
 
         const data = await res.json();
         setMessages([{ sender: 'AI', text: data.message }]);
-        hasInitialized.current = true; // ✅ mark as initialized
+        hasInitialized.current = true;
       } catch {
         setMessages([{ sender: 'AI', text: "Sorry, I couldn't load the introduction." }]);
       } finally {
@@ -61,6 +77,15 @@ export default function Chat() {
 
   const sendMessage = async () => {
     if (!userInput.trim() || !session?.user?.id) return;
+
+    const allowed = await checkApiAllowance(session.user.id);
+    if (!allowed) {
+      setMessages((prev) => [...prev, {
+        sender: 'AI',
+        text: "🚫 You've reached your daily message limit. Please come back tomorrow!",
+      }]);
+      return;
+    }
 
     setMessages((prev) => [...prev, { sender: 'User', text: userInput }]);
     setUserInput('');
@@ -86,6 +111,16 @@ export default function Chat() {
 
   const openQuizModal = async () => {
     if (!session?.user?.id) return;
+
+    const allowed = await checkApiAllowance(session.user.id);
+    if (!allowed) {
+      setMessages((prev) => [...prev, {
+        sender: 'AI',
+        text: "🚫 You've reached your daily API limit. Please come back tomorrow!",
+      }]);
+      return;
+    }
+
     setShowQuizModal(true);
 
     try {
@@ -102,6 +137,14 @@ export default function Chat() {
 
   const submitQuiz = async () => {
     if (!session?.user?.id) return;
+
+    const allowed = await checkApiAllowance(session.user.id);
+    if (!allowed) {
+      setQuizFeedback("🚫 You've reached your daily API limit. Try again tomorrow!");
+      setQuizGrade('');
+      return;
+    }
+
     setQuizLoading(true);
 
     try {
@@ -127,14 +170,21 @@ export default function Chat() {
 
   const closeQuizModal = async () => {
     setShowQuizModal(false);
-
-    // ✅ Reset quiz state so it works again
     setQuizText('');
     setQuizAnswers(['', '', '', '', '']);
     setQuizFeedback('');
     setQuizGrade('');
 
     if (!session?.user?.id) return;
+
+    const allowed = await checkApiAllowance(session.user.id);
+    if (!allowed) {
+      setMessages((prev) => [...prev, {
+        sender: 'AI',
+        text: "🚫 You've reached your daily API limit. Please come back tomorrow!",
+      }]);
+      return;
+    }
 
     setLoading(true);
     try {
@@ -159,7 +209,7 @@ export default function Chat() {
     <div className="min-h-screen flex flex-col items-center container mx-auto p-6 bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300">
       <h2 className="text-4xl font-semibold mb-6 text-gray-800">📖 Casual Learning: {subject}</h2>
 
-      <div className="w-full max-w-4xl bg-white bg-opacity-95 border border-gray-200 rounded-2xl shadow-xl p-6 flex flex-col flex-grow">
+      <div className="w-full max-w-4xl bg-white bg-opacity-95 border border-gray-200 rounded-2xl shadow-xl p-6 flex flex-col flex-grow animate-fadeIn">
         <div className="overflow-y-auto mb-4 flex-1 space-y-2" style={{ maxHeight: '60vh' }}>
           {messages.map((msg, idx) =>
             msg.sender === 'separator' ? (
@@ -248,4 +298,3 @@ export default function Chat() {
     </div>
   );
 }
-

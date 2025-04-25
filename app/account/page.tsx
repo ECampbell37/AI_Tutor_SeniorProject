@@ -1,13 +1,33 @@
-// app/account/page.tsx
-
 'use client';
+
+import { useEffect, useState } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import { LogOut, UserCircle, Sparkles, Lock } from 'lucide-react';
 import Link from 'next/link';
 
+const DAILY_LIMIT = 100;
 
 export default function AccountPage() {
   const { data: session } = useSession();
+  const [usage, setUsage] = useState<number>(0);
+
+  useEffect(() => {
+    const fetchUsage = async () => {
+      if (!session?.user?.id) return;
+  
+      const res = await fetch('/api/usage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: session.user.id }),
+      });
+  
+      const data = await res.json();
+      setUsage(data?.usage ?? 0);
+    };
+  
+    fetchUsage();
+  }, [session]);
+  
 
   if (!session) {
     return (
@@ -17,7 +37,7 @@ export default function AccountPage() {
             <Lock className="ml-1 h-16 w-16" /> You&apos;re not signed in
           </h1>
           <p className="mt-6 text-gray-700 mb-8 text-base sm:text-lg">
-          To access your account and enjoy all the features, please log in.
+            To access your account and enjoy all the features, please log in.
           </p>
           <Link href="/signin" className="inline-block w-full hover:no-underline">
             <button className="w-full bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-400 text-white font-bold py-3 px-6 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center justify-center gap-2">
@@ -28,9 +48,9 @@ export default function AccountPage() {
       </div>
     );
   }
-  
 
   const user = session.user;
+  const usagePercent = Math.min((usage / DAILY_LIMIT) * 100, 100);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 flex items-center justify-center px-6 py-16">
@@ -50,6 +70,17 @@ export default function AccountPage() {
             <h2 className="text-lg font-semibold text-purple-600 mb-2">🎓 Role</h2>
             <p className="text-sm text-gray-700">Student</p>
           </div>
+        </div>
+
+        <div className="mb-10">
+          <h2 className="text-md font-semibold text-blue-700 mb-1">📊 Daily API Usage</h2>
+          <div className="w-full bg-gray-200 rounded-full h-4 mb-2">
+            <div
+              className="bg-blue-500 h-4 rounded-full transition-all duration-300"
+              style={{ width: `${usagePercent}%` }}
+            />
+          </div>
+          <p className="text-sm text-gray-600">{`${usage} / ${DAILY_LIMIT} API calls used today`}</p>
         </div>
 
         <div className="mb-10">

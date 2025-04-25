@@ -1,4 +1,3 @@
-// app/api/auth/signup/route.ts
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
 import { supabaseServer } from '@/lib/supabaseClient';
@@ -11,7 +10,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing username or password' }, { status: 400 });
     }
 
-    // Check if the username already exists
+    // Check if username exists
     const { data: existingUser } = await supabaseServer
       .from('users')
       .select('id')
@@ -22,13 +21,13 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Username already exists' }, { status: 400 });
     }
 
-    // Hash the password
+    // Hash password and generate UUID
     const hashedPassword = await bcrypt.hash(password, 10);
+    const userId = crypto.randomUUID();
 
-    // Insert new user into Supabase
     const { error: insertError } = await supabaseServer
       .from('users')
-      .insert([{ username, hashed_password: hashedPassword }]);
+      .insert([{ id: userId, username, hashed_password: hashedPassword }]);
 
     if (insertError) {
       console.error(insertError);

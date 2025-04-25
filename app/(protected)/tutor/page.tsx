@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export default function TutorSelection() {
   return (
-    <div className="h-screen flex overflow-x-auto snap-x snap-mandatory bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300">
+    <div className="h-screen flex overflow-x-auto snap-x snap-mandatory bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 animate-fade">
       <Link 
         href="/kidsTopics" 
         className="flex-none w-screen md:w-auto md:flex-1 snap-center group relative overflow-hidden hover:no-underline"

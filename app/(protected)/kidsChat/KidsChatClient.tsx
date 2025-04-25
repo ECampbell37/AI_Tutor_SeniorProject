@@ -25,7 +25,17 @@ export default function KidsChat() {
   const [quizGrade, setQuizGrade] = useState("");
   const [quizLoading, setQuizLoading] = useState(false);
 
-  const hasInitialized = useRef(false); // ✅ avoid re-triggering memory clear + intro fetch
+  const hasInitialized = useRef(false);
+
+  async function checkApiAllowance(userId: string): Promise<boolean> {
+    const res = await fetch("/api/usage/check", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId }),
+    });
+    const data = await res.json();
+    return data.allowed === true;
+  }
 
   useEffect(() => {
     if (!session?.user?.id || hasInitialized.current) return;
@@ -40,8 +50,13 @@ export default function KidsChat() {
           },
         });
 
-        setLoading(true);
+        const allowed = await checkApiAllowance(session.user.id);
+        if (!allowed) {
+          setMessages([{ sender: "AI", text: "🚫 You've reached your daily limit. Come back tomorrow!" }]);
+          return;
+        }
 
+        setLoading(true);
         const res = await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/kids_intro?subject=${encodeURIComponent(subject)}`, {
           headers: { "x-user-id": session.user.id },
         });
@@ -61,6 +76,12 @@ export default function KidsChat() {
 
   const sendMessage = async () => {
     if (!userInput.trim() || !session?.user?.id) return;
+
+    const allowed = await checkApiAllowance(session.user.id);
+    if (!allowed) {
+      setMessages((prev) => [...prev, { sender: "AI", text: "🚫 You've reached your daily limit. Try again tomorrow!" }]);
+      return;
+    }
 
     setMessages((prev) => [...prev, { sender: "You", text: userInput }]);
     setUserInput("");
@@ -88,6 +109,12 @@ export default function KidsChat() {
   const startQuiz = async () => {
     if (!session?.user?.id) return;
 
+    const allowed = await checkApiAllowance(session.user.id);
+    if (!allowed) {
+      setMessages((prev) => [...prev, { sender: "AI", text: "🚫 You've hit your daily limit. Try again tomorrow!" }]);
+      return;
+    }
+
     setShowQuizModal(true);
 
     try {
@@ -104,6 +131,13 @@ export default function KidsChat() {
 
   const submitQuiz = async () => {
     if (!session?.user?.id) return;
+
+    const allowed = await checkApiAllowance(session.user.id);
+    if (!allowed) {
+      setQuizFeedback("🚫 Daily limit reached. Try again tomorrow!");
+      setQuizGrade("");
+      return;
+    }
 
     setQuizLoading(true);
 
@@ -130,14 +164,18 @@ export default function KidsChat() {
 
   const continueLesson = async () => {
     setShowQuizModal(false);
-
-    // ✅ Reset quiz state for reuse
     setQuizText("");
     setQuizAnswers(["", "", "", "", ""]);
     setQuizFeedback("");
     setQuizGrade("");
 
     if (!session?.user?.id) return;
+
+    const allowed = await checkApiAllowance(session.user.id);
+    if (!allowed) {
+      setMessages((prev) => [...prev, { sender: "AI", text: "🚫 Limit reached. Try again tomorrow!" }]);
+      return;
+    }
 
     setLoading(true);
     try {
@@ -162,7 +200,7 @@ export default function KidsChat() {
     <div className="w-full min-h-screen flex flex-col items-center container mx-auto p-6 bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300">
       <h2 className="text-4xl font-bold mb-6 text-gray-800">🌱 Kids Learning: {subject}</h2>
 
-      <div className="w-full max-w-3xl bg-white border-4 border-emerald-300 rounded-3xl shadow-xl p-6 flex flex-col flex-grow">
+      <div className="w-full max-w-3xl bg-white border-4 border-emerald-300 rounded-3xl shadow-xl p-6 flex flex-col flex-grow animate-fadeIn">
         <div className="overflow-y-auto mb-4 flex-1 space-y-2" style={{ maxHeight: "60vh" }}>
           {messages.map((msg, idx) =>
             msg.sender === "separator" ? (
@@ -251,4 +289,3 @@ export default function KidsChat() {
     </div>
   );
 }
-

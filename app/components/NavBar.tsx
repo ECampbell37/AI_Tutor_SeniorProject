@@ -15,6 +15,7 @@ export default function NavBar() {
     { label: 'Select Tutor', href: '/tutor' },
     { label: 'About', href: '/about' },
     { label: 'Free Chat', href: '/freeChat' },
+    { label: 'Status Check', href: '/statusCheck' },
   ];
 
   return (

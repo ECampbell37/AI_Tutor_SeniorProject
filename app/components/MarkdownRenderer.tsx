@@ -11,10 +11,11 @@ export default function MarkdownRenderer({ content }: { content: string }) {
   return (
     <div className="prose max-w-none">
       <ReactMarkdown
-        children={content}
         remarkPlugins={[remarkMath]}
         rehypePlugins={[rehypeKatex, rehypeHighlight]}
-      />
+      >
+        {content}
+      </ReactMarkdown>
     </div>
   );
 }

@@ -29,7 +29,7 @@ export default function TutorSelection() {
         </div>
       </Link>
       <Link 
-        href="/topics" 
+        href="/professionalChat" 
         className="flex-none w-screen md:w-auto md:flex-1 snap-center group relative overflow-hidden hover:no-underline"
       >
         <div className="h-full bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 flex flex-col items-center justify-center text-white text-4xl font-bold transition duration-300 group-hover:from-indigo-600 group-hover:to-purple-600">

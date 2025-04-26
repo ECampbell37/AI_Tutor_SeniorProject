@@ -3,6 +3,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { SendHorizonal, ClipboardCheck, X, Loader2 } from 'lucide-react';
+import MarkdownRenderer from '../../components/MarkdownRenderer';
+
 
 interface Message {
   sender: 'AI' | 'User' | 'separator';
@@ -211,20 +213,29 @@ export default function Chat() {
 
       <div className="w-full max-w-4xl bg-white bg-opacity-95 border border-gray-200 rounded-2xl shadow-xl p-6 flex flex-col flex-grow animate-fadeIn">
         <div className="overflow-y-auto mb-4 flex-1 space-y-2" style={{ maxHeight: '60vh' }}>
-          {messages.map((msg, idx) =>
-            msg.sender === 'separator' ? (
-              <div key={idx} className="text-center text-gray-400 py-2">{msg.text}</div>
-            ) : (
-              <div
-                key={idx}
-                className={`p-3 rounded-xl shadow-sm ${
-                  msg.sender === 'AI' ? 'bg-blue-50 text-blue-700' : 'bg-teal-50 text-gray-700'
-                }`}
-              >
-                <strong>{msg.sender}:</strong> {msg.text}
+        {messages.map((msg, idx) =>
+          msg.sender === 'separator' ? (
+            <div key={idx} className="text-center text-gray-400 py-2">{msg.text}</div>
+          ) : (
+            <div
+              key={idx}
+              className={`p-3 rounded-xl shadow-sm ${
+                msg.sender === 'AI' ? 'bg-blue-50 text-blue-700' : 'bg-teal-50 text-gray-700'
+              }`}
+            >
+              <div className="flex flex-wrap gap-1 items-start">
+                <strong className="shrink-0">{msg.sender}:</strong>
+                {msg.sender === 'AI' ? (
+                  <div className="flex-1 overflow-x-hidden">
+                    <MarkdownRenderer content={msg.text} />
+                  </div>
+                ) : (
+                  <span className="flex-1">{msg.text}</span>
+                )}
               </div>
-            )
-          )}
+            </div>
+          )
+        )}
           {loading && <div className="text-blue-600 animate-pulse">AI is typing...</div>}
         </div>
 
@@ -258,7 +269,9 @@ export default function Chat() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 overflow-auto">
           <div className="bg-white p-6 rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
             <h3 className="text-2xl font-semibold mb-4">Quiz</h3>
-            <pre className="bg-gray-100 p-4 mb-3 rounded whitespace-pre-wrap">{quizText}</pre>
+            <div className="bg-gray-100 p-4 mb-3 rounded whitespace-pre-wrap">
+              <MarkdownRenderer content={quizText} />
+            </div>
             {quizAnswers.map((answer, i) => (
               <input
                 key={i}
@@ -280,10 +293,19 @@ export default function Chat() {
               {quizLoading ? <Loader2 className="animate-spin h-5 w-5 mx-auto" /> : 'Submit Answers'}
             </button>
             {quizFeedback && (
-              <div className="mt-4 p-4 bg-blue-100 rounded">
-                <strong>Feedback:</strong>
-                <pre className="whitespace-pre-wrap">{quizFeedback}</pre>
-                <strong className="mt-4 block">Grade:</strong> {quizGrade}
+              <div className="mt-4 p-4 bg-blue-100 rounded space-y-4">
+                <div>
+                  <strong>Feedback:</strong>
+                  <div className="whitespace-pre-wrap">
+                    <MarkdownRenderer content={quizFeedback} />
+                  </div>
+                </div>
+                <div>
+                  <strong>Grade:</strong>
+                  <div className="whitespace-pre-wrap">
+                    <MarkdownRenderer content={quizGrade} />
+                  </div>
+                </div>
               </div>
             )}
             <button

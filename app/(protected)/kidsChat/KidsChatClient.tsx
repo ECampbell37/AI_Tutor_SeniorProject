@@ -3,6 +3,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { SendHorizonal, ClipboardCheck, X, Loader2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import MarkdownRenderer from "../../components/MarkdownRenderer";
+
 
 interface Message {
   sender: "AI" | "You" | "separator";
@@ -212,7 +214,16 @@ export default function KidsChat() {
                   msg.sender === "AI" ? "bg-green-50 text-green-600" : "bg-teal-50 text-gray-700"
                 }`}
               >
-                <strong>{msg.sender}:</strong> {msg.text}
+                <div className="flex flex-wrap gap-1 items-start">
+                  <strong className="shrink-0">{msg.sender}:</strong>
+                  {msg.sender === 'AI' ? (
+                    <div className="flex-1 overflow-x-hidden">
+                      <MarkdownRenderer content={msg.text} />
+                    </div>
+                  ) : (
+                    <span className="flex-1">{msg.text}</span>
+                  )}
+                </div>
               </div>
             )
           )}
@@ -249,7 +260,9 @@ export default function KidsChat() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 overflow-auto">
           <div className="bg-white p-6 rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
             <h3 className="text-2xl font-bold mb-4 text-green-700">📝 Your Quiz</h3>
-            <pre className="bg-gray-100 p-4 mb-3 rounded whitespace-pre-wrap">{quizText}</pre>
+            <div className="bg-gray-100 p-4 mb-3 rounded whitespace-pre-wrap">
+              <MarkdownRenderer content={quizText} />
+            </div>
             {quizAnswers.map((answer, i) => (
               <input
                 key={i}
@@ -271,10 +284,19 @@ export default function KidsChat() {
               {quizLoading ? <Loader2 className="animate-spin h-5 w-5 mx-auto" /> : "Submit Answers"}
             </button>
             {quizFeedback && (
-              <div className="mt-4 p-4 bg-green-100 rounded text-emerald-800">
-                <strong>Feedback:</strong>
-                <pre className="whitespace-pre-wrap">{quizFeedback}</pre>
-                <strong className="mt-4 block">Grade:</strong> {quizGrade}
+              <div className="mt-4 p-4 bg-green-100 rounded text-emerald-800 space-y-4">
+                <div>
+                  <strong>Feedback:</strong>
+                  <div className="whitespace-pre-wrap">
+                    <MarkdownRenderer content={quizFeedback} />
+                  </div>
+                </div>
+                <div>
+                  <strong>Grade:</strong>
+                  <div className="whitespace-pre-wrap">
+                    <MarkdownRenderer content={quizGrade} />
+                  </div>
+                </div>
               </div>
             )}
             <button

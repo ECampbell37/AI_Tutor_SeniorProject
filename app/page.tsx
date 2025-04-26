@@ -44,7 +44,7 @@ export default function Home() {
           </p>
 
           <Link href="/tutor" className="hover:no-underline">
-            <button className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white font-semibold py-3 px-8 rounded-full flex items-center justify-center shadow-md hover:shadow-lg hover:scale-105 transition-transform duration-300 focus:outline-none">
+            <button className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white font-semibold py-3 px-8 text-lg rounded-full flex items-center justify-center shadow-md hover:shadow-lg hover:scale-105 transition-transform duration-300">
               Select Your Tutor
               <ArrowRight className="ml-2 h-5 w-5" />
             </button>

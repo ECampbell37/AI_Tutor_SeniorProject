@@ -1,7 +1,7 @@
-// app/kidsChat/page.tsx
+// app/professionalChat/page.tsx
 
 import { Suspense } from 'react';
-import KidsChatClient from './KidsChatClient';
+import ProChatClient from './ProChatClient';
 
 export default function KidsChatPage() {
   return (
@@ -12,7 +12,7 @@ export default function KidsChatPage() {
         </div>
       }
     >
-      <KidsChatClient />
+      <ProChatClient />
     </Suspense>
   );
 }

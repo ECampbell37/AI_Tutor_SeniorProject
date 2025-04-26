@@ -1,7 +1,8 @@
-"use client";
-import React, { useEffect, useRef, useState } from 'react';
-import { SendHorizonal } from 'lucide-react';
+'use client';
+
+import React, { useState, useEffect, useRef } from 'react';
 import { useSession } from 'next-auth/react';
+import { SendHorizonal } from 'lucide-react';
 import MarkdownRenderer from '../../components/MarkdownRenderer';
 
 interface Message {
@@ -9,9 +10,8 @@ interface Message {
   text: string;
 }
 
-export default function FreeChat() {
+export default function ProfessionalChat() {
   const { data: session } = useSession();
-
   const [messages, setMessages] = useState<Message[]>([]);
   const [userInput, setUserInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -33,7 +33,7 @@ export default function FreeChat() {
 
     const initializeMemory = async () => {
       try {
-        await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/free_chat/memory/clear`, {
+        await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/professional_chat/memory/clear`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -43,14 +43,14 @@ export default function FreeChat() {
 
         setMessages([{
           sender: 'AI',
-          text: "Welcome to Free Chat with the AI Tutor! Start the conversation however you'd like 😊",
+          text: "👋 Welcome to Professional Mode! Ask advanced questions involving math, code, or deep concepts — I'm here to help like a subject matter expert.",
         }]);
 
         hasInitialized.current = true;
       } catch {
         setMessages([{
           sender: 'AI',
-          text: 'Sorry, I could not start the conversation.',
+          text: 'Sorry, I could not start the session.',
         }]);
       }
     };
@@ -70,24 +70,25 @@ export default function FreeChat() {
       return;
     }
 
-    setMessages((prev) => [...prev, { sender: 'User', text: userInput }]);
+    const userText = userInput;
+    setMessages((prev) => [...prev, { sender: 'User', text: userText }]);
     setUserInput('');
     setLoading(true);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/free_chat`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/professional_chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'x-user-id': session.user.id,
         },
-        body: JSON.stringify({ message: userInput }),
+        body: JSON.stringify({ message: userText }),
       });
 
       const data = await res.json();
       setMessages((prev) => [...prev, { sender: 'AI', text: data.message }]);
     } catch {
-      setMessages((prev) => [...prev, { sender: 'AI', text: 'Something went wrong!' }]);
+      setMessages((prev) => [...prev, { sender: 'AI', text: 'Oops! Something went wrong.' }]);
     }
 
     setLoading(false);
@@ -95,15 +96,15 @@ export default function FreeChat() {
 
   return (
     <div className="min-h-screen flex flex-col items-center container mx-auto p-6 bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300">
-      <h2 className="text-4xl font-semibold mb-6 text-gray-800">🗨️ Free Chat Mode</h2>
+      <h2 className="text-4xl font-semibold mb-6 text-gray-800">🎓 Professional Tutor</h2>
 
-      <div className="w-full max-w-3xl bg-white bg-opacity-95 border border-gray-200 rounded-2xl shadow-xl p-6 flex flex-col flex-grow animate-fadeIn">
+      <div className="w-full max-w-4xl bg-white bg-opacity-95 border border-gray-200 rounded-2xl shadow-xl p-6 flex flex-col flex-grow animate-fadeIn">
         <div className="overflow-y-auto mb-4 flex-1 space-y-2" style={{ maxHeight: '60vh' }}>
-        {messages.map((msg, idx) => (
+          {messages.map((msg, idx) => (
             <div
               key={idx}
               className={`p-3 rounded-xl shadow-sm ${
-                msg.sender === 'AI' ? 'bg-indigo-50 text-gray-800' : 'bg-teal-50 text-gray-700'
+                msg.sender === 'AI' ? 'bg-purple-50 text-purple-800' : 'bg-teal-50 text-gray-700'
               }`}
             >
               <div className="flex flex-wrap gap-1 items-start">
@@ -118,7 +119,7 @@ export default function FreeChat() {
               </div>
             </div>
           ))}
-          {loading && <div className="text-indigo-600 animate-pulse">AI is typing...</div>}
+          {loading && <div className="text-purple-600 animate-pulse">AI is typing...</div>}
         </div>
 
         <div className="flex items-center mt-2">
@@ -127,13 +128,13 @@ export default function FreeChat() {
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), sendMessage())}
-            placeholder="Type your message..."
+            placeholder="Ask a professional question..."
             rows={1}
             style={{ minHeight: '3.2rem', maxHeight: '10rem' }}
           />
           <button
             onClick={sendMessage}
-            className="bg-indigo-500 text-white rounded-xl p-3 hover:bg-indigo-600 shadow-md transition duration-200 flex items-center"
+            className="bg-purple-500 text-white rounded-xl p-3 hover:bg-purple-600 shadow-md transition duration-200 flex items-center"
           >
             Send <SendHorizonal className="ml-2 h-5 w-5" />
           </button>

@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { ClipboardCopy } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';

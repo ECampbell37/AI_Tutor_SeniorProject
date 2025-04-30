@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
-import { SendHorizonal, X } from "lucide-react";
+import { SendHorizonal} from "lucide-react";
 import MarkdownRenderer from "../../components/MarkdownRenderer";
 
 interface Message {
@@ -29,7 +29,7 @@ export default function PDFChat() {
           text: "📘 Welcome! I’ve loaded your PDF. Ask anything about it, and I’ll do my best to help.",
         }]);
         hasInitialized.current = true;
-      } catch (err) {
+      } catch {
         setMessages([{
           sender: 'AI',
           text: '❌ Sorry, something went wrong while initializing the PDF chat.',

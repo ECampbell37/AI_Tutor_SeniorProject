@@ -30,7 +30,7 @@ export default function AboutPage() {
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-gray-800 mb-4">📚 Overview</h2>
           <p className="text-gray-700 text-base">
-            AI Tutor is a web-based learning companion that adapts to your needs. Whether you're studying for an exam or exploring a new topic, it guides you through interactive lessons and quizzes powered by AI. It's built for clarity, simplicity, and deep understanding.
+            AI Tutor is a web-based learning companion that adapts to your needs. Whether you&apos;re studying for an exam or exploring a new topic, it guides you through interactive lessons and quizzes powered by AI. It&apos;s built for clarity, simplicity, and deep understanding.
           </p>
         </div>
       </section>
@@ -82,7 +82,7 @@ export default function AboutPage() {
           <p className="text-gray-700 text-lg">
             AI Tutor was created to make education more accessible, engaging, and personalized. We believe learning
             should feel like a conversation — not a chore. By combining powerful AI with intuitive design, we aim to
-            empower people of all ages to expand thier minds and enjoy the learning process. It's time to reimagine 
+            empower people of all ages to expand thier minds and enjoy the learning process. It&apos;s time to reimagine 
             what education can be ✨ 
           </p>
         </div>

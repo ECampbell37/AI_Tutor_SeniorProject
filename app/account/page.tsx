@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useSession, signOut } from 'next-auth/react';
-import { LogOut, UserCircle, Sparkles, Lock } from 'lucide-react';
+import { LogOut, UserCircle, Sparkles, Lock, GaugeCircle } from 'lucide-react';
 import Link from 'next/link';
 
 const DAILY_LIMIT = 100;
@@ -58,8 +58,8 @@ export default function AccountPage() {
         <div className="inline-block mb-6 animate-bounce-slow">
           <UserCircle className="text-blue-500 w-16 h-16" />
         </div>
-        <h1 className="text-4xl font-bold text-gray-800 mb-2">My Account</h1>
-        <p className="text-gray-600 mb-6">Welcome back, {user?.name || 'Learner'}!</p>
+        <h1 className="text-4xl font-bold text-gray-800 mb-2">Welcome back, {user?.name || 'Learner'}!</h1>
+        <p className="text-gray-600 mb-6">Here’s a quick look at your usage and progress</p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left mb-10">
           <div className="bg-white bg-opacity-70 border border-blue-200 p-5 rounded-xl shadow-md">
@@ -73,14 +73,34 @@ export default function AccountPage() {
         </div>
 
         <div className="mb-10">
-          <h2 className="text-md font-semibold text-blue-700 mb-1">📊 Daily API Usage</h2>
-          <div className="w-full bg-gray-200 rounded-full h-4 mb-2">
-            <div
-              className="bg-blue-500 h-4 rounded-full transition-all duration-300"
-              style={{ width: `${usagePercent}%` }}
-            />
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <GaugeCircle className="text-blue-600" size={20} />
+            <h2 className="text-md font-semibold text-blue-700">Daily API Usage</h2>
           </div>
-          <p className="text-sm text-gray-600">{`${usage} / ${DAILY_LIMIT} API calls used today`}</p>
+
+          <div className="relative w-full h-5 rounded-full bg-gray-200 overflow-hidden shadow-inner">
+            <div
+              className="absolute left-0 top-0 h-full rounded-full transition-all duration-700 ease-in-out"
+              style={{
+                width: `${usagePercent}%`,
+                background: `linear-gradient(to right,
+                  #3b82f6,
+                  ${usagePercent < 50 ? '#6366f1' : usagePercent < 80 ? '#a855f7' : '#ef4444'})`,
+              }}
+            />
+            <div
+              className="absolute -top-5 text-xs font-bold text-gray-800 transition-all duration-300"
+              style={{
+                left: `calc(${usagePercent}% - 25px)`,
+              }}
+            >
+              {Math.floor(usagePercent)}%
+            </div>
+          </div>
+
+          <p className="text-sm text-gray-600 mt-2">
+            {`${usage} / ${DAILY_LIMIT} API calls used today`}
+          </p>
         </div>
 
         <div className="mb-10">

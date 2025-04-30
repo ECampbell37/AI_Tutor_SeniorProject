@@ -91,11 +91,11 @@ export default function Home() {
 
         {/* PDF Mode */}
         <section className="bg-blue-50 rounded-2xl py-16 px-6 shadow-md text-center animate-fadeInUp">
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">📄 PDF Mode (Coming Soon)</h2>
+          <h2 className="text-3xl font-bold text-gray-800 mb-4">📄 PDF Mode (Experimental)</h2>
           <p className="text-gray-600 mb-8">
-            Upload a textbook or handout and ask questions directly about it — perfect for deep learning with your own materials.
+            Upload a textbook or handout and ask questions directly about it — ideal for learning with your own materials.
           </p>
-          <Link href="/" className='hover:no-underline'>
+          <Link href="/pdfUpload" className='hover:no-underline'>
             <button className="bg-gradient-to-r from-orange-400 via-amber-500 to-yellow-400 text-white font-semibold py-3 px-8 rounded-full flex items-center justify-center mx-auto shadow-md hover:shadow-lg hover:scale-105 transition-transform duration-300">
               Preview PDF Mode
               <FileText className="ml-2 h-5 w-5" />

@@ -109,7 +109,7 @@ export default function FreeChat() {
               <div className="flex flex-wrap gap-1 items-start">
                 <strong className="shrink-0">{msg.sender}:</strong>
                 {msg.sender === 'AI' ? (
-                  <div className="flex-1 overflow-x-hidden">
+                  <div className="flex-1 overflow-x-hidden break-words">
                     <MarkdownRenderer content={msg.text} />
                   </div>
                 ) : (

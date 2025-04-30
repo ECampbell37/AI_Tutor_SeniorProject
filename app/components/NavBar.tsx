@@ -13,9 +13,10 @@ export default function NavBar() {
   const menuItems = [
     { label: 'Account', href: '/account' },
     { label: 'Select Tutor', href: '/tutor' },
-    { label: 'About', href: '/about' },
     { label: 'Free Chat', href: '/freeChat' },
+    { label: 'PDF Mode', href: '/pdfUpload' },
     { label: 'Status Check', href: '/statusCheck' },
+    { label: 'About', href: '/about' },
   ];
 
   return (

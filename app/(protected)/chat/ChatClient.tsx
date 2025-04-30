@@ -226,7 +226,7 @@ export default function Chat() {
               <div className="flex flex-wrap gap-1 items-start">
                 <strong className="shrink-0">{msg.sender}:</strong>
                 {msg.sender === 'AI' ? (
-                  <div className="flex-1 overflow-x-hidden">
+                  <div className="flex-1 overflow-x-hidden break-words whitespace-pre-line">
                     <MarkdownRenderer content={msg.text} />
                   </div>
                 ) : (
@@ -269,7 +269,7 @@ export default function Chat() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 overflow-auto">
           <div className="bg-white p-6 rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
             <h3 className="text-2xl font-semibold mb-4">Quiz</h3>
-            <div className="bg-gray-100 p-4 mb-3 rounded whitespace-pre-wrap">
+            <div className="bg-gray-100 p-4 mb-3 rounded whitespace-pre-line">
               <MarkdownRenderer content={quizText} />
             </div>
             {quizAnswers.map((answer, i) => (
@@ -296,13 +296,13 @@ export default function Chat() {
               <div className="mt-4 p-4 bg-blue-100 rounded space-y-4">
                 <div>
                   <strong>Feedback:</strong>
-                  <div className="whitespace-pre-wrap">
+                  <div className="break-words whitespace-pre-line">
                     <MarkdownRenderer content={quizFeedback} />
                   </div>
                 </div>
                 <div>
                   <strong>Grade:</strong>
-                  <div className="whitespace-pre-wrap">
+                  <div className="break-words whitespace-pre-line">
                     <MarkdownRenderer content={quizGrade} />
                   </div>
                 </div>

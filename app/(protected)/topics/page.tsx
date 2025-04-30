@@ -15,6 +15,7 @@ export default function Topics() {
     { name: 'Astronomy', href: '/chat?subject=Astronomy' },
     { name: 'AI/ML', href: '/chat?subject=AI/ML' },
     { name: 'Computer Science', href: '/chat?subject=Computer%20Science' },
+    { name: 'Data Science', href: '/chat?subject=Data%20Science' },
     { name: 'Physics', href: '/chat?subject=Physics' },
     { name: 'Biology', href: '/chat?subject=Biology' },
     { name: 'Chemistry', href: '/chat?subject=Chemistry' },
@@ -30,7 +31,7 @@ export default function Topics() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {topics.map((topic) => (
             <Link key={topic.name} href={topic.href}>
-              <button className="h-32 w-full bg-blue-600 text-white rounded-3xl hover:bg-gray-800 text-lg font-bold">
+              <button className="h-32 w-full bg-blue-500 text-white rounded-3xl hover:bg-gray-800 text-lg font-bold">
                 {topic.name}
               </button>
             </Link>
@@ -38,9 +39,9 @@ export default function Topics() {
 
           <button
             onClick={() => setShowModal(true)}
-            className="h-32 w-full bg-blue-600 text-white rounded-3xl hover:bg-gray-800 text-lg font-bold"
+            className="h-32 w-full bg-blue-500 text-white rounded-3xl hover:bg-gray-800 text-lg font-bold"
           >
-            Other: ___
+            ⭐ Other: ___
           </button>
         </div>
       </div>

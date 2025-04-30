@@ -35,7 +35,7 @@ export default function PDFUpload() {
       }
 
       router.push("/pdfChat");
-    } catch (error) {
+    } catch {
       alert("❌ Something went wrong. Please try again.");
     } finally {
       setLoading(false);
@@ -47,7 +47,7 @@ export default function PDFUpload() {
       <div className="bg-white bg-opacity-80 backdrop-blur-md p-12 rounded-2xl shadow-xl max-w-md w-full text-center animate-fadeInUp">
         <Upload className="w-12 h-12 text-blue-500 mx-auto mb-5" />
         <h1 className="text-3xl font-bold mb-2">Upload Your PDF</h1>
-        <p className="text-gray-600 mb-6">We'll help you understand and chat about it!</p>
+        <p className="text-gray-600 mb-6">We&apos;ll help you understand and chat about it!</p>
 
         <label
           htmlFor="pdf-upload"

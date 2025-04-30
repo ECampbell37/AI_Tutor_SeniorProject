@@ -58,7 +58,6 @@ export default function PDFChat() {
       });
 
       const data = await res.json();
-      console.log("PDF Ask API Response:", data); // Helpful debug line
 
       if (data?.message && data.message.trim() !== "") {
         setMessages((prev) => [...prev, { sender: "AI", text: data.message }]);

@@ -13,17 +13,29 @@ import { useSession, signOut } from 'next-auth/react';
 import { LogOut, UserCircle, Sparkles, Lock, GaugeCircle, 
   UserCheck, NotebookPen, Trophy, ChartNoAxesCombined, Undo2} from 'lucide-react';
 import Link from 'next/link';
+import type { UserStats } from '@/lib/badges';
 
 //API Daily User Limit
 const DAILY_LIMIT = 100;
+
+//Badge type for badge hook
+type Badge = {
+  id: string;
+  badge_id?: string;
+  name: string;
+  description: string;
+  icon: string;
+  awarded_at: string;
+};
+
 
 export default function AccountPage() {
   //Hooks
   const { data: session } = useSession();
   const [joinedAt, setJoinedAt] = useState<string | null>(null);
   const [usage, setUsage] = useState<number>(0);
-  const [badges, setBadges] = useState<any[]>([]);
-  const [stats, setStats] = useState<{ total_logins: number; quizzes_taken: number; topics: string[] }>({
+  const [badges, setBadges] = useState<Badge[]>([]);
+  const [stats, setStats] = useState<UserStats>({
     total_logins: 0,
     quizzes_taken: 0,
     topics: [],
@@ -177,7 +189,7 @@ export default function AccountPage() {
           <UserCircle className="text-blue-500 w-16 h-16" />
         </div>
         <h1 className="text-4xl font-bold text-gray-800 mb-2">Welcome back, {user?.name || 'Learner'}!</h1>
-        <p className="text-gray-600 mb-6">Here's a quick look at your usage and progress</p>
+        <p className="text-gray-600 mb-6">Here&apos;s a quick look at your usage and progress</p>
   
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left mb-10">
           <div className="bg-white bg-opacity-70 border border-blue-200 p-5 rounded-xl shadow-md">

@@ -1,4 +1,11 @@
-// lib/supabaseClient.ts
+/************************************************************
+ * Name:    Elijah Campbell‑Ihim
+ * Project: AI Tutor
+ * Class:   CMPS-450 Senior Project
+ * Date:    May 2025
+ * File:    /lib/supabaseClient.ts
+ ************************************************************/
+
 import { createClient } from '@supabase/supabase-js';
 
 // Client for use in client-side code (read-only, uses anon key)

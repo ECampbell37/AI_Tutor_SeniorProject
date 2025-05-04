@@ -1,3 +1,11 @@
+/************************************************************
+ * Name:    Elijah Campbell‑Ihim
+ * Project: AI Tutor
+ * Class:   CMPS-450 Senior Project
+ * Date:    May 2025
+ * File:    /app/about/page.tsx
+ ************************************************************/
+
 'use client';
 
 import Link from 'next/link';
@@ -103,7 +111,7 @@ export default function AboutPage() {
             </a>{' '}
             using Next.js, LangChain, FastAPI, and Supabase.
           </p>
-
+          {/* Back to Home Button */}
           <Link href="/" className="hover:no-underline">
             <button className="bg-transparent text-rose-500 hover:bg-gradient-to-r hover:from-rose-400 hover:via-pink-500 hover:to-rose-500 hover:text-white font-semibold py-3 px-8 rounded-full flex items-center hover:scale-105 transition-all duration-300">
               <Undo2 className="mr-2 h-5 w-5" />

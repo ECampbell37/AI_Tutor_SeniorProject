@@ -1,4 +1,12 @@
-// app/layout.tsx
+/************************************************************
+ * Name:    Elijah Campbell‑Ihim
+ * Project: AI Tutor
+ * Class:   CMPS-450 Senior Project
+ * Date:    May 2025
+ * File:    /app/layout.tsx
+ ************************************************************/
+
+
 import './globals.css';
 import NavBar from './components/NavBar';
 import Providers from './components/Providers';

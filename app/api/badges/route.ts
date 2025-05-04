@@ -3,32 +3,28 @@
  * Project: AI Tutor
  * Class:   CMPS-450 Senior Project
  * Date:    May 2025
- * File:    /app/api/usage/route.ts
+ * File:    /app/api/badges/route.ts
  ************************************************************/
 
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseServer } from '@/lib/supabaseClient';
 
 export async function POST(req: NextRequest) {
-  //Get user's ID
+  //Get User ID
   const { userId } = await req.json();
 
-  //Get today's date
-  const today = new Date().toISOString().slice(0, 10);
-
-  //Retrieve User API Usage from Database
+  //Get all user's badges from Database
   const { data, error } = await supabaseServer
-    .from('api_usage')
-    .select('request_count')
+    .from('badges')
+    .select('*')
     .eq('user_id', userId)
-    .eq('date', today)
-    .single();
+    .order('awarded_at', { ascending: false });
 
-  //Return Error if one occurs
+  //If error, return
   if (error) {
-    return NextResponse.json({ error: 'Failed to fetch usage' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to fetch badges' }, { status: 500 });
   }
 
-  //Otherwise, return the Usage Count
-  return NextResponse.json({ usage: data?.request_count ?? 0 });
+  //Otherwise, return user's badges
+  return NextResponse.json(data);
 }

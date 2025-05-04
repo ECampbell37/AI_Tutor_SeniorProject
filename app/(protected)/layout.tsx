@@ -1,3 +1,11 @@
+/************************************************************
+ * Name:    Elijah Campbell‑Ihim
+ * Project: AI Tutor
+ * Class:   CMPS-450 Senior Project
+ * Date:    May 2025
+ * File:    /app/(protected)/layout.tsx
+ ************************************************************/
+
 'use client';
 
 import { useSession } from 'next-auth/react';
@@ -6,6 +14,7 @@ import { useEffect, useState } from 'react';
 import { Loader2, BotMessageSquare } from 'lucide-react';
 
 export default function ProtectedLayout({ children }: { children: React.ReactNode }) {
+  //Hooks
   const { status } = useSession();
   const router = useRouter();
 
@@ -13,7 +22,7 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
   const [apiReady, setApiReady] = useState(false);
   const [delayPassed, setDelayPassed] = useState(false);
 
-  // Delay to avoid visual flash
+  // Delay to avoid visual flash of loading screen
   useEffect(() => {
     const timeout = setTimeout(() => setDelayPassed(true), 1100);
     return () => clearTimeout(timeout);
@@ -50,8 +59,10 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
     }
   }, [authReady]);
 
+  //Check if loading screen should be displayed
   const showLoadingScreen = !authReady || !apiReady || !delayPassed;
 
+  //Loading Screen Between Protected Pages
   if (showLoadingScreen) {
     return (
       <div className="flex flex-col items-center justify-center h-screen text-center bg-gradient-to-br from-blue-100 via-blue-200 to-cyan-200 animate-pulse-slow px-6">

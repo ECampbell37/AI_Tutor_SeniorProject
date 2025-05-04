@@ -3,32 +3,29 @@
  * Project: AI Tutor
  * Class:   CMPS-450 Senior Project
  * Date:    May 2025
- * File:    /app/api/usage/route.ts
+ * File:    /app/api/joined/route.ts
  ************************************************************/
 
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseServer } from '@/lib/supabaseClient';
 
 export async function POST(req: NextRequest) {
-  //Get user's ID
+  //Get User ID
   const { userId } = await req.json();
 
-  //Get today's date
-  const today = new Date().toISOString().slice(0, 10);
-
-  //Retrieve User API Usage from Database
+  //Get the date the user created their account
   const { data, error } = await supabaseServer
-    .from('api_usage')
-    .select('request_count')
-    .eq('user_id', userId)
-    .eq('date', today)
+    .from('users')
+    .select('created_at')
+    .eq('id', userId)
     .single();
 
-  //Return Error if one occurs
-  if (error) {
-    return NextResponse.json({ error: 'Failed to fetch usage' }, { status: 500 });
+  //If error, return
+  if (error || !data) {
+    console.error('Join date fetch error:', error);
+    return NextResponse.json({ error: 'Failed to fetch join date' }, { status: 500 });
   }
 
-  //Otherwise, return the Usage Count
-  return NextResponse.json({ usage: data?.request_count ?? 0 });
+  //Otherwise, return the user's join date
+  return NextResponse.json({ joinedAt: data.created_at });
 }

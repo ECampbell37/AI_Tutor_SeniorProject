@@ -1,0 +1,77 @@
+/************************************************************
+ * Name:    Elijah Campbell‑Ihim
+ * Project: AI Tutor
+ * Class:   CMPS-450 Senior Project
+ * Date:    May 2025
+ * File:    /app/api/badges/update/route.ts
+ ************************************************************/
+
+
+import { NextRequest, NextResponse } from 'next/server';
+import { supabaseServer } from '@/lib/supabaseClient';
+import { BADGE_RULES } from '@/lib/badges';
+
+export async function POST(req: NextRequest) {
+  try {
+    //Get user's ID (and any extra params)
+    const { userId, extra } = await req.json();
+
+    // Get user stats from database
+    const { data: stats, error: statsError } = await supabaseServer
+      .from('user_stats')
+      .select('*')
+      .eq('user_id', userId)
+      .maybeSingle();
+
+    if (statsError) throw statsError;
+
+    // Create default stats if missing
+    if (!stats) {
+      const { error: insertError } = await supabaseServer
+        .from('user_stats')
+        .insert([{ user_id: userId, total_logins: 1, quizzes_taken: 0, topics: [] }]);
+      
+      if (insertError) throw insertError;
+
+      return NextResponse.json({ awarded: ['first_login'] });
+    }
+
+    // Get badges already earned by name from database
+    const { data: userBadges, error: badgeError } = await supabaseServer
+      .from('badges')
+      .select('name')
+      .eq('user_id', userId);
+
+    if (badgeError) throw badgeError;
+
+    const earnedNames = userBadges?.map((b) => b.name) ?? [];
+
+    // Determine which badges should be awarded
+    const newBadges = BADGE_RULES.filter((badge) => {
+      return !earnedNames.includes(badge.name) && badge.condition(stats, extra);
+    });
+
+    // Insert new badge rows in database
+    if (newBadges.length > 0) {
+      const inserts = newBadges.map((badge) => ({
+        user_id: userId,
+        name: badge.name,
+        description: badge.description,
+        icon: badge.icon,
+        awarded_at: new Date().toISOString(),
+      }));
+
+      const { error: insertError } = await supabaseServer
+        .from('badges')
+        .insert(inserts);
+
+      if (insertError) throw insertError;
+    }
+
+    // Return new awarded badges
+    return NextResponse.json({ awarded: newBadges.map((b) => b.name) });
+  } catch (err) {
+    console.error('Badge update error:', err);
+    return NextResponse.json({ error: 'Failed to update badges' }, { status: 500 });
+  }
+}

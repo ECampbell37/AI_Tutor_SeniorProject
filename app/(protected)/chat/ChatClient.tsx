@@ -1,3 +1,12 @@
+/************************************************************
+ * Name:    Elijah Campbell‑Ihim
+ * Project: AI Tutor
+ * Class:   CMPS-450 Senior Project
+ * Date:    May 2025
+ * File:    /app/(protected)/chat/ChatClient.tsx
+ ************************************************************/
+
+
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
@@ -6,12 +15,15 @@ import { SendHorizonal, ClipboardCheck, X, Loader2 } from 'lucide-react';
 import MarkdownRenderer from '../../components/MarkdownRenderer';
 
 
+//Message Format (sender and text)
 interface Message {
   sender: 'AI' | 'User' | 'separator';
   text: string;
 }
 
+//Casual Learning Chat Component
 export default function Chat() {
+  //Set up hooks
   const searchParams = useSearchParams();
   const subject = searchParams.get('subject') || 'Astronomy';
   const { data: session } = useSession();
@@ -29,6 +41,7 @@ export default function Chat() {
 
   const hasInitialized = useRef(false);
 
+  //Check User's API Limit
   async function checkApiAllowance(userId: string): Promise<boolean> {
     const res = await fetch('/api/usage/check', {
       method: 'POST',
@@ -40,11 +53,15 @@ export default function Chat() {
     return data.allowed === true;
   }
 
+
+  //Clear Previous Memory and Generate Lesson Intro
   useEffect(() => {
     if (!session?.user?.id || hasInitialized.current) return;
 
     const clearAndFetchIntro = async () => {
       try {
+
+        //Clear memory
         await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/memory/clear`, {
           method: 'POST',
           headers: {
@@ -53,17 +70,37 @@ export default function Chat() {
           },
         });
 
+
+        //Add the current subject to user stats
+        await fetch('/api/stats/topic', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: session.user.id, topic: subject }),
+        });
+
+
+        //Update User's Profile Badges
+        await fetch('/api/badges/update', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: session.user.id }),
+        });
+        
+
+        //If over API Limit, do not generate intro
         const allowed = await checkApiAllowance(session.user.id);
         if (!allowed) {
           setMessages([{ sender: 'AI', text: "🚫 You've reached your daily API limit. Try again tomorrow!" }]);
           return;
         }
 
+        //Generate Intro
         setLoading(true);
         const res = await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/intro?subject=${encodeURIComponent(subject)}`, {
           headers: { 'x-user-id': session.user.id },
         });
 
+        //Recieve the Intro and Display it
         const data = await res.json();
         setMessages([{ sender: 'AI', text: data.message }]);
         hasInitialized.current = true;
@@ -77,9 +114,14 @@ export default function Chat() {
     clearAndFetchIntro();
   }, [subject, session]);
 
+
+
+  //User sends message tp chat
   const sendMessage = async () => {
+    //If no message or user, skip
     if (!userInput.trim() || !session?.user?.id) return;
 
+    //If over API Limit, do not handle response
     const allowed = await checkApiAllowance(session.user.id);
     if (!allowed) {
       setMessages((prev) => [...prev, {
@@ -89,10 +131,12 @@ export default function Chat() {
       return;
     }
 
+    //Otherwise, add the user's message to the conversation
     setMessages((prev) => [...prev, { sender: 'User', text: userInput }]);
     setUserInput('');
     setLoading(true);
 
+    //Generate AI Response
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/chat?subject=${encodeURIComponent(subject)}`, {
         method: 'POST',
@@ -102,6 +146,8 @@ export default function Chat() {
         },
         body: JSON.stringify({ message: userInput }),
       });
+
+      //Recieve and Display AI Response
       const data = await res.json();
       setMessages((prev) => [...prev, { sender: 'AI', text: data.message }]);
     } catch {
@@ -111,9 +157,12 @@ export default function Chat() {
     setLoading(false);
   };
 
+
+  //Open the quiz pop-up
   const openQuizModal = async () => {
     if (!session?.user?.id) return;
 
+    //If API Limit reached, no quiz
     const allowed = await checkApiAllowance(session.user.id);
     if (!allowed) {
       setMessages((prev) => [...prev, {
@@ -125,11 +174,13 @@ export default function Chat() {
 
     setShowQuizModal(true);
 
+    //Generate Quiz
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/quiz/start?subject=${encodeURIComponent(subject)}`, {
         headers: { 'x-user-id': session.user.id },
       });
 
+      //Recieve and Display Quiz
       const data = await res.json();
       setQuizText(data.quiz);
     } catch {
@@ -137,9 +188,12 @@ export default function Chat() {
     }
   };
 
+
+  //Handle Quiz Submission
   const submitQuiz = async () => {
     if (!session?.user?.id) return;
 
+    //If API Limit reached, no ai response
     const allowed = await checkApiAllowance(session.user.id);
     if (!allowed) {
       setQuizFeedback("🚫 You've reached your daily API limit. Try again tomorrow!");
@@ -149,6 +203,7 @@ export default function Chat() {
 
     setQuizLoading(true);
 
+    //Generate Feedback and Grade
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/quiz/submit?subject=${encodeURIComponent(subject)}`, {
         method: 'POST',
@@ -159,9 +214,30 @@ export default function Chat() {
         body: JSON.stringify({ answers: quizAnswers }),
       });
 
+      //Recieve and Display Feedback and Grade
       const data = await res.json();
       setQuizFeedback(data.feedback);
       setQuizGrade(data.grade);
+
+      //Update User Quiz Stats
+      await fetch('/api/stats/quiz', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: session.user.id }),
+      });
+
+
+      //Update User Quiz Badges
+      await fetch('/api/badges/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: session.user.id,
+          extra: { score: data.grade },
+        }),
+      });
+      
+
     } catch {
       setQuizFeedback('Something went wrong submitting your answers.');
       setQuizGrade('');
@@ -170,7 +246,10 @@ export default function Chat() {
     setQuizLoading(false);
   };
 
+
+  //Handle Quiz End
   const closeQuizModal = async () => {
+    //Reset all quiz fields
     setShowQuizModal(false);
     setQuizText('');
     setQuizAnswers(['', '', '', '', '']);
@@ -179,6 +258,7 @@ export default function Chat() {
 
     if (!session?.user?.id) return;
 
+    //Check API Limit
     const allowed = await checkApiAllowance(session.user.id);
     if (!allowed) {
       setMessages((prev) => [...prev, {
@@ -189,11 +269,14 @@ export default function Chat() {
     }
 
     setLoading(true);
+
+    //Generate Post Quiz Continuation Text
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/continue?subject=${encodeURIComponent(subject)}`, {
         headers: { 'x-user-id': session.user.id },
       });
 
+      //Recieve and Display Post Quiz Continuation in chat
       const data = await res.json();
       setMessages((prev) => [
         ...prev,
@@ -207,10 +290,12 @@ export default function Chat() {
     setLoading(false);
   };
 
+  //Casual Learning UI
   return (
     <div className="min-h-screen flex flex-col items-center container mx-auto p-6 bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300">
       <h2 className="text-4xl font-semibold mb-6 text-gray-800">📖 Casual Learning: {subject}</h2>
 
+      {/* Chat Interface */}
       <div className="w-full max-w-4xl bg-white bg-opacity-95 border border-gray-200 rounded-2xl shadow-xl p-6 flex flex-col flex-grow animate-fadeIn">
         <div className="overflow-y-auto mb-4 flex-1 space-y-2" style={{ maxHeight: '60vh' }}>
         {messages.map((msg, idx) =>
@@ -239,6 +324,7 @@ export default function Chat() {
           {loading && <div className="text-blue-600 animate-pulse">AI is typing...</div>}
         </div>
 
+        {/* Text Input */}
         <div className="flex items-center">
           <textarea
             className="flex-1 border border-gray-300 rounded-xl p-3 mr-2 shadow-sm resize-y overflow-y-auto"
@@ -258,6 +344,7 @@ export default function Chat() {
         </div>
       </div>
 
+      {/* Quiz Button */}
       <button
         onClick={openQuizModal}
         className="mt-6 bg-cyan-500 text-white rounded-xl py-3 px-5 hover:bg-cyan-600 shadow-lg flex items-center transition duration-200"
@@ -265,6 +352,7 @@ export default function Chat() {
         Take Quiz <ClipboardCheck className="ml-2 h-5 w-5" />
       </button>
 
+      {/* Quiz Pop Up */}
       {showQuizModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 overflow-auto">
           <div className="bg-white p-6 rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">

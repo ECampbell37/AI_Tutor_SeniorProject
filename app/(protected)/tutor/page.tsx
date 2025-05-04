@@ -1,4 +1,10 @@
-// app/tutor/page.tsx
+/************************************************************
+ * Name:    Elijah Campbell‑Ihim
+ * Project: AI Tutor
+ * Class:   CMPS-450 Senior Project
+ * Date:    May 2025
+ * File:    /app/(protected)/tutor/page.tsx
+ ************************************************************/
 
 'use client';
 import Link from 'next/link';
@@ -6,6 +12,7 @@ import Link from 'next/link';
 export default function TutorSelection() {
   return (
     <div className="h-screen flex overflow-x-auto snap-x snap-mandatory bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 animate-fade">
+      {/* Kids Mode */}
       <Link 
         href="/kidsTopics" 
         className="flex-none w-screen md:w-auto md:flex-1 snap-center group relative overflow-hidden hover:no-underline"
@@ -17,6 +24,7 @@ export default function TutorSelection() {
           </span>
         </div>
       </Link>
+      {/* Casual Mode */}
       <Link 
         href="/topics" 
         className="flex-none w-screen md:w-auto md:flex-1 snap-center group relative overflow-hidden hover:no-underline"
@@ -28,6 +36,7 @@ export default function TutorSelection() {
           </span>
         </div>
       </Link>
+      {/* Professional Mode */}
       <Link 
         href="/professionalChat" 
         className="flex-none w-screen md:w-auto md:flex-1 snap-center group relative overflow-hidden hover:no-underline"

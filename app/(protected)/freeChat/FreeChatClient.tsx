@@ -1,22 +1,35 @@
+/************************************************************
+ * Name:    Elijah Campbell‑Ihim
+ * Project: AI Tutor
+ * Class:   CMPS-450 Senior Project
+ * Date:    May 2025
+ * File:    /app/(protected)/freeChat/FreeChatClient.tsx
+ ************************************************************/
+
 "use client";
 import React, { useEffect, useRef, useState } from 'react';
 import { SendHorizonal } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import MarkdownRenderer from '../../components/MarkdownRenderer';
 
+
+//Message Format (sender and text)
 interface Message {
   sender: 'AI' | 'User';
   text: string;
 }
 
+//Free Chat Component
 export default function FreeChat() {
   const { data: session } = useSession();
 
+  //Set up hooks
   const [messages, setMessages] = useState<Message[]>([]);
   const [userInput, setUserInput] = useState('');
   const [loading, setLoading] = useState(false);
   const hasInitialized = useRef(false);
 
+  //Check API Limit
   async function checkApiAllowance(userId: string): Promise<boolean> {
     const res = await fetch('/api/usage/check', {
       method: 'POST',
@@ -28,6 +41,8 @@ export default function FreeChat() {
     return data.allowed === true;
   }
 
+
+  //Clear Previous Memory and Display Welcome Message
   useEffect(() => {
     if (!session?.user?.id || hasInitialized.current) return;
 
@@ -58,9 +73,12 @@ export default function FreeChat() {
     initializeMemory();
   }, [session]);
 
+
+  //Handle User Message
   const sendMessage = async () => {
     if (!userInput.trim() || !session?.user?.id) return;
 
+    //Check API Limit
     const allowed = await checkApiAllowance(session.user.id);
     if (!allowed) {
       setMessages((prev) => [...prev, {
@@ -70,10 +88,13 @@ export default function FreeChat() {
       return;
     }
 
+    //Add the user's message to the conversation
     setMessages((prev) => [...prev, { sender: 'User', text: userInput }]);
     setUserInput('');
     setLoading(true);
 
+
+    //Generate AI Response
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/free_chat`, {
         method: 'POST',
@@ -84,6 +105,7 @@ export default function FreeChat() {
         body: JSON.stringify({ message: userInput }),
       });
 
+      //Recieve and Display AI Response
       const data = await res.json();
       setMessages((prev) => [...prev, { sender: 'AI', text: data.message }]);
     } catch {
@@ -97,6 +119,7 @@ export default function FreeChat() {
     <div className="min-h-screen flex flex-col items-center container mx-auto p-6 bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300">
       <h2 className="text-4xl font-semibold mb-6 text-gray-800">🗨️ Free Chat Mode</h2>
 
+      {/* Chat Interface */}
       <div className="w-full max-w-3xl bg-white bg-opacity-95 border border-gray-200 rounded-2xl shadow-xl p-6 flex flex-col flex-grow animate-fadeIn">
         <div className="overflow-y-auto mb-4 flex-1 space-y-2" style={{ maxHeight: '60vh' }}>
         {messages.map((msg, idx) => (
@@ -121,6 +144,7 @@ export default function FreeChat() {
           {loading && <div className="text-indigo-600 animate-pulse">AI is typing...</div>}
         </div>
 
+        {/* Text Input */}
         <div className="flex items-center mt-2">
           <textarea
             className="flex-1 border border-gray-300 rounded-xl p-3 mr-2 shadow-sm resize-y overflow-y-auto"

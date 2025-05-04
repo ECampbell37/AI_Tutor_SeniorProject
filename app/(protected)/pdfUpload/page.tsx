@@ -1,3 +1,12 @@
+/************************************************************
+ * Name:    Elijah Campbell‑Ihim
+ * Project: AI Tutor
+ * Class:   CMPS-450 Senior Project
+ * Date:    May 2025
+ * File:    /app/(protected)/pdfUpload/page.tsx
+ ************************************************************/
+
+
 "use client";
 
 import { useState } from "react";
@@ -5,21 +14,27 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Loader2, FileUp, Upload } from "lucide-react";
 
+
+
 export default function PDFUpload() {
+  //Set up hooks
   const { data: session } = useSession();
   const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
 
+  //Handle user file upload
   const handleUpload = async () => {
     if (!file || !session?.user?.id) return;
 
     setLoading(true);
 
+    //FormData Object to be sent to backend server
     const formData = new FormData();
     formData.append("file", file);
 
     try {
+      //Send User's file to API
       const res = await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/pdf/upload`, {
         method: "POST",
         headers: {
@@ -28,12 +43,14 @@ export default function PDFUpload() {
         body: formData,
       });
 
+      //Handle File error
       if (!res.ok) {
         const errorData = await res.json();
         alert(`❌ Upload failed: ${errorData.error || "Unknown error"}`);
         return;
       }
 
+      //Go to pdfChat page on successful upload
       router.push("/pdfChat");
     } catch {
       alert("❌ Something went wrong. Please try again.");

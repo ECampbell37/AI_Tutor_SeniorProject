@@ -1,12 +1,23 @@
+/************************************************************
+ * Name:    Elijah Campbell‑Ihim
+ * Project: AI Tutor
+ * Class:   CMPS-450 Senior Project
+ * Date:    May 2025
+ * File:    /app/(protected)/topics/page.tsx
+ ************************************************************/
+
+
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
-import { X } from 'lucide-react'; // For close icon
+import { X } from 'lucide-react';
 
 export default function Topics() {
+  //Hooks
   const [customTopic, setCustomTopic] = useState('');
   const [showModal, setShowModal] = useState(false);
 
+  //Casual Learning Subjects
   const topics = [
     { name: 'English', href: '/chat?subject=English' },
     { name: 'History', href: '/chat?subject=History' },
@@ -28,6 +39,8 @@ export default function Topics() {
     <div className="min-h-screen flex flex-col animate-fadeIn">
       <div className="container mx-auto p-4 flex-grow">
         <h2 className="text-center text-3xl font-semibold mb-6">Select a Topic</h2>
+
+        {/* Topic Buttons */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {topics.map((topic) => (
             <Link key={topic.name} href={topic.href}>
@@ -46,7 +59,7 @@ export default function Topics() {
         </div>
       </div>
 
-      {/* Modal */}
+      {/* Other Topic Pop Up */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-200">
           <div className="bg-white p-6 rounded-2xl shadow-xl w-11/12 max-w-md animate-fadeIn flex flex-col items-center">

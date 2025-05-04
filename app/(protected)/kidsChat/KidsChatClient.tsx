@@ -1,3 +1,12 @@
+/************************************************************
+ * Name:    Elijah Campbell‑Ihim
+ * Project: AI Tutor
+ * Class:   CMPS-450 Senior Project
+ * Date:    May 2025
+ * File:    /app/(protected)/kidsChat/KidsChatClient.tsx
+ ************************************************************/
+
+
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { SendHorizonal, ClipboardCheck, X, Loader2 } from "lucide-react";
@@ -6,6 +15,7 @@ import { useSession } from "next-auth/react";
 import MarkdownRenderer from "../../components/MarkdownRenderer";
 
 
+//Message Format (sender and text)
 interface Message {
   sender: "AI" | "You" | "separator";
   text: string;
@@ -16,6 +26,7 @@ export default function KidsChat() {
   const subject = searchParams.get("subject") || "Nature";
   const { data: session } = useSession();
 
+  //Set up hooks
   const [messages, setMessages] = useState<Message[]>([]);
   const [userInput, setUserInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -29,6 +40,7 @@ export default function KidsChat() {
 
   const hasInitialized = useRef(false);
 
+  //Check API Limit Function
   async function checkApiAllowance(userId: string): Promise<boolean> {
     const res = await fetch("/api/usage/check", {
       method: "POST",
@@ -39,11 +51,15 @@ export default function KidsChat() {
     return data.allowed === true;
   }
 
+
+  //Clear Previous Memmory and Generate Lesson Intro
   useEffect(() => {
     if (!session?.user?.id || hasInitialized.current) return;
 
     const clearAndFetchIntro = async () => {
       try {
+
+        //Clear memory
         await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/kids_memory/clear`, {
           method: "POST",
           headers: {
@@ -52,17 +68,28 @@ export default function KidsChat() {
           },
         });
 
+        //Update User's Topic Stat
+        await fetch("/api/stats/topic", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: session.user.id, topic: subject }),
+        });
+        
+
+        //Check API Limit
         const allowed = await checkApiAllowance(session.user.id);
         if (!allowed) {
           setMessages([{ sender: "AI", text: "🚫 You've reached your daily limit. Come back tomorrow!" }]);
           return;
         }
 
+        //Generate Intro
         setLoading(true);
         const res = await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/kids_intro?subject=${encodeURIComponent(subject)}`, {
           headers: { "x-user-id": session.user.id },
         });
 
+        //Recieve and Display Intro
         const data = await res.json();
         setMessages([{ sender: "AI", text: data.message }]);
         hasInitialized.current = true;
@@ -76,20 +103,25 @@ export default function KidsChat() {
     clearAndFetchIntro();
   }, [subject, session]);
 
+
+  //Handle User sending Message
   const sendMessage = async () => {
     if (!userInput.trim() || !session?.user?.id) return;
 
+    //Check API Limit
     const allowed = await checkApiAllowance(session.user.id);
     if (!allowed) {
       setMessages((prev) => [...prev, { sender: "AI", text: "🚫 You've reached your daily limit. Try again tomorrow!" }]);
       return;
     }
 
+    //Add message to conversation
     setMessages((prev) => [...prev, { sender: "You", text: userInput }]);
     setUserInput("");
     setLoading(true);
 
     try {
+      //Generate response
       const res = await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/kids_chat?subject=${encodeURIComponent(subject)}`, {
         method: "POST",
         headers: {
@@ -99,6 +131,7 @@ export default function KidsChat() {
         body: JSON.stringify({ message: userInput }),
       });
 
+      //Recieve and Display response
       const data = await res.json();
       setMessages((prev) => [...prev, { sender: "AI", text: data.message }]);
     } catch {
@@ -108,9 +141,11 @@ export default function KidsChat() {
     setLoading(false);
   };
 
+  //Handle quiz start
   const startQuiz = async () => {
     if (!session?.user?.id) return;
 
+    //Check API Limit
     const allowed = await checkApiAllowance(session.user.id);
     if (!allowed) {
       setMessages((prev) => [...prev, { sender: "AI", text: "🚫 You've hit your daily limit. Try again tomorrow!" }]);
@@ -120,10 +155,12 @@ export default function KidsChat() {
     setShowQuizModal(true);
 
     try {
+      //Generate quiz
       const res = await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/kids_quiz/start?subject=${encodeURIComponent(subject)}`, {
         headers: { "x-user-id": session.user.id },
       });
 
+      //Recieve and Display Quiz
       const data = await res.json();
       setQuizText(data.quiz);
     } catch {
@@ -131,9 +168,12 @@ export default function KidsChat() {
     }
   };
 
+
+  //Handle Quiz submission
   const submitQuiz = async () => {
     if (!session?.user?.id) return;
 
+    //Check API Limit
     const allowed = await checkApiAllowance(session.user.id);
     if (!allowed) {
       setQuizFeedback("🚫 Daily limit reached. Try again tomorrow!");
@@ -144,6 +184,7 @@ export default function KidsChat() {
     setQuizLoading(true);
 
     try {
+      //Generate Feedback and Grade
       const res = await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/kids_quiz/submit?subject=${encodeURIComponent(subject)}`, {
         method: "POST",
         headers: {
@@ -153,9 +194,28 @@ export default function KidsChat() {
         body: JSON.stringify({ answers: quizAnswers }),
       });
 
+      //Recieve and Display Feedback and Grade
       const data = await res.json();
       setQuizFeedback(data.feedback);
       setQuizGrade(data.grade);
+
+      //Update user Quiz Stats
+      await fetch("/api/stats/quiz", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: session.user.id }),
+      });
+      
+      //Update user badges
+      await fetch("/api/badges/update", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: session.user.id,
+          extra: { score: data.grade },
+        }),
+      });
+      
     } catch {
       setQuizFeedback("Something went wrong submitting your answers.");
       setQuizGrade("");
@@ -164,7 +224,10 @@ export default function KidsChat() {
     setQuizLoading(false);
   };
 
+
+  //Handle post-quiz continuation
   const continueLesson = async () => {
+    //Clear previous quiz data
     setShowQuizModal(false);
     setQuizText("");
     setQuizAnswers(["", "", "", "", ""]);
@@ -173,6 +236,7 @@ export default function KidsChat() {
 
     if (!session?.user?.id) return;
 
+    //Check API Limit
     const allowed = await checkApiAllowance(session.user.id);
     if (!allowed) {
       setMessages((prev) => [...prev, { sender: "AI", text: "🚫 Limit reached. Try again tomorrow!" }]);
@@ -181,10 +245,12 @@ export default function KidsChat() {
 
     setLoading(true);
     try {
+      //Generate Post Quiz Continuation
       const res = await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/kids_continue?subject=${encodeURIComponent(subject)}`, {
         headers: { "x-user-id": session.user.id },
       });
 
+      //Recieve and Display Continuation
       const data = await res.json();
       setMessages((prev) => [
         ...prev,
@@ -202,6 +268,7 @@ export default function KidsChat() {
     <div className="w-full min-h-screen flex flex-col items-center container mx-auto p-6 bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300">
       <h2 className="text-4xl font-bold mb-6 text-gray-800">🌱 Kids Learning: {subject}</h2>
 
+      {/* Chat Interface */}
       <div className="w-full max-w-3xl bg-white border-4 border-emerald-300 rounded-3xl shadow-xl p-6 flex flex-col flex-grow animate-fadeIn">
         <div className="overflow-y-auto mb-4 flex-1 space-y-2" style={{ maxHeight: "60vh" }}>
           {messages.map((msg, idx) =>
@@ -230,6 +297,7 @@ export default function KidsChat() {
           {loading && <div className="text-emerald-600 animate-pulse">AI is typing...</div>}
         </div>
 
+        {/* Text Input */}
         <div className="flex items-center">
           <textarea
             className="flex-1 border border-gray-300 rounded-xl p-3 mr-2 shadow-sm resize-y overflow-y-auto"
@@ -249,6 +317,7 @@ export default function KidsChat() {
         </div>
       </div>
 
+      {/* Quiz Button */}
       <button
         onClick={startQuiz}
         className="mt-6 bg-emerald-500 text-white rounded-xl py-3 px-5 hover:bg-emerald-600 shadow-lg flex items-center transition duration-200"
@@ -256,6 +325,7 @@ export default function KidsChat() {
         Take Quiz <ClipboardCheck className="ml-2 h-5 w-5" />
       </button>
 
+      {/* Quiz Pop Up */}
       {showQuizModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 overflow-auto">
           <div className="bg-white p-6 rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">

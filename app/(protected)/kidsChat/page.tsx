@@ -1,8 +1,16 @@
-// app/kidsChat/page.tsx
+/************************************************************
+ * Name:    Elijah Campbell‑Ihim
+ * Project: AI Tutor
+ * Class:   CMPS-450 Senior Project
+ * Date:    May 2025
+ * File:    /app/(protected)/kidsChat/page.tsx
+ ************************************************************/
 
 import { Suspense } from 'react';
 import KidsChatClient from './KidsChatClient';
 
+
+// Displays a loading spinner while the chat interface loads query parameters and chat data.
 export default function KidsChatPage() {
   return (
     <Suspense

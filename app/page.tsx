@@ -1,4 +1,10 @@
-// app/page.tsx
+/************************************************************
+ * Name:    Elijah Campbell‑Ihim
+ * Project: AI Tutor
+ * Class:   CMPS-450 Senior Project
+ * Date:    May 2025
+ * File:    /app/page.tsx
+ ************************************************************/
 
 'use client'
 
@@ -6,7 +12,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRight, MessageCircle, FileText, BotMessageSquare} from 'lucide-react'
 
-// Updated image paths
+
+// Scrolling subject images
 const subjects = [
   '/subjects/mythology.png',
   '/subjects/astronomy.png',
@@ -19,6 +26,7 @@ const subjects = [
   '/subjects/business.png',
 ]
 
+//Home Screen
 export default function Home() {
 
   return (
@@ -33,6 +41,7 @@ export default function Home() {
             <BotMessageSquare className="text-blue-500 w-20 h-20" />
           </div>
 
+          {/* Welcome Header */}
           <h1 className="text-5xl md:text-6xl font-extrabold mb-6 text-gray-900 leading-tight">
             Welcome to{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-300">
@@ -43,6 +52,7 @@ export default function Home() {
             Your personalized AI-powered learning assistant for every subject.
           </p>
 
+          {/* Tutor Selection Button */}
           <Link href="/tutor" className="hover:no-underline">
             <button className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white font-semibold py-3 px-8 text-lg rounded-full flex items-center justify-center shadow-md hover:shadow-lg hover:scale-105 transition-transform duration-300">
               Select Your Tutor

@@ -1,13 +1,25 @@
-// app/api/usage/check/route.ts
+/************************************************************
+ * Name:    Elijah Campbell‑Ihim
+ * Project: AI Tutor
+ * Class:   CMPS-450 Senior Project
+ * Date:    May 2025
+ * File:    /app/api/usage/check/route.ts
+ ************************************************************/
+
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseServer } from '@/lib/supabaseClient';
 
+//User Daily API Limit
 const DAILY_LIMIT = 100;
 
 export async function POST(req: NextRequest) {
+  //Get User ID
   const { userId } = await req.json();
+
+  //Get today's date
   const today = new Date().toISOString().slice(0, 10);
 
+  //Get User API Usage from Database
   const { data, error } = await supabaseServer
     .from('api_usage')
     .select('*')
@@ -15,17 +27,20 @@ export async function POST(req: NextRequest) {
     .eq('date', today)
     .single();
 
+  //If error, return
   if (error && error.code !== 'PGRST116') {
     return NextResponse.json({ allowed: false, error: 'Failed to check usage' }, { status: 500 });
   }
 
+  //Set usage count
   const currentCount = data?.request_count ?? 0;
 
+  //If usage is over daily limit, user is not allowed to use API
   if (currentCount >= DAILY_LIMIT) {
     return NextResponse.json({ allowed: false });
   }
 
-  // Insert or update
+  // If no data exists, insert new row for user. Otherwise, increment user's usage count in database
   if (!data) {
     const { error: insertError } = await supabaseServer
       .from('api_usage')
@@ -44,5 +59,6 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  //User is allowed to use API
   return NextResponse.json({ allowed: true });
 }

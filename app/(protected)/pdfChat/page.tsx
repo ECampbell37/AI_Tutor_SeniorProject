@@ -1,3 +1,12 @@
+/************************************************************
+ * Name:    Elijah Campbell‑Ihim
+ * Project: AI Tutor
+ * Class:   CMPS-450 Senior Project
+ * Date:    May 2025
+ * File:    /app/(protected)/pdfChat/page.tsx
+ ************************************************************/
+
+
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -5,12 +14,14 @@ import { useSession } from "next-auth/react";
 import { SendHorizonal} from "lucide-react";
 import MarkdownRenderer from "../../components/MarkdownRenderer";
 
+//Message Format (sender and text)
 interface Message {
   sender: "AI" | "User" | "separator";
   text: string;
 }
 
 export default function PDFChat() {
+  //Set up hooks
   const { data: session } = useSession();
   const [messages, setMessages] = useState<Message[]>([]);
   const [userInput, setUserInput] = useState('');
@@ -40,14 +51,18 @@ export default function PDFChat() {
     initializeChat();
   }, [session]);
 
+
+  //Handle Message send
   const sendMessage = async () => {
     if (!userInput.trim() || !session?.user?.id) return;
 
+    //Add user message
     setMessages((prev) => [...prev, { sender: "User", text: userInput }]);
     setUserInput('');
     setLoading(true);
 
     try {
+      //Generate AI Response
       const res = await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/pdf/ask`, {
         method: "POST",
         headers: {
@@ -57,8 +72,10 @@ export default function PDFChat() {
         body: JSON.stringify({ message: userInput }),
       });
 
+      //Recieve AI Response from API
       const data = await res.json();
 
+      //If the message exists, display it
       if (data?.message && data.message.trim() !== "") {
         setMessages((prev) => [...prev, { sender: "AI", text: data.message }]);
       } else {
@@ -76,6 +93,7 @@ export default function PDFChat() {
     <div className="min-h-screen flex flex-col items-center container mx-auto p-6 bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300">
       <h2 className="text-4xl font-semibold mb-6 text-gray-800">📄 PDF Reader Chat</h2>
 
+      {/* Chat Interface */}
       <div className="w-full max-w-4xl bg-white bg-opacity-95 border border-gray-200 rounded-2xl shadow-xl p-6 flex flex-col flex-grow animate-fadeIn">
         <div className="overflow-y-auto mb-4 flex-1 space-y-2" style={{ maxHeight: '60vh' }}>
           {messages.map((msg, idx) =>
@@ -104,6 +122,7 @@ export default function PDFChat() {
           {loading && <div className="text-blue-600 animate-pulse">AI is typing...</div>}
         </div>
 
+        {/* Text Input */}
         <div className="flex items-center">
           <textarea
             className="flex-1 border border-gray-300 rounded-xl p-3 mr-2 shadow-sm resize-y overflow-y-auto"

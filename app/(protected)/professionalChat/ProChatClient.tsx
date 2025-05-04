@@ -1,3 +1,12 @@
+/************************************************************
+ * Name:    Elijah Campbell‑Ihim
+ * Project: AI Tutor
+ * Class:   CMPS-450 Senior Project
+ * Date:    May 2025
+ * File:    /app/(protected)/professionalChat/ProChatClient.tsx
+ ************************************************************/
+
+
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -5,18 +14,21 @@ import { useSession } from 'next-auth/react';
 import { SendHorizonal } from 'lucide-react';
 import MarkdownRenderer from '../../components/MarkdownRenderer';
 
+//Message Format (sender and text)
 interface Message {
   sender: 'AI' | 'User';
   text: string;
 }
 
 export default function ProfessionalChat() {
+  //Hooks
   const { data: session } = useSession();
   const [messages, setMessages] = useState<Message[]>([]);
   const [userInput, setUserInput] = useState('');
   const [loading, setLoading] = useState(false);
   const hasInitialized = useRef(false);
 
+  //Check API Limit Function
   async function checkApiAllowance(userId: string): Promise<boolean> {
     const res = await fetch('/api/usage/check', {
       method: 'POST',
@@ -28,11 +40,14 @@ export default function ProfessionalChat() {
     return data.allowed === true;
   }
 
+
+  //Clear previous memory and Display Welcome Message
   useEffect(() => {
     if (!session?.user?.id || hasInitialized.current) return;
 
     const initializeMemory = async () => {
       try {
+        //Clear memory
         await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/professional_chat/memory/clear`, {
           method: 'POST',
           headers: {
@@ -41,6 +56,7 @@ export default function ProfessionalChat() {
           },
         });
 
+        //Welcome Message
         setMessages([{
           sender: 'AI',
           text: "👋 Welcome to Professional Mode! Ask advanced questions involving math, code, or deep concepts — I'm here to help like a subject matter expert.",
@@ -58,9 +74,12 @@ export default function ProfessionalChat() {
     initializeMemory();
   }, [session]);
 
+
+  //Handle user message send
   const sendMessage = async () => {
     if (!userInput.trim() || !session?.user?.id) return;
 
+    //Check API Limit
     const allowed = await checkApiAllowance(session.user.id);
     if (!allowed) {
       setMessages((prev) => [...prev, {
@@ -70,12 +89,14 @@ export default function ProfessionalChat() {
       return;
     }
 
+    //Add user message to conversation
     const userText = userInput;
     setMessages((prev) => [...prev, { sender: 'User', text: userText }]);
     setUserInput('');
     setLoading(true);
 
     try {
+      //Generate AI Response
       const res = await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/professional_chat`, {
         method: 'POST',
         headers: {
@@ -85,6 +106,7 @@ export default function ProfessionalChat() {
         body: JSON.stringify({ message: userText }),
       });
 
+      //Recieve and Display AI Response
       const data = await res.json();
       setMessages((prev) => [...prev, { sender: 'AI', text: data.message }]);
     } catch {
@@ -99,8 +121,8 @@ export default function ProfessionalChat() {
       <div className="w-full max-w-4xl flex flex-col flex-grow p-6">
         <h2 className="text-4xl font-semibold mb-6 text-gray-800 text-center">🎓 Professional Tutor</h2>
   
-        <div className="flex flex-col bg-white bg-opacity-95 border border-gray-200 rounded-2xl shadow-xl p-6 flex-grow overflow-hidden">
-          {/* Chat messages container */}
+        {/* Chat Interface */}
+        <div className="flex flex-col bg-white bg-opacity-95 border border-gray-200 rounded-2xl shadow-xl p-6 flex-grow overflow-hidden animate-fadeIn">
           <div className="flex-1 overflow-y-auto space-y-2 mb-4 min-h-0">
             {messages.map((msg, idx) => (
               <div
@@ -124,7 +146,7 @@ export default function ProfessionalChat() {
             {loading && <div className="text-purple-600 animate-pulse">AI is typing...</div>}
           </div>
   
-          {/* Input area */}
+          {/* Text Input */}
           <div className="flex items-center mt-2">
             <textarea
               className="flex-1 border border-gray-300 rounded-xl p-3 mr-2 shadow-sm resize-y overflow-y-auto"

@@ -1,4 +1,12 @@
-// components/NavBar.tsx
+/************************************************************
+ * Name:    Elijah Campbell‑Ihim
+ * Project: AI Tutor
+ * Class:   CMPS-450 Senior Project
+ * Date:    May 2025
+ * File:    /app/components/NavBar.tsx
+ ************************************************************/
+
+
 'use client';
 
 import { useState } from 'react';
@@ -7,9 +15,11 @@ import { Menu, X, BotMessageSquare, LogOut } from 'lucide-react';
 import { useSession, signOut } from 'next-auth/react';
 
 export default function NavBar() {
+  //Hooks
   const { data: session } = useSession();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  //Nav Buttons in the Menu
   const menuItems = [
     { label: 'Account', href: '/account' },
     { label: 'Select Tutor', href: '/tutor' },

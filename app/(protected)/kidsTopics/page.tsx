@@ -1,10 +1,18 @@
-// app/kidsTopics/page.tsx
+/************************************************************
+ * Name:    Elijah Campbell‑Ihim
+ * Project: AI Tutor
+ * Class:   CMPS-450 Senior Project
+ * Date:    May 2025
+ * File:    /app/(protected)/kidsTopics/page.tsx
+ ************************************************************/
 
 'use client';
 import Link from 'next/link';
 
 
 export default function KidsTopics() {
+
+  //Kids Mode Learning Subjects
   const kidsTopics = [
     { name: 'Science', href: '/kidsChat?subject=Science' },
     { name: 'Nature', href: '/kidsChat?subject=Nature' },
@@ -22,6 +30,7 @@ export default function KidsTopics() {
     <div className="min-h-screen flex flex-col animate-fadeIn"> 
       <div className="container mx-auto p-4 flex-grow">
         <h2 className="text-center text-3xl font-semibold mb-6">Select a Topic</h2>
+        {/* Topic Buttons */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {kidsTopics.map((topic) => (
             <Link key={topic.name} href={topic.href}>

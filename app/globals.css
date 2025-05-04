@@ -1,4 +1,10 @@
-/* globals.css */
+/************************************************************
+ * Name:    Elijah Campbell‑Ihim
+ * Project: AI Tutor
+ * Class:   CMPS-450 Senior Project
+ * Date:    May 2025
+ * File:    /app/globals.css
+ ************************************************************/
 
 /* Import Tailwind's base styles, components, and utilities */
 @tailwind base;
@@ -22,7 +28,6 @@ body {
 /* Global heading styles for consistency */
 h1, h2, h3, h4, h5, h6 {
   @apply font-bold;
-  /* Optionally, you can add responsive margins or text sizes here */
 }
 
 /* Standard link styles with hover effects */
@@ -35,7 +40,7 @@ button {
   @apply cursor-pointer transition duration-200 ease-in-out;
 }
 
-/* Optional: Style the scrollbar for webkit browsers */
+/* Style the scrollbar for webkit browsers */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -44,13 +49,14 @@ button {
   @apply bg-gray-400 rounded;
 }
 
-/* Optional: Enhance text selection appearance */
+/* Enhance text selection appearance */
 ::selection {
   background-color: #b3d4fc;
   color: #000;
 }
 
 
+/* Custom Fade In and Up Animation */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -67,6 +73,7 @@ button {
 }
 
 
+/* Custom Fade Animation */
 @keyframes fade {
   from {
     opacity: 0;

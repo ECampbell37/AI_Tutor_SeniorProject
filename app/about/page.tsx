@@ -28,7 +28,7 @@ export default function AboutPage() {
             </span>
           </h1>
           <p className="text-lg text-gray-700">
-            A smarter way to learn — blending conversation, quizzes, and progress tracking into one AI-powered experience.
+            A personalized way to learn — blending conversation, quizzes, and progress tracking into one AI-powered experience.
           </p>
         </div>
       </section>

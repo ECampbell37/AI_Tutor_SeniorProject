@@ -1,147 +1,138 @@
-# 🧠 AI Tutor Frontend (Next.js + Supabase + LangChain)
+# 🧠 AI Tutor — Your Personalized Learning Assistant
 
-This is the **frontend** of the AI Tutor project, built with **Next.js**, **TypeScript**, and **Tailwind CSS**, and powered by **Supabase** for authentication and a custom **Python LangChain API** for AI tutoring.
 
-Users can choose a subject, receive engaging lessons from an AI tutor, take quizzes, and receive feedback based on their performance. This frontend is optimized for mobile-first use and deployed via **Vercel**.
-
----
-
-## 🌐 Live Demo
-
-> Check it out! — [Deployed via Vercel](https://ai-tutor-senior-project.vercel.app/)
+## 🎉 Live on Vercel  
+👉 [Visit AI Tutor!](https://ai-tutor-senior-project.vercel.app/)
 
 ---
 
-## 📁 Folder Overview
+## 📘 Overview
 
-```
-AI_Tutor_SeniorProject/
-├── app/                   # Next.js app directory with routes (e.g. /chat, /signin)
-├── components/            # Reusable React components
-├── lib/                   # Supabase client, utilities
-├── public/                # Static assets
-├── styles/                # Tailwind & global CSS
-├── .env.local             # Local environment variables (not committed)
-├── next.config.js         # Next.js config
-└── tsconfig.json          # TypeScript settings
-```
+**AI Tutor** is an intelligent, full-stack tutoring platform designed to deliver personalized learning experiences for users of all ages and skill levels. Whether you’re a student, a professional, or just curious, AI Tutor helps you explore topics, test your knowledge, and track your progress — all with an engaging, interactive interface.
+
+Developed as my **Senior Capstone Project** in Computer Science, this application combines Generative AI with an intuitive web-based design to deliever a unique and inspiring user experience.
 
 ---
 
-## ⚙️ Technologies Used
+## ✨ Features
 
-- **Next.js 14+ (App Router)**
-- **React + TypeScript**
-- **Tailwind CSS**
-- **Supabase** (auth & DB)
-- **Vercel** (deployment)
-- **Custom LangChain Python API** (hosted on Render)
+- 🧑‍🏫 **Subject-Based Tutoring** – Learn by choosing from curated topic categories (e.g., Coding, Mythology, Astronomy).
+- 📝 **Interactive Quizzes** – After each session, receive a custom quiz based on your conversation.
+- 📄 **PDF Chat Mode** – Upload PDFs and ask questions about the contents directly.
+- 💬 **Free Chat Mode** – Open-ended conversation with the AI on any topic.
+- 👩‍💻 **Professional Mode** – Supports Markdown, LaTeX, and code formatting for technical users.
+- 🏆 **User Stats & Badges** – Track your progress through usage data and earn badges for milestones.
+- 🔐 **Secure Auth + API Limits** – Supabase Auth, protected routes, and a daily request cap for each user.
 
 ---
 
-## 🚀 Running Locally
+## 🖼️ Screenshots
 
-### 1. Clone the repository
+| Homepage | Menu | Account Stats |
+|----------|-----------|----------------|
+| ![Home Screenshot](./assets/home.png) | ![Chat Screenshot](./assets/nav.png) | ![Account Screenshot](./assets/account.png) |
+
+| Tutors | Topics | Chat |
+|----------|-----------|----------------|
+| ![Home Screenshot](./assets/tutors.png) | ![Chat Screenshot](./assets/topics.png) | ![Account Screenshot](./assets/chat.png) |
+
+
+| Quiz | Professional | PDF |
+|----------|-----------|----------------|
+| ![Home Screenshot](./assets/quiz.png) | ![Chat Screenshot](./assets/pro.png) | ![Account Screenshot](./assets/pdfUpload.png) |
+
+
+---
+
+## 🛠 Tech Stack
+
+**Frontend:**
+- [Next.js](https://nextjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Lucide Icons](https://lucide.dev/)
+
+**Backend:**
+- [FastAPI](https://fastapi.tiangolo.com/)
+- [LangChain](https://www.langchain.com/)
+- [OpenAI API](https://platform.openai.com/)
+
+**Storage & Auth:**
+- [Supabase](https://supabase.com/) (PostgreSQL, Row-Level Security, Auth)
+
+**Document Parsing:**
+- PyMuPDF + FAISS for PDF vector search
+
+**Deployment:**
+- [Vercel](https://vercel.com/) (Frontend)
+- [Render](https://render.com/) (Python API)
+
+---
+
+## 🧪 Getting Started
+
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/ECampbell37/AI_Tutor_SeniorProject.git
 cd AI_Tutor_SeniorProject
 ```
 
-### 2. Install dependencies
+### 2. Install Dependencies
 
 ```bash
+# Frontend
+cd app
 npm install
-# or
-yarn install
+
+# Backend
+cd ../python-api
+pip install -r requirements.txt
 ```
 
-### 3. Add environment variables
+### 3. Environment Setup
 
-Create a `.env.local` file in the root:
+Create `.env.local` in the `app` folder and `.env` in `python-api`.
 
+**Example: `app/.env.local`**
 ```
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-NEXTAUTH_SECRET=your_auth_secret
-NEXTAUTH_URL=http://localhost:3000
-NEXT_PUBLIC_PYTHON_API=https://your-python-api.onrender.com
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_public_key
+OPENAI_API_KEY=your_openai_key
 ```
 
-### 4. Start the dev server
+**Example: `python-api/.env`**
+```
+OPENAI_API_KEY=your_openai_key
+```
+
+### 4. Run Locally
 
 ```bash
+# Terminal 1 - Frontend
+cd app
 npm run dev
+
+# Terminal 2 - Backend
+cd python-api
+uvicorn main:app --reload
 ```
 
-Visit:  
-`http://localhost:3000`
+---
+
+## 📊 User Progress & Badges
+
+Track your learning journey with:
+
+- ✅ Number of logins  
+- ✅ Topics explored  
+- ✅ Quizzes taken
+
+Badges are automatically awarded based on activity milestones — including your first quiz, getting a perfect score, exploring topics, and more!
 
 ---
 
-## 🔐 Authentication
+## 🤝 Author
 
-This app uses **NextAuth.js** with Supabase as the user database and `CredentialsProvider` for manual login.
-
-> You can configure additional providers or use Supabase OAuth.
-
----
-
-## 📡 API Connection
-
-The app sends requests to a **Python LangChain API** hosted separately (e.g., Render):
-
-```ts
-fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/intro?subject=Biology`)
-```
-
-Update the `NEXT_PUBLIC_PYTHON_API` value in `.env.local` when deploying.
-
----
-
-## 📦 Deployment
-
-### ✅ Frontend (Vercel)
-
-1. Push to GitHub
-2. Go to [vercel.com](https://vercel.com)
-3. Import project → Add environment variables
-4. Click **Deploy**
-
-### ✅ Backend (Render)
-
-Your LangChain API is deployed separately to [Render](https://render.com).
-
----
-
-## 🧠 Features
-
-- AI tutoring with custom subject support
-- Adaptive quiz generation & grading
-- Memory-based conversations
-- Mobile-friendly chat UI
-- Auth-protected routes and sessions
-
----
-
-## 📈 Planned Features
-
-- Analytics dashboard
-- Mastery tracking with badges
-- Kids vs Adults mode
-- Offline mode with caching
-
----
-
-## 🙌 Credits
-
-Built by [Elijah Campbell-Ihim](https://github.com/ECampbell37) as a senior project for Computer Science.
-
-Powered by:
-- OpenAI
-- LangChain
-- Supabase
-- Vercel
-- Render
-
----
+🏆 Made by [Elijah Campbell-Ihim](https://github.com/ECampbell37)  
+🎓 CMPS-450 Senior Project — Spring 2025

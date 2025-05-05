@@ -21,6 +21,24 @@ interface Message {
   text: string;
 }
 
+
+// Function to extract out numeric grade 
+function extractNumericGrade(gradeText: string): number | null {
+  // Look for something like "Grade: 100%"
+  const gradePattern = /Grade:\s*(\d+)%/i;
+
+  // Try to match the pattern in the input text
+  const match = gradeText.match(gradePattern);
+
+  // If there's a match, convert it to a number and return it
+  if (match) {
+    return parseInt(match[1], 10);
+  }
+
+  // If no match found, return null
+  return null;
+}
+
 export default function KidsChat() {
   const searchParams = useSearchParams();
   const subject = searchParams.get("subject") || "Nature";
@@ -205,6 +223,10 @@ export default function KidsChat() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: session.user.id }),
       });
+
+
+      //Extract out the user's numeric grade
+      const numericGrade = extractNumericGrade(data.grade);
       
       //Update user badges
       await fetch("/api/badges/update", {
@@ -212,7 +234,7 @@ export default function KidsChat() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           userId: session.user.id,
-          extra: { score: data.grade },
+          extra: { grade: numericGrade },
         }),
       });
       

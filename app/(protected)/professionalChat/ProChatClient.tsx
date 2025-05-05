@@ -123,7 +123,7 @@ export default function ProfessionalChat() {
   
         {/* Chat Interface */}
         <div className="flex flex-col bg-white bg-opacity-95 border border-gray-200 rounded-2xl shadow-xl p-6 flex-grow overflow-hidden animate-fadeIn">
-          <div className="flex-1 overflow-y-auto space-y-2 mb-4 min-h-0">
+          <div className="overflow-y-auto mb-4 flex-1 space-y-2" style={{ maxHeight: '60vh' }}>
             {messages.map((msg, idx) => (
               <div
                 key={idx}

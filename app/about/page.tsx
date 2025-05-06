@@ -38,7 +38,7 @@ export default function AboutPage() {
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-gray-800 mb-4">📚 Overview</h2>
           <p className="text-gray-700 text-base">
-            AI Tutor is a web-based learning companion that adapts to your needs. Whether you&apos;re studying for an exam or exploring a new topic, it guides you through interactive lessons and quizzes powered by AI. It&apos;s built for clarity, simplicity, and deep understanding.
+            AI Tutor is a web-based educational resource that adapts to your needs. Whether you&apos;re studying for an exam or exploring a new topic, it guides you through interactive lessons and quizzes powered by AI. It&apos;s built for clarity, simplicity, and constant exploration.
           </p>
         </div>
       </section>
@@ -69,6 +69,61 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* TUTOR MODES EXPLAINER */}
+      <section className="bg-white bg-opacity-90 py-16 px-6 border-t border-gray-200 animate-fadeInUp">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6">🍎 Meet the Tutors</h2>
+          <p className="text-gray-700 text-base mb-8">
+            Choose the right AI mode for your learning needs. Each tutor offers a distinct experience tailored to different ages, goals, and contexts.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left mb-12">
+
+            <div className="bg-green-100 bg-opacity-50 border border-green-300 p-6 rounded-xl shadow">
+              <h3 className="text-xl font-semibold text-green-700 mb-2">🧒 Kids Mode</h3>
+              <p className="text-sm text-gray-700">
+                Designed for younger learners with simplified explanations, playful language, and lots of encouragement. Lessons are fun and easy to follow.
+              </p>
+            </div>
+
+            <div className="bg-blue-100 bg-opacity-50 border border-blue-300 p-6 rounded-xl shadow">
+              <h3 className="text-xl font-semibold text-blue-700 mb-2">💬 Casual Mode</h3>
+              <p className="text-sm text-gray-700">
+                Think of this as your own personal teacher of any subject you can think of! A casual and friendly learning environment that enables learners to explore and master their own personal interests.
+              </p>
+            </div>
+
+            <div className="bg-purple-100 bg-opacity-50 border border-purple-300 p-6 rounded-xl shadow">
+              <h3 className="text-xl font-semibold text-purple-700 mb-2">🧑‍💼 Professional Mode</h3>
+              <p className="text-sm text-gray-700">
+                Geared toward college students and adults who are looking for more technicality. Includes markdown, math equation, and code functionality — perfect for technical or academic topics.
+              </p>
+            </div>
+
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
+
+            <div className="bg-cyan-100 bg-opacity-50 border border-cyan-300 p-6 rounded-xl shadow">
+              <h3 className="text-xl font-semibold text-cyan-700 mb-2">🗨️ Free Chat</h3>
+              <p className="text-sm text-gray-700">
+                Have an open-ended conversation with the AI. Great for brainstorming, Q&amp;A, or just thinking out loud with a smart companion.
+              </p>
+            </div>
+
+            <div className="bg-yellow-100 bg-opacity-50 border border-yellow-300 p-6 rounded-xl shadow">
+              <h3 className="text-xl font-semibold text-yellow-700 mb-2">📄 PDF Tutor (Experimental)</h3>
+              <p className="text-sm text-gray-700">
+                Upload a PDF and ask questions about the content. Ideal for summarizing text and extracting out useful information. This mode is a new and experimental feature.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+
 
       {/* HOW IT WORKS SECTION */}
       <section className="bg-white bg-opacity-90 py-16 px-6 border-t border-gray-200 animate-fadeInUp">

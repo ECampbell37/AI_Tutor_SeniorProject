@@ -10,7 +10,7 @@
 
 **AI Tutor** is an intelligent, full-stack tutoring platform designed to deliver personalized learning experiences for users of all ages and skill levels. Whether you’re a student, a professional, or just curious, AI Tutor helps you explore topics, test your knowledge, and track your progress — all with an engaging, interactive interface.
 
-Developed as my **Senior Capstone Project** in Computer Science, this application combines Generative AI with an intuitive web-based design to deliever a unique and inspiring user experience.
+Developed as my **Senior Capstone Project** in Computer Science, this application combines Generative AI with an intuitive web-based design to deliever a unique and customized user experience.
 
 ---
 
@@ -28,18 +28,69 @@ Developed as my **Senior Capstone Project** in Computer Science, this applicatio
 
 ## 🖼️ Screenshots
 
-| Homepage | Menu | Account Stats |
-|----------|-----------|----------------|
-| ![Home Screenshot](./assets/home.png) | ![Chat Screenshot](./assets/nav.png) | ![Account Screenshot](./assets/account.png) |
+### 🏠 Home & Navigation
 
-| Tutors | Topics | Chat |
-|----------|-----------|----------------|
-| ![Home Screenshot](./assets/tutors.png) | ![Chat Screenshot](./assets/topics.png) | ![Account Screenshot](./assets/chat.png) |
+<div align="center">
+  <img src="./assets/home.png" alt="Home Screenshot" width="800"/>
+  <p><em>Homepage</em></p>
+</div>
 
+<div align="center">
+  <img src="./assets/nav.png" alt="Navigation Menu" width="800"/>
+  <p><em>Main Menu</em></p>
+</div>
 
-| Quiz | Professional | PDF |
-|----------|-----------|----------------|
-| ![Home Screenshot](./assets/quiz.png) | ![Chat Screenshot](./assets/pro.png) | ![Account Screenshot](./assets/pdfUpload.png) |
+---
+
+### 🧑‍🏫 Tutors & Topics
+
+<div align="center">
+  <img src="./assets/tutors.png" alt="Tutors Screen" width="800"/>
+  <p><em>Select Your Tutor</em></p>
+</div>
+
+<div align="center">
+  <img src="./assets/topics.png" alt="Topics Screen" width="800"/>
+  <p><em>Pick a Topic</em></p>
+</div>
+
+---
+
+### 💬 Chat & Quiz
+
+<div align="center">
+  <img src="./assets/chat.png" alt="Chat Screenshot" width="800"/>
+  <p><em>Interactive Chat</em></p>
+</div>
+
+<div align="center">
+  <img src="./assets/quiz.png" alt="Quiz Screenshot" width="800"/>
+  <p><em>AI-Generated Quiz</em></p>
+</div>
+
+---
+
+### 👩‍💻 Professional & PDF Mode
+
+<div align="center">
+  <img src="./assets/pro.png" alt="Professional Mode Screenshot" width="800"/>
+  <p><em>Professional Mode with Code Copying, Markdown + LaTeX</em></p>
+</div>
+
+<div align="center">
+  <img src="./assets/pdfUpload.png" alt="PDF Upload Screenshot" width="800"/>
+  <p><em>Ask Questions About a PDF</em></p>
+</div>
+
+---
+
+### 🏅 Account & Badges
+
+<div align="center">
+  <img src="./assets/badges.png" alt="Account Badges Screenshot" width="800"/>
+  <p><em>User Stats and Badge Tracking</em></p>
+</div>
+
 
 
 ---

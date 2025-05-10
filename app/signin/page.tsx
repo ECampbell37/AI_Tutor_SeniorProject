@@ -7,6 +7,15 @@
  ************************************************************/
 
 
+
+/**
+ * Sign-In Page – Allows existing users to log into their account.
+ *
+ * Uses NextAuth's `signIn()` method with custom credentials.
+ * Redirects to the `/account` page on success, or shows an error on failure.
+ */
+
+
 'use client';
 
 import { useState } from 'react';
@@ -14,14 +23,24 @@ import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
+
+
+/**
+ * Renders a styled sign-in form for username/password authentication.
+ * Communicates with the NextAuth credentials provider backend.
+ */
 export default function SignInPage() {
-  //Hooks
+  // Form state
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const router = useRouter();
 
-  //Handle User Sign in
+
+  /**
+   * Handles sign-in form submission.
+   * Calls NextAuth's `signIn()` and redirects on success.
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -48,6 +67,7 @@ export default function SignInPage() {
         {errorMsg && (
           <p className="text-red-600 text-sm text-center mb-4 bg-red-100 rounded p-2">{errorMsg}</p>
         )}
+        {/* Login Form */}
         <form onSubmit={handleSubmit} className="space-y-5">
           {/* Username Input */}
           <div>

@@ -6,6 +6,14 @@
  * File:    /app/api/usage/check/route.ts
  ************************************************************/
 
+
+/**
+ * Checks whether a user is allowed to make an API request based on their current usage.
+ * If allowed, it increments their usage count for the day.
+ * Enforces a daily limit of 100 requests per user.
+ */
+
+
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseServer } from '@/lib/supabaseClient';
 
@@ -27,20 +35,20 @@ export async function POST(req: NextRequest) {
     .eq('date', today)
     .single();
 
-  //If error, return
+  // If error occurs (except "no rows found"), return failure
   if (error && error.code !== 'PGRST116') {
     return NextResponse.json({ allowed: false, error: 'Failed to check usage' }, { status: 500 });
   }
 
-  //Set usage count
+  // Get current usage count (defaults to 0 if no entry found)
   const currentCount = data?.request_count ?? 0;
 
-  //If usage is over daily limit, user is not allowed to use API
+  // Block the request if the user has reached their daily limit
   if (currentCount >= DAILY_LIMIT) {
     return NextResponse.json({ allowed: false });
   }
 
-  // If no data exists, insert new row for user. Otherwise, increment user's usage count in database
+  // If no usage entry exists, insert a new one with count = 1
   if (!data) {
     const { error: insertError } = await supabaseServer
       .from('api_usage')
@@ -49,6 +57,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ allowed: false, error: 'Failed to insert usage' }, { status: 500 });
     }
   } else {
+    // Otherwise, increment the user's request count by 1
     const { error: updateError } = await supabaseServer
       .from('api_usage')
       .update({ request_count: currentCount + 1 })
@@ -59,6 +68,6 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  //User is allowed to use API
+  // User is allowed and usage has been updated
   return NextResponse.json({ allowed: true });
 }

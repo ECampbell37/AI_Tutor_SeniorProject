@@ -6,12 +6,26 @@
  * File:    /app/(protected)/professionalChat/page.tsx
  ************************************************************/
 
+
+
+/**
+ * Professional Chat Page – Suspense-enabled wrapper for the ProChatClient component.
+ *
+ * This component handles lazy loading of the main chat UI.
+ * It provides a spinner fallback while waiting for the ProChatClient to resolve dynamic data like
+ * query parameters or session state (necessary for Vercel).
+ */
+
 import { Suspense } from 'react';
 import ProChatClient from './ProChatClient';
 
 
-// Displays a loading spinner while the chat interface loads query parameters and chat data.
-export default function KidsChatPage() {
+
+/**
+ * Renders the professional chat page using React Suspense.
+ * While ProChatClient loads (e.g., fetching search params), a spinner is displayed.
+ */
+export default function ProChatPage() {
   return (
     <Suspense
       fallback={

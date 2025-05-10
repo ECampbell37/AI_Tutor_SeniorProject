@@ -7,6 +7,16 @@
  ************************************************************/
 
 
+
+/**
+ * PDF Chat Page – Conversation interface for uploaded PDF documents.
+ *
+ * After uploading a file via /pdfUpload, users land on this page to
+ * ask questions about their PDF. It interacts with a FastAPI backend
+ * that uses LangChain to search and answer questions from document content.
+ */
+
+
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -14,22 +24,30 @@ import { useSession } from "next-auth/react";
 import { SendHorizonal} from "lucide-react";
 import MarkdownRenderer from "../../components/MarkdownRenderer";
 
-//Message Format (sender and text)
+
+// Defines the format of a single message in the chat history
 interface Message {
   sender: "AI" | "User" | "separator";
   text: string;
 }
 
+
+/**
+ * Renders the chat interface that lets users query the uploaded PDF.
+ * Displays messages, handles input, and fetches responses from the backend.
+ */
 export default function PDFChat() {
-  //Set up hooks
+  //Session
   const { data: session } = useSession();
+
+  // Chat state
   const [messages, setMessages] = useState<Message[]>([]);
   const [userInput, setUserInput] = useState('');
   const [loading, setLoading] = useState(false);
-
   const hasInitialized = useRef(false);
 
-  // Add welcome message on first load
+
+  // On first load, display welcome message if user is authenticated
   useEffect(() => {
     if (!session?.user?.id || hasInitialized.current) return;
 
@@ -52,11 +70,14 @@ export default function PDFChat() {
   }, [session]);
 
 
-  //Handle Message send
+
+  /**
+   * Sends user's message to the backend and appends the AI response to the chat.
+   */
   const sendMessage = async () => {
     if (!userInput.trim() || !session?.user?.id) return;
 
-    //Add user message
+    //Add user message to chat
     setMessages((prev) => [...prev, { sender: "User", text: userInput }]);
     setUserInput('');
     setLoading(true);

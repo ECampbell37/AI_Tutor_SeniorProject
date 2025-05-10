@@ -7,16 +7,24 @@
  ************************************************************/
 
 
+
+/**
+ * This route checks a user's current stats against predefined badge rules.
+ * If any new badges qualify, it inserts them into the `badges` table.
+ * Called after logins, quizzes, or topic explorations.
+ */
+
+
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseServer } from '@/lib/supabaseClient';
 import { BADGE_RULES } from '@/lib/badges';
 
 export async function POST(req: NextRequest) {
   try {
-    //Get user's ID (and any extra params)
+    //Get user's ID (and any extra params, like quiz grade)
     const { userId, extra } = await req.json();
 
-    // Get user stats from database
+    // Fetch user stats from the database
     const { data: stats, error: statsError } = await supabaseServer
       .from('user_stats')
       .select('*')
@@ -25,18 +33,18 @@ export async function POST(req: NextRequest) {
 
     if (statsError) throw statsError;
 
-    // Create default stats if missing
+
+    // If no stats found, assume this is the user's first interaction and create default stats
     if (!stats) {
       const { error: insertError } = await supabaseServer
         .from('user_stats')
-        .insert([{ user_id: userId, total_logins: 1, quizzes_taken: 0, topics: [] }]);
+        .insert([{ user_id: userId, total_logins: 0, quizzes_taken: 0, topics: [] }]);
       
       if (insertError) throw insertError;
-
-      return NextResponse.json({ awarded: ['first_login'] });
     }
 
-    // Get badges already earned by name from database
+
+    // Fetch names of badges already earned by the user
     const { data: userBadges, error: badgeError } = await supabaseServer
       .from('badges')
       .select('name')
@@ -46,12 +54,14 @@ export async function POST(req: NextRequest) {
 
     const earnedNames = userBadges?.map((b) => b.name) ?? [];
 
-    // Determine which badges should be awarded
+
+    // Determine which new badges should be awarded
     const newBadges = BADGE_RULES.filter((badge) => {
       return !earnedNames.includes(badge.name) && badge.condition(stats, extra);
     });
 
-    // Insert new badge rows in database
+
+    // Insert any new badge rows into the database
     if (newBadges.length > 0) {
       const inserts = newBadges.map((badge) => ({
         user_id: userId,
@@ -68,7 +78,7 @@ export async function POST(req: NextRequest) {
       if (insertError) throw insertError;
     }
 
-    // Return new awarded badges
+    // Return names of newly awarded badges (can be empty if none)
     return NextResponse.json({ awarded: newBadges.map((b) => b.name) });
   } catch (err) {
     console.error('Badge update error:', err);

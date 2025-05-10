@@ -6,6 +6,21 @@
  * File:    /app/page.tsx
  ************************************************************/
 
+
+
+/**
+ * Home Page – Landing screen for AI Tutor.
+ *
+ * Features:
+ * - Hero section with welcome message and main action button
+ * - Horizontally scrolling subject image strip
+ * - Previews for Free Chat, PDF Mode, and About
+ * - Footer with credits and connection status link
+ * 
+ * This serves as the user's first impression of AI Tutor.
+ */
+
+
 'use client'
 
 import Link from 'next/link'
@@ -13,7 +28,7 @@ import Image from 'next/image'
 import { ArrowRight, MessageCircle, FileText, BotMessageSquare} from 'lucide-react'
 
 
-// Scrolling subject images
+// Array of subject image paths used in the scrolling images section
 const subjects = [
   '/subjects/mythology.png',
   '/subjects/astronomy.png',
@@ -26,7 +41,11 @@ const subjects = [
   '/subjects/business.png',
 ]
 
-//Home Screen
+
+/**
+ * Home – Main landing page component.
+ * Includes animations, mode previews, and links to key app areas.
+ */
 export default function Home() {
 
   return (

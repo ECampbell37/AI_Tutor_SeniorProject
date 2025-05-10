@@ -7,6 +7,20 @@
  ************************************************************/
 
 
+/**
+ * ProChatClient.tsx – Handles the main chat interface for the Professional Tutor mode.
+ *
+ * This React client component provides an advanced tutoring experience tailored for technical users.
+ * It supports clear markdown output, math and code rendering, and contextual conversation via a Python backend.
+ *
+ * Key Features:
+ * - Secure user session integration via NextAuth
+ * - API rate limiting using daily usage checks
+ * - Automatic conversation memory clearing on session start
+ * - Interactive chat interface with markdown/code highlighting and LaTeX support
+ */
+
+
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -21,14 +35,21 @@ interface Message {
 }
 
 export default function ProfessionalChat() {
-  //Hooks
+  //Session
   const { data: session } = useSession();
+
+  //Chat State Variables
   const [messages, setMessages] = useState<Message[]>([]);
   const [userInput, setUserInput] = useState('');
   const [loading, setLoading] = useState(false);
   const hasInitialized = useRef(false);
 
-  //Check API Limit Function
+  
+  /**
+   * Checks if the user has remaining API requests for the day.
+   * @param userId - The user's Supabase ID
+   * @returns True if allowed, false otherwise
+   */
   async function checkApiAllowance(userId: string): Promise<boolean> {
     const res = await fetch('/api/usage/check', {
       method: 'POST',
@@ -41,7 +62,9 @@ export default function ProfessionalChat() {
   }
 
 
-  //Clear previous memory and Display Welcome Message
+  /**
+   * Clears previous memory for this user on first load and shows a welcome message.
+   */
   useEffect(() => {
     if (!session?.user?.id || hasInitialized.current) return;
 
@@ -75,7 +98,9 @@ export default function ProfessionalChat() {
   }, [session]);
 
 
-  //Handle user message send
+  /**
+   * Sends the user's message to the AI and handles the response.
+   */
   const sendMessage = async () => {
     if (!userInput.trim() || !session?.user?.id) return;
 

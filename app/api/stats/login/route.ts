@@ -6,6 +6,15 @@
  * File:    /app/api/stats/login/route.ts
  ************************************************************/
 
+
+
+/**
+ * This route tracks daily login activity.
+ * It checks if the user has already logged in today,
+ * and if not, updates their last_login date and increments total_logins.
+ */
+
+
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseServer } from '@/lib/supabaseClient';
 
@@ -13,25 +22,28 @@ export async function POST(req: NextRequest) {
   //Get user ID
   const { userId } = await req.json();
 
-  //Get today's date
+  // Get today's date (YYYY-MM-DD format)
   const today = new Date().toISOString().slice(0, 10);
 
-  //Get User Login data from database
+
+  // Fetch user's login data (last login date and total logins)
   const { data: stats, error } = await supabaseServer
     .from('user_stats')
     .select('last_login, total_logins')
     .eq('user_id', userId)
     .single();
 
-  //If not found, return not found error
+    
+  // If user stats not found or query failed
   if (error || !stats) return NextResponse.json({ error: 'Stats not found' }, { status: 500 });
 
-  //If already logged in for the day, return
+  // If user has already logged in today, return early
   if (stats.last_login === today) {
     return NextResponse.json({ message: 'Already logged today' });
   }
 
-  //If not logged in today, increment login count
+
+  // Otherwise, increment total logins and update last_login to today
   const { error: updateError } = await supabaseServer
     .from('user_stats')
     .update({

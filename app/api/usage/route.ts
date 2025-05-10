@@ -6,8 +6,16 @@
  * File:    /app/api/usage/route.ts
  ************************************************************/
 
+
+/**
+ * API Usage Route – Returns how many API requests the user has made today.
+ * This is used to enforce and visualize daily usage limits.
+ */
+
+
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseServer } from '@/lib/supabaseClient';
+
 
 export async function POST(req: NextRequest) {
   //Get user's ID
@@ -24,11 +32,11 @@ export async function POST(req: NextRequest) {
     .eq('date', today)
     .single();
 
-  //Return Error if one occurs
+  // Handle database error
   if (error) {
     return NextResponse.json({ error: 'Failed to fetch usage' }, { status: 500 });
   }
 
-  //Otherwise, return the Usage Count
+  // Return the request count (or 0 if not found)
   return NextResponse.json({ usage: data?.request_count ?? 0 });
 }

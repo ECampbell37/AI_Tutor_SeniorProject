@@ -6,15 +6,24 @@
  * File:    /app/api/stats/topic/route.ts
  ************************************************************/
 
+
+
+/**
+ * This route updates the list of topics a user has explored.
+ * If the topic is not already listed in user_stats.topics,
+ * it appends the new topic and updates the database.
+ */
+
+
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseServer } from '@/lib/supabaseClient';
 
 export async function POST(req: NextRequest) {
   try {
-    //Get user ID
+    // Get user ID and topic
     const { userId, topic } = await req.json();
 
-    // Fetch current explored topics
+    // Fetch user's currently explored topics
     const { data, error } = await supabaseServer
       .from('user_stats')
       .select('topics')
@@ -27,12 +36,12 @@ export async function POST(req: NextRequest) {
     //Store user's explored topics
     const currentTopics = data.topics || [];
 
-    //If topic already explored, return as false
+    // If topic has already been explored, return early
     if (currentTopics.includes(topic)) {
       return NextResponse.json({ updated: false });
     }
 
-    //Otherwise, append new topic to explored topics list
+    // Append new topic to the list and update in database
     const { error: updateError } = await supabaseServer
       .from('user_stats')
       .update({ topics: [...currentTopics, topic] })
@@ -40,7 +49,7 @@ export async function POST(req: NextRequest) {
 
     if (updateError) throw updateError;
 
-    //Return as updated
+    // Return success response
     return NextResponse.json({ updated: true });
   } catch (err) {
     console.error('Error updating topics:', err);

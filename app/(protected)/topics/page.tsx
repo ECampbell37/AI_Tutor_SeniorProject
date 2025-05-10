@@ -7,17 +7,32 @@
  ************************************************************/
 
 
+
+/**
+ * Topics Page – Lets users choose a subject for casual tutoring.
+ *
+ * This page displays a grid of preset subjects and allows users to enter a
+ * custom topic. Clicking a topic links to the main `/chat` route with the
+ * subject passed as a query parameter.
+ */
+
+
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
 import { X } from 'lucide-react';
 
+
+/**
+ * Renders a topic selection screen for casual tutoring mode.
+ * Includes preset subjects and a modal for entering custom topics.
+ */
 export default function Topics() {
-  //Hooks
+  // State hooks for managing user input and modal visibility
   const [customTopic, setCustomTopic] = useState('');
   const [showModal, setShowModal] = useState(false);
 
-  //Casual Learning Subjects
+  // List of predefined casual learning subjects with their corresponding chat links
   const topics = [
     { name: 'English', href: '/chat?subject=English' },
     { name: 'History', href: '/chat?subject=History' },
@@ -50,6 +65,7 @@ export default function Topics() {
             </Link>
           ))}
 
+          {/* Special "Other" Topic Button */}
           <button
             onClick={() => setShowModal(true)}
             className="h-32 w-full bg-blue-500 text-white rounded-3xl hover:bg-gray-800 text-lg font-bold"
@@ -59,7 +75,7 @@ export default function Topics() {
         </div>
       </div>
 
-      {/* Other Topic Pop Up */}
+      {/* Custom Topic Pop Up */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-200">
           <div className="bg-white p-6 rounded-2xl shadow-xl w-11/12 max-w-md animate-fadeIn flex flex-col items-center">

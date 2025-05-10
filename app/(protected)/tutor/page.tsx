@@ -6,9 +6,27 @@
  * File:    /app/(protected)/tutor/page.tsx
  ************************************************************/
 
+
+
+/**
+ * TutorSelection Page – Displays all available tutor modes.
+ *
+ * This page serves as the main mode selector for AI Tutor.
+ * Users can swipe or click to select between:
+ * - Kids Mode (green): simplified, fun lessons
+ * - Casual Mode (blue): general topic-based learning
+ * - Professional Mode (purple): advanced technical tutoring
+ */
+
 'use client';
 import Link from 'next/link';
 
+
+/**
+ * Renders a divided interface (horizontally scrollable on small screens) 
+ * for selecting a tutor mode. Each section is color-coded and includes 
+ * hover text to describe the mode.
+ */
 export default function TutorSelection() {
   return (
     <div className="h-screen flex overflow-x-auto snap-x snap-mandatory bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 animate-fade">

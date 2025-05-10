@@ -6,13 +6,29 @@
  * File:    /app/(protected)/kidsTopics/page.tsx
  ************************************************************/
 
+
+
+
+/**
+ * KidsTopics Page – Subject selector for Kids Mode in AI Tutor.
+ *
+ * Displays a grid of kid-friendly topics such as dinosaurs, superheroes,
+ * and nature. Clicking a topic routes to the Kids Chat interface for that subject.
+ */
+
+
 'use client';
 import Link from 'next/link';
 
 
+
+/**
+ * Renders a grid of predefined subjects tailored for children.
+ * Each button links to the corresponding `/kidsChat` route with a subject query.
+ */
 export default function KidsTopics() {
 
-  //Kids Mode Learning Subjects
+  // List of predefined kids learning subjects with their corresponding chat links
   const kidsTopics = [
     { name: 'Science', href: '/kidsChat?subject=Science' },
     { name: 'Nature', href: '/kidsChat?subject=Nature' },

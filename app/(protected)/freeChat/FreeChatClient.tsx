@@ -6,6 +6,18 @@
  * File:    /app/(protected)/freeChat/FreeChatClient.tsx
  ************************************************************/
 
+
+
+/**
+ * FreeChatClient.tsx – React component for the AI Tutor's Free Chat Mode.
+ *
+ * This component allows users to have an open-ended conversation with the AI.
+ * It features dynamic message rendering, API request handling, session tracking,
+ * API rate-limiting, and a clean conversational UI.
+ */
+
+
+
 "use client";
 import React, { useEffect, useRef, useState } from 'react';
 import { SendHorizonal } from 'lucide-react';
@@ -13,23 +25,36 @@ import { useSession } from 'next-auth/react';
 import MarkdownRenderer from '../../components/MarkdownRenderer';
 
 
-//Message Format (sender and text)
+
+// Defines the format of a single message in the chat history
 interface Message {
   sender: 'AI' | 'User';
   text: string;
 }
 
-//Free Chat Component
+
+/**
+ * FreeChat – Top-level component for open-ended AI conversation.
+ *
+ * Users can send any message without subject restrictions, and the AI
+ * will respond based on conversational memory and user prompts.
+ */
 export default function FreeChat() {
+  //User Session hook
   const { data: session } = useSession();
 
-  //Set up hooks
+  // Chat state variables
   const [messages, setMessages] = useState<Message[]>([]);
   const [userInput, setUserInput] = useState('');
   const [loading, setLoading] = useState(false);
   const hasInitialized = useRef(false);
 
-  //Check API Limit
+
+  /**
+   * Checks if the user has API access left for the day.
+   * @param userId - Supabase user ID
+   * @returns Whether the user is allowed to continue using the API
+   */
   async function checkApiAllowance(userId: string): Promise<boolean> {
     const res = await fetch('/api/usage/check', {
       method: 'POST',
@@ -42,7 +67,9 @@ export default function FreeChat() {
   }
 
 
-  //Clear Previous Memory and Display Welcome Message
+  /**
+   * Clears previous memory for this user on first load and shows a welcome message.
+   */
   useEffect(() => {
     if (!session?.user?.id || hasInitialized.current) return;
 
@@ -74,7 +101,10 @@ export default function FreeChat() {
   }, [session]);
 
 
-  //Handle User Message
+
+  /**
+   * Sends the user's message to the AI and handles the response.
+   */
   const sendMessage = async () => {
     if (!userInput.trim() || !session?.user?.id) return;
 
@@ -94,7 +124,7 @@ export default function FreeChat() {
     setLoading(true);
 
 
-    //Generate AI Response
+    // Request AI response
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_PYTHON_API}/free_chat`, {
         method: 'POST',

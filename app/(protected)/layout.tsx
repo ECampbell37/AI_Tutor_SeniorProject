@@ -6,6 +6,16 @@
  * File:    /app/(protected)/layout.tsx
  ************************************************************/
 
+
+/**
+ * Protected Layout – Wraps authenticated pages with session and backend checks.
+ *
+ * - Redirects unauthenticated users to the /account login page
+ * - Ensures backend API is awake before rendering child components
+ * - Displays animated loading screen until auth + API readiness + delay
+ */
+
+
 'use client';
 
 import { useSession } from 'next-auth/react';
@@ -13,22 +23,32 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Loader2, BotMessageSquare } from 'lucide-react';
 
+
+/**
+ * Layout wrapper for all pages under `/app/(protected)/`.
+ *
+ * Enforces user authentication and API readiness before rendering children.
+ * Shows a custom animated loading screen while checks are in progress.
+ */
 export default function ProtectedLayout({ children }: { children: React.ReactNode }) {
-  //Hooks
+  // NextAuth session status (authenticated, unauthenticated, loading)
   const { status } = useSession();
   const router = useRouter();
 
+  // State to track readiness
   const [authReady, setAuthReady] = useState(false);
   const [apiReady, setApiReady] = useState(false);
   const [delayPassed, setDelayPassed] = useState(false);
 
-  // Delay to avoid visual flash of loading screen
+  
+  // Short delay to prevent UI flickering when loading is too fast
   useEffect(() => {
     const timeout = setTimeout(() => setDelayPassed(true), 1100);
     return () => clearTimeout(timeout);
   }, []);
 
-  // Check authentication
+
+  // Check authentication, redirect unauthenticated users to login page
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.replace('/account');
@@ -37,7 +57,8 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
     }
   }, [status, router]);
 
-  // Check if API is awake
+
+  // Ping the FastAPI backend to make sure it’s awake
   useEffect(() => {
     const checkApi = async () => {
       try {
@@ -50,7 +71,8 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
           throw new Error();
         }
       } catch {
-        setTimeout(checkApi, 3000); // retry
+        // Retry if server is asleep or slow
+        setTimeout(checkApi, 3000);
       }
     };
 
@@ -59,10 +81,12 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
     }
   }, [authReady]);
 
-  //Check if loading screen should be displayed
+
+  // Determine whether to show the loading screen
   const showLoadingScreen = !authReady || !apiReady || !delayPassed;
 
-  //Loading Screen Between Protected Pages
+
+  // Show loading screen with animation if backend is not ready or user is loading
   if (showLoadingScreen) {
     return (
       <div className="flex flex-col items-center justify-center h-screen text-center bg-gradient-to-br from-blue-100 via-blue-200 to-cyan-200 animate-pulse-slow px-6">
@@ -80,5 +104,6 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
     );
   }
 
+  // Render protected page content once all checks pass
   return <>{children}</>;
 }

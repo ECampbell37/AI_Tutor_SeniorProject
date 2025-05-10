@@ -6,11 +6,26 @@
  * File:    /app/(protected)/kidsChat/page.tsx
  ************************************************************/
 
+
+
+/**
+ * Kids Chat Page – Suspense-enabled wrapper for the KidsChatClient component.
+ *
+ * This component handles lazy loading of the main chat UI.
+ * It provides a spinner fallback while waiting for the KidsChatClient to resolve dynamic data like
+ * query parameters or session state (necessary for Vercel).
+ */
+
+
 import { Suspense } from 'react';
 import KidsChatClient from './KidsChatClient';
 
 
-// Displays a loading spinner while the chat interface loads query parameters and chat data.
+
+/**
+ * Renders the kids mode chat page using React Suspense.
+ * While KidsChatClient loads (e.g., fetching search params), a spinner is displayed.
+ */
 export default function KidsChatPage() {
   return (
     <Suspense

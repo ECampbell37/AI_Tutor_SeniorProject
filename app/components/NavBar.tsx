@@ -7,6 +7,15 @@
  ************************************************************/
 
 
+/**
+ * NavBar Component – Fixed top navigation with collapsible side menu.
+ *
+ * Provides quick access to key pages like Account, Tutor Modes, PDF Upload, etc.
+ * Includes authentication state handling via NextAuth:
+ * - Shows "Log In" if the user is not signed in
+ * - Shows "Sign Out" with the username if signed in
+ */
+
 'use client';
 
 import { useState } from 'react';
@@ -14,12 +23,17 @@ import Link from 'next/link';
 import { Menu, X, BotMessageSquare, LogOut } from 'lucide-react';
 import { useSession, signOut } from 'next-auth/react';
 
+
+/**
+ * Renders a responsive navigation bar with a side-drawer menu.
+ * The drawer displays links to main app pages and a user login/logout section.
+ */
 export default function NavBar() {
-  //Hooks
+  //Session and State hooks
   const { data: session } = useSession();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  //Nav Buttons in the Menu
+  // Navigation links shown in the drawer
   const menuItems = [
     { label: 'Account', href: '/account' },
     { label: 'Select Tutor', href: '/tutor' },
@@ -33,12 +47,15 @@ export default function NavBar() {
     <header className="fixed top-0 left-0 right-0 z-50">
       {/* Top Navigation Bar */}
       <nav className="bg-gray-800 text-white p-4 flex justify-between items-center shadow-md">
+        {/* App Logo and Name */}
         <Link
           href="/"
           className="flex items-center text-xl font-bold text-white hover:no-underline"
         >
           <BotMessageSquare size={28} />
           <span className="ml-2">AI Tutor</span>
+
+        {/* Menu Button */}
         </Link>
         <button
           onClick={() => setIsMenuOpen(true)}
@@ -49,13 +66,14 @@ export default function NavBar() {
         </button>
       </nav>
 
-      {/* Side-Drawer Menu */}
+      {/* Slide-in Side Menu */}
       <div
         className={`fixed top-0 right-0 h-full w-80 bg-gray-800 text-white transform transition-transform duration-300 z-40 rounded-l-2xl shadow-lg ${
           isMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         <div className="p-6 h-full flex flex-col justify-between">
+          {/* Top Section: Menu Header + Links */}
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold">Menu</h2>
@@ -68,6 +86,7 @@ export default function NavBar() {
               </button>
             </div>
 
+            {/* Menu Navigation Links */}
             <nav className="flex flex-col space-y-3">
               {menuItems.map((item) => (
                 <Link
@@ -82,7 +101,7 @@ export default function NavBar() {
             </nav>
           </div>
 
-          {/* Footer section */}
+          {/* Footer Section: Authentication Control */}
           <div className="pt-6 border-t border-gray-700">
             {session ? (
               <div className="flex flex-col items-center space-y-4">

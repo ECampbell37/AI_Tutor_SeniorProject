@@ -6,11 +6,29 @@
  * File:    /app/about/page.tsx
  ************************************************************/
 
+
+
+
+/**
+ * About Page – Informational landing page for AI Tutor.
+ *
+ * This page introduces the purpose and features of the AI Tutor web app.
+ * It describes the learning modes, backend tech stack, and the mission
+ * behind the project. Animated sections and clean layout help convey 
+ * professionalism and clarity for first-time users.
+ */
+
+
 'use client';
 
 import Link from 'next/link';
 import { BotMessageSquare, Undo2 } from 'lucide-react';
 
+
+/**
+ * Renders the About page with an animated walkthrough of AI Tutor's goals,
+ * features, available tutor modes, and technical stack.
+ */
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-400 via-blue-300 to-cyan-200 text-gray-900 overflow-x-hidden">
@@ -70,7 +88,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* TUTOR MODES EXPLAINER */}
+      {/* TUTOR MODES SECTION */}
       <section className="bg-white bg-opacity-90 py-16 px-6 border-t border-gray-200 animate-fadeInUp">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-gray-800 mb-6">🍎 Meet the Tutors</h2>
@@ -122,8 +140,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-
-
 
       {/* HOW IT WORKS SECTION */}
       <section className="bg-white bg-opacity-90 py-16 px-6 border-t border-gray-200 animate-fadeInUp">

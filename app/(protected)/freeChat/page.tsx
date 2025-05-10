@@ -6,11 +6,24 @@
  * File:    /app/(protected)/freeChat/page.tsx
  ************************************************************/
 
+
+/**
+ * Free Chat Page – Suspense-enabled wrapper for the FreeChatClient component.
+ *
+ * This component handles lazy loading of the main chat UI.
+ * It provides a spinner fallback while waiting for the FreeChatClient to resolve dynamic data like
+ * query parameters or session state (necessary for Vercel).
+ */
+
+
 import { Suspense } from 'react';
 import FreeChatClient from './FreeChatClient';
 
 
-// Displays a loading spinner while the chat interface loads query parameters and chat data.
+/**
+ * Renders the free chat page using React Suspense.
+ * While FreeChatClient loads (e.g., fetching search params), a spinner is displayed.
+ */
 export default function FreeChatPage() {
   return (
     <Suspense

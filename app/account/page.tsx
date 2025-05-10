@@ -6,6 +6,27 @@
  * File:    /app/account/page.tsx
  ************************************************************/
 
+
+
+/**
+ * Account Page – Displays personalized usage, stats, and progress for the logged-in user.
+ *
+ * This page shows:
+ * - Join date and role
+ * - API usage progress bar
+ * - Number of logins, quizzes taken, topics explored
+ * - Earned badges and visual rewards
+ * - Buttons to return home or sign out
+ *
+ * Also handles backend sync via API to fetch:
+ * - Account creation date
+ * - API usage for the day
+ * - Badges earned
+ * - Session tracking and login count
+ */
+
+
+
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -15,10 +36,12 @@ import { LogOut, UserCircle, Sparkles, Lock, GaugeCircle,
 import Link from 'next/link';
 import type { UserStats } from '@/lib/badges';
 
+
 //API Daily User Limit
 const DAILY_LIMIT = 100;
 
-//Badge type for badge hook
+
+//Defines type for badge state var
 type Badge = {
   id: string;
   badge_id?: string;
@@ -29,9 +52,16 @@ type Badge = {
 };
 
 
+
+/**
+ * Renders the account dashboard for the logged-in user.
+ * Includes usage tracking, badge display, and user statistics.
+ */
 export default function AccountPage() {
-  //Hooks
+  // Session
   const { data: session } = useSession();
+
+  // State variables
   const [joinedAt, setJoinedAt] = useState<string | null>(null);
   const [usage, setUsage] = useState<number>(0);
   const [badges, setBadges] = useState<Badge[]>([]);
@@ -42,7 +72,7 @@ export default function AccountPage() {
   });
 
 
-  //Set userId in Session Storage
+  // Store user ID locally for use across client components
   useEffect(() => {
     if (session?.user?.id) {
       sessionStorage.setItem('user_id', session.user.id);
@@ -51,7 +81,7 @@ export default function AccountPage() {
   
 
 
-  //Fetch User Join Date
+  // Fetch join date from database backend
   useEffect(() => {
     const fetchJoinDate = async () => {
       if (!session?.user?.id) return;
@@ -72,7 +102,7 @@ export default function AccountPage() {
 
 
 
-  // Track daily login
+  // Track today's login and update badge progress
   useEffect(() => {
     const trackLogin = async () => {
       if (!session?.user?.id) return;
@@ -95,7 +125,7 @@ export default function AccountPage() {
   
 
 
-  //Get API Usage
+  // Get current daily API usage count
   useEffect(() => {
     const fetchUsage = async () => {
       if (!session?.user?.id) return;
@@ -115,7 +145,7 @@ export default function AccountPage() {
 
 
 
-  //Get Badges
+  // Fetch all badges earned by the user
   useEffect(() => {
     const fetchBadges = async () => {
       if (!session?.user?.id) return;
@@ -135,7 +165,7 @@ export default function AccountPage() {
 
 
 
-  //Get User Stats
+  // Get general usage stats (logins, quizzes, topics)
   useEffect(() => {
     const fetchStats = async () => {
       if (!session?.user?.id) return;
@@ -155,7 +185,7 @@ export default function AccountPage() {
 
 
 
-  //Unauthorized Account Screen
+  // If user is not signed in, show locked screen
   if (!session) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 px-4">
@@ -180,7 +210,7 @@ export default function AccountPage() {
   const user = session.user;
   const usagePercent = Math.min((usage / DAILY_LIMIT) * 100, 100);
 
-  //Account Page
+  // Render main account dashboard
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 flex items-center justify-center px-6 py-16">
       {/* Account Header */}

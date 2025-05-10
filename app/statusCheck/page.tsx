@@ -6,18 +6,39 @@
  * File:    /app/statusCheck/page.tsx
  ************************************************************/
 
+
+
+/**
+ * API Status Check Page – Displays real-time health status of the Python backend.
+ *
+ * This page pings the `/health` endpoint of the FastAPI server and renders feedback.
+ * It's helpful for users to verify if the backend is awake (especially if hosted on free-tier platforms like Render).
+ */
+
+
+
 "use client";
 import React, { useState, useEffect } from "react";
 import { CheckCircle, XCircle, Loader2, RefreshCcw } from "lucide-react";
 
-//Status Check URL
+// Python API health check endpoint
 const API_URL = `${process.env.NEXT_PUBLIC_PYTHON_API}/health`;
 
+
+
+/**
+ * Displays a status screen showing whether the FastAPI backend is online.
+ * Provides a retry button to re-ping the server.
+ */
 export default function ApiStatusPage() {
-  //Hook
+  // State to track API status
   const [status, setStatus] = useState<"loading" | "up" | "down">("loading");
 
-  //Check feedback from API
+
+  /**
+   * Ping the API server to check if it's responsive.
+   * Sets status accordingly for UI rendering.
+   */
   const checkApi = async () => {
     setStatus("loading");
     try {
@@ -35,13 +56,15 @@ export default function ApiStatusPage() {
     }
   };
 
-  //Check status
+  // Run check once when the page mounts
   useEffect(() => {
     checkApi();
   }, []);
 
 
-  //Function to Display Proper status screen
+  /**
+   * Renders a UI block based on the current API status.
+   */
   const renderStatus = () => {
     //Loading screen
     if (status === "loading") {
@@ -75,7 +98,8 @@ export default function ApiStatusPage() {
     );
   };
 
-  //Main Screen
+
+  // Main layout
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 p-6 text-center">
       <h1 className="text-4xl font-bold mb-6 text-gray-800">API Server Status</h1>

@@ -6,6 +6,15 @@
  * File:    /app/api/stats/route.ts
  ************************************************************/
 
+
+
+/**
+ * This route retrieves a user's learning stats — including login count,
+ * number of quizzes taken, and the list of topics they've explored.
+ * If no stats exist yet for the user, it creates a default entry.
+ */
+
+
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseServer } from '@/lib/supabaseClient';
 
@@ -21,6 +30,7 @@ export async function POST(req: NextRequest) {
       .eq('user_id', userId)
       .maybeSingle();
 
+    // If an error occurred, return failure response
     if (error) {
       console.error('Error fetching user stats:', error);
       return NextResponse.json({ error: 'Failed to fetch stats' }, { status: 500 });
@@ -29,7 +39,8 @@ export async function POST(req: NextRequest) {
     // If stats already exist, return them
     if (data) return NextResponse.json(data);
 
-    // Otherwise, create default stats
+
+    // If stats don't exist, initialize default stats
     const defaultStats = {
       user_id: userId,
       total_logins: 0,
@@ -37,7 +48,7 @@ export async function POST(req: NextRequest) {
       topics: [],
     };
 
-    //Add new stats to stats table
+    // Insert default stats row into the database
     const { error: insertError } = await supabaseServer
       .from('user_stats')
       .insert([defaultStats]);
@@ -47,7 +58,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Failed to initialize stats' }, { status: 500 });
     }
 
-    //Return Success
+    // Return the newly created default stats
     return NextResponse.json(defaultStats);
   } catch (err) {
     console.error('Unexpected error in /api/stats:', err);

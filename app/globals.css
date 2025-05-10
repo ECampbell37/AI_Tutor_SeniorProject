@@ -6,41 +6,52 @@
  * File:    /app/globals.css
  ************************************************************/
 
-/* Import Tailwind's base styles, components, and utilities */
+
+
+/**
+ * Global CSS Stylesheet – Applies universal styling rules across the AI Tutor app.
+ *
+ * Combines Tailwind utility classes with custom base styles for consistent design.
+ * Includes: layout defaults, font styling, scrollbar styling, and animations.
+ */
+
+
+/* --- Tailwind Base Setup --- */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Custom Global Styles */
 
-/* Set a default font, background, and text color for the body */
+/* --- Custom Global Styles --- */
 
+/* Base <body> styles */
 body {
   @apply bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 text-gray-800;
   font-family: 'Inter', sans-serif;
 }
 
-/* Ensure the container class centers content and adds side padding */
+/* Container utility: max width and padding */
 .container {
   @apply max-w-7xl mx-auto px-4;
 }
 
-/* Global heading styles for consistency */
+/* Uniform heading weight */
 h1, h2, h3, h4, h5, h6 {
   @apply font-bold;
 }
 
-/* Standard link styles with hover effects */
+/* Base link styling with hover effect */
 a {
   @apply text-gray-800 hover:underline;
 }
 
-/* Default button styles for uniformity */
+/* Button hover/transition consistency */
 button {
   @apply cursor-pointer transition duration-200 ease-in-out;
 }
 
-/* Style the scrollbar for webkit browsers */
+
+/* --- Scrollbar Styling (WebKit Browsers) --- */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -49,14 +60,17 @@ button {
   @apply bg-gray-400 rounded;
 }
 
-/* Enhance text selection appearance */
+
+/* --- Text Selection Highlight --- */
 ::selection {
   background-color: #b3d4fc;
   color: #000;
 }
 
 
-/* Custom Fade In and Up Animation */
+/* --- Animations --- */
+
+/* Fade In + Slide Up Animation */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -72,8 +86,7 @@ button {
   animation: fadeInUp 0.8s ease-out both;
 }
 
-
-/* Custom Fade Animation */
+/* Basic Fade Animation */
 @keyframes fade {
   from {
     opacity: 0;
@@ -86,5 +99,3 @@ button {
 .animate-fade {
   animation: fade 0.4s ease-out both;
 }
-
-

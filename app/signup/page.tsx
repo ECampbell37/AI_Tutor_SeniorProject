@@ -6,21 +6,41 @@
  * File:    /app/signup/page.tsx
  ************************************************************/
 
+
+
+/**
+ * SignUp Page – Allows users to create a new account.
+ *
+ * Handles input validation, displays success/error messages,
+ * and redirects to the sign-in page after successful registration.
+ */
+
+
 'use client';
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
+
+
+/**
+ * Renders the user registration form with client-side validation.
+ * On submit, sends a POST request to `/api/auth/signup` to create a new user.
+ */
 export default function SignUpPage() {
-  //Hooks
+  // Form state
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
   const router = useRouter();
 
-  //Handle User Sign Up
+  
+  /**
+   * Handles the form submission by sending a signup request to the backend.
+   * Displays appropriate feedback and redirects on success.
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -54,6 +74,8 @@ export default function SignUpPage() {
       <div className="relative bg-white shadow-xl rounded-2xl p-8 w-full max-w-md transform transition duration-300 hover:scale-[1.01]">
         {/* Header Section */}
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Create an Account 🚀</h2>
+
+        {/* Error/Success Messages */}
         {errorMsg && (
           <p className="text-red-600 text-sm text-center mb-4 bg-red-100 rounded p-2">{errorMsg}</p>
         )}
@@ -62,6 +84,8 @@ export default function SignUpPage() {
             {successMsg}
           </p>
         )}
+
+        {/* Sign-Up Form */}
         <form onSubmit={handleSubmit} className="space-y-5">
           {/* Username Input */}
           <div>

@@ -6,19 +6,37 @@
  * File:    /lib/badges.ts
  ************************************************************/
 
-// Type definition for user stats
+
+
+/**
+ * Badge System Logic – Defines milestone-based badges and rules
+ * for tracking user achievements across login streaks, quiz completions,
+ * perfect scores, and topic exploration.
+ */
+
+
+
+/**
+ * Represents a user's progress stats used to evaluate badge conditions.
+ */
 export interface UserStats {
   total_logins: number;
   quizzes_taken: number;
   topics: string[];
 }
 
-// Extra object passed to badge condition
+
+/**
+ * Optional extra passed to badge condition checks for quiz grade badges.
+ */
 export interface BadgeConditionExtra {
   grade?: number;
 }
 
-// Badge definition
+
+/**
+ * Structure of a single badge rule, including condition for awarding it.
+ */
 export interface BadgeRule {
   id: string;
   name: string;
@@ -27,7 +45,12 @@ export interface BadgeRule {
   condition: (stats: UserStats, extra?: BadgeConditionExtra) => boolean;
 }
 
-// Badge rules and conditions
+
+
+/**
+ * All defined badge rules and their unlock conditions.
+ * Evaluated when a user completes a relevant action (e.g., login, quiz).
+ */
 export const BADGE_RULES: BadgeRule[] = [
   {
     id: 'first_login',

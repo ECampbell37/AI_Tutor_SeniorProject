@@ -6,6 +6,16 @@
  * File:    /app/components/MarkdownRender.tsx
  ************************************************************/
 
+
+/**
+ * MarkdownRenderer Component – Renders Markdown content with:
+ * - LaTeX math support via KaTeX
+ * - Syntax highlighting via highlight.js
+ * - Dynamic "Copy" buttons on code blocks
+ */
+
+
+
 'use client';
 
 import React, { useEffect } from 'react';
@@ -13,9 +23,19 @@ import ReactMarkdown from 'react-markdown';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import rehypeHighlight from 'rehype-highlight';
+
+// KaTeX and Highlight.js styles
 import 'katex/dist/katex.min.css';
 import 'highlight.js/styles/github.css';
 
+
+
+/**
+ * Renders Markdown with math and code formatting.
+ * Automatically enhances code blocks with a copy-to-clipboard button.
+ *
+ * @param content - Markdown string to render
+ */
 export default function MarkdownRenderer({ content }: { content: string }) {
 
   //Check to see if the Markdown contains code
@@ -28,16 +48,16 @@ export default function MarkdownRenderer({ content }: { content: string }) {
       const parent = block.parentElement;
       if (!parent) return;
 
-      // Avoid adding multiple buttons
+      // Prevent duplicate copy buttons
       if (parent.querySelector('.copy-btn')) return;
 
-      //Copy Button
+      // Create copy button
       const button = document.createElement('button');
       button.textContent = '📝Copy';
       button.className =
         'copy-btn absolute top-2 right-2 text-xs px-2 py-1 rounded-md bg-gray-100 hover:bg-gray-200 text-gray-800 opacity-0 group-hover:opacity-100 transition-opacity';
 
-      //Copy Button onClick
+      // Copy code content to clipboard
       button.onclick = async () => {
         await navigator.clipboard.writeText(block.textContent || '');
         button.textContent = '✅ Copied!';
@@ -46,7 +66,7 @@ export default function MarkdownRenderer({ content }: { content: string }) {
         }, 2000);
       };
 
-      //Add padding and copy button to markdown segment
+      // Add styling and copy button to code block
       parent.classList.add('relative', 'group', 'p-4', 'bg-white', 'rounded-lg');
       parent.appendChild(button);
     });

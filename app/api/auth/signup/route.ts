@@ -7,21 +7,43 @@
  ************************************************************/
 
 
+
+
+/**
+ * API Route: POST /api/auth/signup
+ *
+ * Handles user registration:
+ * - Validates input
+ * - Checks for username uniqueness
+ * - Hashes the password securely with bcrypt
+ * - Inserts new user into Supabase `users` table
+ * - Returns JSON response with success or error
+ */
+
+
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
 import { supabaseServer } from '@/lib/supabaseClient';
 
+
+
+/**
+ * POST handler for creating a new user account.
+ * 
+ * @param request - HTTP Request containing JSON with `username` and `password`
+ * @returns JSON response with success message or error
+ */
 export async function POST(request: Request) {
   try {
-    //Get username and password
+    // Extract credentials from request body
     const { username, password } = await request.json();
 
-    //If one or more is missing, return error
+    // Validate input
     if (!username || !password) {
       return NextResponse.json({ error: 'Missing username or password' }, { status: 400 });
     }
 
-    // Check if username exists
+    // Check if the username already exists
     const { data: existingUser } = await supabaseServer
       .from('users')
       .select('id')
@@ -32,16 +54,17 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Username already exists' }, { status: 400 });
     }
 
-    // Hash password and generate UUID
+    // Hash the password with bcrypt
     const hashedPassword = await bcrypt.hash(password, 10);
-    const userId = crypto.randomUUID();
+    const userId = crypto.randomUUID();  // Generate a new UUID for the user
 
-    //Create new user
+
+    // Insert new user into the Supabase database
     const { error: insertError } = await supabaseServer
       .from('users')
       .insert([{ id: userId, username, hashed_password: hashedPassword }]);
 
-    //If error, return
+    // Handle insertion error
     if (insertError) {
       console.error(insertError);
       return NextResponse.json({ error: 'Error creating user' }, { status: 500 });
@@ -50,6 +73,7 @@ export async function POST(request: Request) {
     //Return success message
     return NextResponse.json({ message: 'User created successfully' });
   } catch (err) {
+    // Catch unexpected server errors
     console.error(err);
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }

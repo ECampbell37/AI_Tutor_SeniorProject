@@ -7,6 +7,20 @@
  ************************************************************/
 
 
+
+/**
+ * ChatClient.tsx – Handles the main chat interface for the Casual Tutor mode.
+ * 
+ * Features:
+ * - Initializes AI lesson based on selected subject
+ * - Manages chat message flow between user and AI
+ * - Integrates API limit checking per user
+ * - Offers an interactive quiz modal with grading and feedback
+ * - Tracks stats and updates badges based on usage and performance
+ */
+
+
+
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
@@ -15,13 +29,19 @@ import { SendHorizonal, ClipboardCheck, X, Loader2 } from 'lucide-react';
 import MarkdownRenderer from '../../components/MarkdownRenderer';
 
 
-//Message Format (sender and text)
+// Defines the format of a single message in the chat history
 interface Message {
   sender: 'AI' | 'User' | 'separator';
   text: string;
 }
 
-// Function to extract out numeric grade 
+
+
+/**
+ * Extracts a numeric percentage grade from a string like "Grade: 80%"
+ * @param gradeText - The full grade text string
+ * @returns The numeric grade (0–100) or null if not found
+ */
 function extractNumericGrade(gradeText: string): number | null {
   // Look for something like "Grade: 100%"
   const gradePattern = /Grade:\s*(\d+)%/i;
@@ -39,17 +59,23 @@ function extractNumericGrade(gradeText: string): number | null {
 }
 
 
-//Casual Learning Chat Component
+
+/**
+ * Main chat component for casual learning mode.
+ * Handles API interactions, user messages, quiz system, and AI-generated replies.
+ */
 export default function Chat() {
-  //Set up hooks
+  // Set Session and Subject-related hooks
   const searchParams = useSearchParams();
   const subject = searchParams.get('subject') || 'Astronomy';
   const { data: session } = useSession();
 
+  // Chat state variables
   const [messages, setMessages] = useState<Message[]>([]);
   const [userInput, setUserInput] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // Quiz-related state variables
   const [showQuizModal, setShowQuizModal] = useState(false);
   const [quizText, setQuizText] = useState('');
   const [quizAnswers, setQuizAnswers] = useState<string[]>(['', '', '', '', '']);
@@ -59,7 +85,12 @@ export default function Chat() {
 
   const hasInitialized = useRef(false);
 
-  //Check User's API Limit
+
+  /**
+   * Checks if the user has remaining API requests for the day.
+   * @param userId - The user's Supabase ID
+   * @returns True if allowed, false otherwise
+   */
   async function checkApiAllowance(userId: string): Promise<boolean> {
     const res = await fetch('/api/usage/check', {
       method: 'POST',
@@ -72,7 +103,9 @@ export default function Chat() {
   }
 
 
-  //Clear Previous Memory and Generate Lesson Intro
+  /**
+   * On initial load, clears memory, logs the subject, updates badges, and fetches intro.
+   */
   useEffect(() => {
     if (!session?.user?.id || hasInitialized.current) return;
 
@@ -134,7 +167,9 @@ export default function Chat() {
 
 
 
-  //User sends message tp chat
+  /**
+   * Handles the sending of a message by the user and receives AI response.
+   */
   const sendMessage = async () => {
     //If no message or user, skip
     if (!userInput.trim() || !session?.user?.id) return;
@@ -176,7 +211,10 @@ export default function Chat() {
   };
 
 
-  //Open the quiz pop-up
+
+  /**
+   * Opens the quiz modal and fetches quiz questions from the backend.
+   */
   const openQuizModal = async () => {
     if (!session?.user?.id) return;
 
@@ -207,7 +245,10 @@ export default function Chat() {
   };
 
 
-  //Handle Quiz Submission
+
+  /**
+   * Submits the user's quiz answers and processes feedback and grading.
+   */
   const submitQuiz = async () => {
     if (!session?.user?.id) return;
 
@@ -267,7 +308,10 @@ export default function Chat() {
   };
 
 
-  //Handle Quiz End
+
+  /**
+   * Closes the quiz modal and fetches continuation message from the tutor.
+   */
   const closeQuizModal = async () => {
     //Reset all quiz fields
     setShowQuizModal(false);
@@ -310,7 +354,7 @@ export default function Chat() {
     setLoading(false);
   };
 
-  //Casual Learning UI
+  // Casual Learning UI
   return (
     <div className="min-h-screen flex flex-col items-center container mx-auto p-6 bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300">
       <h2 className="text-4xl font-semibold mb-6 text-gray-800">📖 Casual Learning: {subject}</h2>

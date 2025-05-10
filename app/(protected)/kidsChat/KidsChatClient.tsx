@@ -7,6 +7,18 @@
  ************************************************************/
 
 
+/**
+ * KidsChatClient.tsx – Handles the main chat interface for the Kids Tutor mode.
+ * 
+ * Features:
+ * - Initializes AI lesson based on selected subject
+ * - Manages chat message flow between user and AI
+ * - Integrates API limit checking per user
+ * - Offers an interactive quiz modal with grading and feedback
+ * - Tracks stats and updates badges based on usage and performance
+ */
+
+
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { SendHorizonal, ClipboardCheck, X, Loader2 } from "lucide-react";
@@ -15,14 +27,19 @@ import { useSession } from "next-auth/react";
 import MarkdownRenderer from "../../components/MarkdownRenderer";
 
 
-//Message Format (sender and text)
+// Defines the format of a single message in the chat history
 interface Message {
   sender: "AI" | "You" | "separator";
   text: string;
 }
 
 
-// Function to extract out numeric grade 
+
+/**
+ * Extracts a numeric percentage grade from a string like "Grade: 80%"
+ * @param gradeText - The full grade text string
+ * @returns The numeric grade (0–100) or null if not found
+ */
 function extractNumericGrade(gradeText: string): number | null {
   // Look for something like "Grade: 100%"
   const gradePattern = /Grade:\s*(\d+)%/i;
@@ -39,16 +56,23 @@ function extractNumericGrade(gradeText: string): number | null {
   return null;
 }
 
+
+/**
+ * Main chat component for kids learning mode.
+ * Handles API interactions, user messages, quiz system, and AI-generated replies.
+ */
 export default function KidsChat() {
+  // Set Session and Subject-related hooks
   const searchParams = useSearchParams();
   const subject = searchParams.get("subject") || "Nature";
   const { data: session } = useSession();
 
-  //Set up hooks
+  // Chat state variables
   const [messages, setMessages] = useState<Message[]>([]);
   const [userInput, setUserInput] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Quiz-related state variables
   const [showQuizModal, setShowQuizModal] = useState(false);
   const [quizText, setQuizText] = useState("");
   const [quizAnswers, setQuizAnswers] = useState<string[]>(["", "", "", "", ""]);
@@ -58,7 +82,12 @@ export default function KidsChat() {
 
   const hasInitialized = useRef(false);
 
-  //Check API Limit Function
+
+  /**
+   * Checks if the user has remaining API requests for the day.
+   * @param userId - The user's Supabase ID
+   * @returns True if allowed, false otherwise
+   */
   async function checkApiAllowance(userId: string): Promise<boolean> {
     const res = await fetch("/api/usage/check", {
       method: "POST",
@@ -70,7 +99,9 @@ export default function KidsChat() {
   }
 
 
-  //Clear Previous Memmory and Generate Lesson Intro
+  /**
+   * On initial load, clears memory, logs the subject, updates badges, and fetches intro.
+   */
   useEffect(() => {
     if (!session?.user?.id || hasInitialized.current) return;
 
@@ -122,7 +153,10 @@ export default function KidsChat() {
   }, [subject, session]);
 
 
-  //Handle User sending Message
+  
+  /**
+   * Handles the sending of a message by the user and receives AI response.
+   */
   const sendMessage = async () => {
     if (!userInput.trim() || !session?.user?.id) return;
 
@@ -159,7 +193,10 @@ export default function KidsChat() {
     setLoading(false);
   };
 
-  //Handle quiz start
+  
+  /**
+   * Opens the quiz modal and fetches quiz questions from the backend.
+   */
   const startQuiz = async () => {
     if (!session?.user?.id) return;
 
@@ -187,7 +224,10 @@ export default function KidsChat() {
   };
 
 
-  //Handle Quiz submission
+  
+  /**
+   * Submits the user's quiz answers and processes feedback and grading.
+   */
   const submitQuiz = async () => {
     if (!session?.user?.id) return;
 
@@ -247,7 +287,10 @@ export default function KidsChat() {
   };
 
 
-  //Handle post-quiz continuation
+  
+  /**
+   * Closes the quiz modal and fetches continuation message from the tutor.
+   */
   const continueLesson = async () => {
     //Clear previous quiz data
     setShowQuizModal(false);
@@ -286,6 +329,7 @@ export default function KidsChat() {
     setLoading(false);
   };
 
+  //Kids Learning UI
   return (
     <div className="w-full min-h-screen flex flex-col items-center container mx-auto p-6 bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300">
       <h2 className="text-4xl font-bold mb-6 text-gray-800">🌱 Kids Learning: {subject}</h2>

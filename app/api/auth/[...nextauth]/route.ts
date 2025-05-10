@@ -7,12 +7,22 @@
  ************************************************************/
 
 
+
+/**
+ * NextAuth Configuration for AI Tutor – Handles sign-in using custom credentials.
+ *
+ * Uses Supabase as a user database, with bcrypt password verification.
+ * JWT-based sessions ensure secure and scalable auth handling across routes.
+ */
+
+
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import { supabaseServer } from '@/lib/supabaseClient';
 
-// Configure NextAuth handler with credentials provider
+
+// Initialize NextAuth handler
 const handler = NextAuth({
   providers: [
     CredentialsProvider({
@@ -21,39 +31,48 @@ const handler = NextAuth({
         username: { label: "Username", type: "text", placeholder: "your_username" },
         password: { label: "Password", type: "password" },
       },
-      // Authorize function to validate login
+      
+      
+      /**
+       * Authorize user by verifying credentials with Supabase.
+       * @returns Authenticated user object or null on failure
+       */
       async authorize(credentials) {
         if (!credentials?.username || !credentials?.password) return null;
 
-        // Query Supabase for matching user
+        // Look up the user in Supabase
         const { data: user, error } = await supabaseServer
           .from('users')
           .select('id, username, hashed_password')
           .eq('username', credentials.username)
           .single();
 
-        // Return null if user not found or query fails
+        // Fail if user not found or error in query
         if (error || !user) return null;
 
-        // Compare entered password with stored hashed password
+        // Compare hashed password
         const isValid = await bcrypt.compare(credentials.password, user.hashed_password);
         if (!isValid) return null;
 
-        // Return user object if login is successful
+        // Return a user object on success
         return { id: user.id.toString(), name: user.username };
       }
     })
   ],
 
-  // Use JSON Web tokens (JWT) for session management
+  // Use JSON Web Tokens to manage sessions
   session: { strategy: "jwt" },
 
-  // Secret key for signing tokens
+  // Environment secret for signing tokens
   secret: process.env.NEXTAUTH_SECRET,
 
   // Customize token and session handling
   callbacks: {
-    // Add user ID to the JWT
+    
+    /**
+     * Customize JWT token structure.
+     * Adds user ID to the token payload.
+     */
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
@@ -61,7 +80,11 @@ const handler = NextAuth({
       return token;
     },
 
-    // Add user ID to the session object
+    
+    /**
+     * Customize session object returned to the client.
+     * Embeds user ID in the session.user object.
+     */
     async session({ session, token }) {
       if (token && session.user) {
         session.user.id = token.id as string;
@@ -70,11 +93,11 @@ const handler = NextAuth({
     }
   },
 
-  // Use a custom sign-in page
+  // Custom sign-in page route
   pages: {
     signIn: '/signin'
   }
 });
 
-// Export the handler for both GET and POST requests
+// Export NextAuth handler for both GET and POST requests
 export { handler as GET, handler as POST };

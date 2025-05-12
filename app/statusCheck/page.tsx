@@ -81,7 +81,7 @@ export default function ApiStatusPage() {
       return (
         <div className="flex flex-col items-center text-green-600 animate-fadeInUp">
           <CheckCircle size={48} />
-          <p className="mt-3 text-2xl font-semibold">You're good to go!</p>
+          <p className="mt-3 text-2xl font-semibold">You&apos;re good to go!</p>
           <p className="text-sm text-gray-700 mt-1">The AI Tutor is ready to help 🎉</p>
         </div>
       );
@@ -91,8 +91,8 @@ export default function ApiStatusPage() {
     return (
       <div className="flex flex-col items-center text-red-600 animate-fadeInUp">
         <XCircle size={48} />
-        <p className="mt-3 text-2xl font-semibold">Hmm... can’t reach the Tutor</p>
-        <p className="text-sm text-gray-700 mt-1">We're having some trouble connecting right now — please check back again shortly.</p>
+        <p className="mt-3 text-2xl font-semibold">Hmm... can&apos;t reach the Tutor</p>
+        <p className="text-sm text-gray-700 mt-1">We&apos;re having some trouble connecting right now — please check back again shortly.</p>
       </div>
     );
   };

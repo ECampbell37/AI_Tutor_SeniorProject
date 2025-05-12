@@ -35,7 +35,7 @@ export default function TutorSelection() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowHint(false);
-    }, 6000);
+    }, 5000);
 
     return () => clearTimeout(timer);
   }, []);

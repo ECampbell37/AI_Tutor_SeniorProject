@@ -82,7 +82,7 @@ export default function ProfessionalChat() {
         //Welcome Message
         setMessages([{
           sender: 'AI',
-          text: "👋 Welcome to Professional Mode! Ask advanced questions involving math, code, or deep concepts — I'm here to help like a subject matter expert.",
+          text: "👋 Welcome to Professional Mode! Ask advanced questions about math, coding, coursework, career help, or complex concepts — I'm here to assist like a subject-matter expert. Ask away! 😊",
         }]);
 
         hasInitialized.current = true;

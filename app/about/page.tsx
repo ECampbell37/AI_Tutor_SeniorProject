@@ -10,7 +10,7 @@
 
 
 /**
- * About Page – Informational landing page for AI Tutor.
+ * About Page – Informational page for AI Tutor.
  *
  * This page introduces the purpose and features of the AI Tutor web app.
  * It describes the learning modes, backend tech stack, and the mission

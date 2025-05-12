@@ -39,7 +39,7 @@ export default function NavBar() {
     { label: 'Select Tutor', href: '/tutor' },
     { label: 'Free Chat', href: '/freeChat' },
     { label: 'PDF Mode', href: '/pdfUpload' },
-    { label: 'Status Check', href: '/statusCheck' },
+    { label: 'Check Connection', href: '/statusCheck' },
     { label: 'About', href: '/about' },
   ];
 

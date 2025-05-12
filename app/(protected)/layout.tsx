@@ -97,7 +97,7 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
         <p className="text-md text-gray-600 max-w-md">
           {status === 'loading'
             ? 'Checking your session...'
-            : 'Waking up the AI engine. This may take a few seconds if the server was asleep.'}
+            : 'Waking up the AI server. This may take a few seconds if the server was asleep.'}
         </p>
         <Loader2 className="w-8 h-8 text-blue-600 animate-spin mt-6" />
       </div>

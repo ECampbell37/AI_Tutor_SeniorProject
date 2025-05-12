@@ -313,7 +313,7 @@ export default function AccountPage() {
         <div className="mb-10">
           <div className="flex items-center justify-center gap-2 mb-2">
             <GaugeCircle className="text-blue-600" size={20} />
-            <h2 className="text-md font-semibold text-blue-700">Daily API Usage</h2>
+            <h2 className="text-md font-semibold text-blue-700">Daily Usage Limit</h2>
           </div>
           <div className="relative w-full h-5 rounded-full bg-gray-200 overflow-hidden shadow-inner">
             <div
@@ -335,7 +335,7 @@ export default function AccountPage() {
             </div>
           </div>
           <p className="text-sm text-gray-600 mt-2">
-            {`${usage} / ${DAILY_LIMIT} API calls used today`}
+            {`${usage} / ${DAILY_LIMIT} AI Messages used today`}
           </p>
         </div>
   

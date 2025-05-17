@@ -1,8 +1,15 @@
-# 🧠 AI Tutor — Your Personalized Learning Assistant
+# 🍎 AI Tutor — Your Personalized Learning Assistant
 
 
 ## 🎉 Live on Vercel  
 👉 [Visit AI Tutor!](https://ai-tutor-senior-project.vercel.app/)
+
+---
+
+## 🔗 Repositories
+
+- **Frontend Repo (Next.js, React, Supabase):** [AI_Tutor_SeniorProject](https://github.com/ECampbell37/AI_Tutor_SeniorProject)
+- **Backend Repo (LangChain, FastAPI, Python):** [Python-API_SeniorProject](https://github.com/ECampbell37/Python-API_SeniorProject)
 
 ---
 
@@ -16,7 +23,7 @@ Developed as my **Senior Capstone Project** in Computer Science, this applicatio
 
 ## ✨ Features
 
-- 🧑‍🏫 **Subject-Based Tutoring** – Learn by choosing from curated topic categories (e.g., Coding, Mythology, Astronomy).
+- 🧑‍🏫 **Subject-Based Tutoring** – Learn by choosing from a list of subjects (e.g., Coding, Mythology, Astronomy), or by creating your own!
 - 📝 **Interactive Quizzes** – After each session, receive a custom quiz based on your conversation.
 - 📄 **PDF Chat Mode** – Upload PDFs and ask questions about the contents directly.
 - 💬 **Free Chat Mode** – Open-ended conversation with the AI on any topic.
@@ -122,52 +129,59 @@ Developed as my **Senior Capstone Project** in Computer Science, this applicatio
 
 ## 🧪 Getting Started
 
-### 1. Clone the Repository
+### 1. Clone the Repositories
 
-```bash
+```
+# Frontend
 git clone https://github.com/ECampbell37/AI_Tutor_SeniorProject.git
-cd AI_Tutor_SeniorProject
+cd AI_Tutor_SeniorProject/app
+
+# Backend (clone separately)
+git clone https://github.com/ECampbell37/Python-API_SeniorProject.git
+cd Python-API_SeniorProject
 ```
 
 ### 2. Install Dependencies
 
-```bash
+```
 # Frontend
-cd app
+cd ../AI_Tutor_SeniorProject/app
 npm install
 
 # Backend
-cd ../python-api
+cd ../../Python-API_SeniorProject
 pip install -r requirements.txt
 ```
 
 ### 3. Environment Setup
 
-Create `.env.local` in the `app` folder and `.env` in `python-api`.
+Create `.env.local` in the `app` folder and `.env` in `Python-API_SeniorProject`.
 
 **Example: `app/.env.local`**
 ```
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_public_key
-OPENAI_API_KEY=your_openai_key
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url  
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_public_key  
+OPENAI_API_KEY=your_openai_key  
 ```
 
 **Example: `python-api/.env`**
 ```
-OPENAI_API_KEY=your_openai_key
+OPENAI_API_KEY=your_openai_key  
 ```
 
 ### 4. Run Locally
 
-```bash
+```
 # Terminal 1 - Frontend
-cd app
+cd AI_Tutor_SeniorProject/app
 npm run dev
 
 # Terminal 2 - Backend
-cd python-api
+cd Python-API_SeniorProject
 uvicorn main:app --reload
 ```
+
+> Frontend should now be running on http://localhost:3000, backend on http://localhost:8000
 
 ---
 

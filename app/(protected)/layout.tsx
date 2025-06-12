@@ -48,15 +48,6 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
   }, []);
 
 
-  // Check authentication, redirect unauthenticated users to login page
-  useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.replace('/account');
-    } else if (status === 'authenticated') {
-      setAuthReady(true);
-    }
-  }, [status, router]);
-
 
   // Ping the FastAPI backend to make sure it’s awake
   useEffect(() => {
@@ -76,10 +67,22 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
       }
     };
 
-    if (authReady) {
-      checkApi();
+    // Ping
+    checkApi();
+
+  }, []);
+
+
+
+  // Check authentication, redirect unauthenticated users to login page
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.replace('/account');
+    } else if (status === 'authenticated') {
+      setAuthReady(true);
     }
-  }, [authReady]);
+  }, [status, router]);
+
 
 
   // Determine whether to show the loading screen

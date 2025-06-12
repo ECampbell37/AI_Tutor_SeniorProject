@@ -47,6 +47,24 @@ export default function PDFChat() {
   const hasInitialized = useRef(false);
 
 
+  /**
+   * Checks if the user has API access left for the day.
+   * @param userId - Supabase user ID
+   * @returns Whether the user is allowed to continue using the API
+   */
+  async function checkApiAllowance(userId: string): Promise<boolean> {
+    const res = await fetch('/api/usage/check', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId, route: "/pdf/ask" }), // you can customize route logic here
+    });
+
+    const data = await res.json();
+    return data.allowed === true;
+  }
+
+
+
   // On first load, display welcome message if user is authenticated
   useEffect(() => {
     if (!session?.user?.id || hasInitialized.current) return;
@@ -76,6 +94,16 @@ export default function PDFChat() {
    */
   const sendMessage = async () => {
     if (!userInput.trim() || !session?.user?.id) return;
+
+    // Check API Limit
+    const allowed = await checkApiAllowance(session.user.id);
+    if (!allowed) {
+      setMessages((prev) => [...prev, {
+        sender: 'AI',
+        text: "🚫 You've reached your daily limit for PDF questions. Try again tomorrow!",
+      }]);
+      return;
+    }
 
     //Add user message to chat
     setMessages((prev) => [...prev, { sender: "User", text: userInput }]);

@@ -38,6 +38,9 @@ export async function POST(request: Request) {
     // Extract credentials from request body
     const { username, password } = await request.json();
 
+    // Get today's date (YYYY-MM-DD format)
+    const today = new Date().toISOString().slice(0, 10);
+
     // Validate input
     if (!username || !password) {
       return NextResponse.json({ error: 'Missing username or password' }, { status: 400 });
@@ -69,6 +72,17 @@ export async function POST(request: Request) {
       console.error(insertError);
       return NextResponse.json({ error: 'Error creating user' }, { status: 500 });
     }
+
+    // After user inserted successfully into users table, create stats entry
+    await supabaseServer.from('user_stats').insert([
+      {
+        user_id: userId,
+        total_logins: 1,
+        last_login: today,
+        quizzes_taken: 0,
+        topics: [],
+      },
+    ]);
 
     //Return success message
     return NextResponse.json({ message: 'User created successfully' });

@@ -34,13 +34,9 @@ export async function POST(req: NextRequest) {
     if (statsError) throw statsError;
 
 
-    // If no stats found, assume this is the user's first interaction and create default stats
+    // If no stats found, return error
     if (!stats) {
-      const { error: insertError } = await supabaseServer
-        .from('user_stats')
-        .insert([{ user_id: userId, total_logins: 0, quizzes_taken: 0, topics: [] }]);
-      
-      if (insertError) throw insertError;
+      return NextResponse.json({ error: 'User stats not found. Login tracking required first.' }, { status: 400 });
     }
 
 

@@ -59,7 +59,7 @@ type Badge = {
  */
 export default function AccountPage() {
   // Session
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   // State variables
   const [joinedAt, setJoinedAt] = useState<string | null>(null);
@@ -83,6 +83,8 @@ export default function AccountPage() {
 
   // Fetch join date from database backend
   useEffect(() => {
+    if (status !== 'authenticated') return;
+
     const fetchJoinDate = async () => {
       if (!session?.user?.id) return;
   
@@ -97,13 +99,15 @@ export default function AccountPage() {
     };
   
     fetchJoinDate();
-  }, [session]);
+  }, [status, session]);
   
 
 
 
   // Track today's login and update badge progress
   useEffect(() => {
+    if (status !== 'authenticated') return;
+
     const trackLogin = async () => {
       if (!session?.user?.id) return;
 
@@ -121,12 +125,14 @@ export default function AccountPage() {
     };
 
     trackLogin();
-  }, [session]);
+  }, [status, session]);
   
 
 
   // Get current daily API usage count
   useEffect(() => {
+    if (status !== 'authenticated') return;
+
     const fetchUsage = async () => {
       if (!session?.user?.id) return;
   
@@ -141,12 +147,14 @@ export default function AccountPage() {
     };
   
     fetchUsage();
-  }, [session]);
+  }, [status, session]);
 
 
 
   // Fetch all badges earned by the user
   useEffect(() => {
+    if (status !== 'authenticated') return;
+
     const fetchBadges = async () => {
       if (!session?.user?.id) return;
 
@@ -161,12 +169,14 @@ export default function AccountPage() {
     };
 
     fetchBadges();
-  }, [session]);
+  }, [status, session]);
 
 
 
   // Get general usage stats (logins, quizzes, topics)
   useEffect(() => {
+    if (status !== 'authenticated') return;
+
     const fetchStats = async () => {
       if (!session?.user?.id) return;
   
@@ -181,7 +191,7 @@ export default function AccountPage() {
     };
   
     fetchStats();
-  }, [session]);
+  }, [status, session]);
 
 
 

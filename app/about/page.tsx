@@ -146,10 +146,10 @@ export default function AboutPage() {
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-gray-800 mb-6">⚙️ How It Works</h2>
           <p className="text-gray-700 text-base mb-4">
-            AI Tutor is built using <strong>Next.js</strong> for the frontend, <strong>LangChain</strong> for structured prompts, <strong>OpenAI</strong> models for conversation and evaluation, and <strong>Supabase</strong> for secure auth and data tracking.
+            AI Tutor uses <strong>OpenAI&apos;s GPT-4o-mini</strong>, a powerful language model that understands what you&apos;re trying to learn and responds in a friendly, helpful way. It feels like talking to a real tutor - one who can break things down clearly, answer follow-up questions, and keep the conversation going.
           </p>
           <p className="text-gray-700 text-base">
-            A FastAPI Python backend manages prompt routing, memory, and quiz scoring. Every feature is designed to provide fast, reliable, and intuitive feedback to the learner.
+            Just choose a topic, and the AI will guide you step by step - with explanations, questions, and personalized quizzes that adapt to how you&apos;re doing. 
           </p>
         </div>
       </section>

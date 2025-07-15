@@ -39,6 +39,7 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
   const [authReady, setAuthReady] = useState(false);
   const [apiReady, setApiReady] = useState(false);
   const [delayPassed, setDelayPassed] = useState(false);
+  const [showProgressBar, setShowProgressBar] = useState(false);
 
   
   // Short delay to prevent UI flickering when loading is too fast
@@ -47,6 +48,12 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
     return () => clearTimeout(timeout);
   }, []);
 
+
+  // Delay before showing the loading progress bar
+  useEffect(() => {
+  const timer = setTimeout(() => setShowProgressBar(true), 3000);
+  return () => clearTimeout(timer);
+}, []);
 
 
   // Ping the FastAPI backend to make sure it’s awake
@@ -93,16 +100,25 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
   if (showLoadingScreen) {
     return (
       <div className="flex flex-col items-center justify-center h-screen text-center bg-gradient-to-br from-blue-100 via-blue-200 to-cyan-200 animate-pulse-slow px-6">
-        <BotMessageSquare className="w-16 h-16 text-blue-500 animate-bounce-slow mb-6" />
+        <BotMessageSquare className="w-16 h-16 text-blue-500 animate-bounce mb-6" />
         <h1 className="text-3xl font-extrabold text-gray-800 mb-2 tracking-tight animate-fadeInUp">
           Initializing AI Tutor...
         </h1>
         <p className="text-md text-gray-600 max-w-md">
           {status === 'loading'
             ? 'Checking your session...'
-            : 'Waking up the AI server. This may take a few seconds if the server was asleep.'}
+            : 'Waking up the AI server. This may take up to a minute if the server was asleep.'}
         </p>
-        <Loader2 className="w-8 h-8 text-blue-600 animate-spin mt-6" />
+
+        {showProgressBar ? (
+          <div className="w-full max-w-md mt-8">
+            <div className="h-2 bg-blue-300 rounded-full overflow-hidden">
+              <div className="h-full bg-blue-600 animate-progress-60s" />
+            </div>
+          </div>
+        ) : (
+          <Loader2 className="w-8 h-8 text-blue-600 animate-spin mt-6" />
+        )}
       </div>
     );
   }

@@ -99,3 +99,17 @@ button {
 .animate-fade {
   animation: fade 0.4s ease-out both;
 }
+
+/* 60s Progress Bar Animation */
+@keyframes progressBar {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.animate-progress-60s {
+  animation: progressBar 60s linear forwards;
+}

@@ -67,7 +67,7 @@ export default function MarkdownRenderer({ content }: { content: string }) {
       };
 
       // Add styling and copy button to code block
-      parent.classList.add('relative', 'group', 'p-4', 'bg-white', 'rounded-lg');
+      parent.classList.add('relative', 'group', 'p-4', 'bg-white', 'rounded-lg', 'mt-2', 'mb-4');
       parent.appendChild(button);
     });
   }, [content]);
@@ -79,6 +79,35 @@ export default function MarkdownRenderer({ content }: { content: string }) {
       <ReactMarkdown
         remarkPlugins={[remarkMath]}
         rehypePlugins={[rehypeKatex, rehypeHighlight]}
+        components={{
+              h1: (props) => (
+                <h1 className="text-xl font-bold mb-4" {...props} />
+              ),
+              h2: (props) => (
+                <h2 className="text-xl font-semibold mt-8 mb-4 border-b pb-1" {...props} />
+              ),
+              h3: (props) => (
+                <h3 className="text-lg font-semibold mb-4" {...props} />
+              ),
+              h4: (props) => (
+                <h3 className="text-md font-semibold mb-4" {...props} />
+              ),
+              p: ({ children }) => (
+                <p className="leading-relaxed mb-4">{children}</p>
+              ),
+              ul: (props) => (
+                <ul className="list-disc ml-6 space-y-4 mb-6" {...props} />
+              ),
+              ol: (props) => (
+                <ol className="list-decimal ml-6 mb-4 space-y-4" {...props} />
+              ),
+              li: (props) => (
+                <li className="leading-normal mb-4" {...props} />
+              ),
+              hr: (props) => ( 
+                <hr className="mb-4" {...props} />
+              ),
+            }}
       >
         {content}
       </ReactMarkdown>

@@ -146,7 +146,7 @@ export default function AboutPage() {
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-gray-800 mb-6">⚙️ How It Works</h2>
           <p className="text-gray-700 text-base mb-4">
-            AI Tutor uses <strong>OpenAI&apos;s GPT-4o-mini</strong>, a powerful language model that understands what you&apos;re trying to learn and responds in a friendly, helpful way. It feels like talking to a real tutor - one who can break things down clearly, answer follow-up questions, and keep the conversation going.
+            AI Tutor uses <strong>OpenAI&apos;s GPT-4o</strong>, a powerful language model that understands what you&apos;re trying to learn and responds in a friendly, helpful way. It feels like talking to a real tutor - one who can break things down clearly, answer follow-up questions, and keep the conversation going.
           </p>
           <p className="text-gray-700 text-base">
             Just choose a topic, and the AI will guide you step by step - with explanations, questions, and personalized quizzes that adapt to how you&apos;re doing. 
@@ -161,7 +161,7 @@ export default function AboutPage() {
           <p className="text-gray-700 text-lg">
             AI Tutor was created to make education more accessible, engaging, and personalized. We believe learning
             should feel like a conversation — not a chore. By combining powerful AI with intuitive design, we aim to
-            empower people of all ages to expand thier minds and enjoy the learning process. It&apos;s time to reimagine 
+            encourage people of all ages to expand thier minds and enjoy the learning process. It&apos;s time to reimagine 
             what education can be ✨ 
           </p>
         </div>

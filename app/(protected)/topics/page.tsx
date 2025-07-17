@@ -46,6 +46,7 @@ export default function Topics() {
     { name: 'Biology', href: '/chat?subject=Biology' },
     { name: 'Chemistry', href: '/chat?subject=Chemistry' },
     { name: 'Philosophy', href: '/chat?subject=Philosophy' },
+    { name: 'Existentialism', href: '/chat?subject=Existentialism' },
     { name: 'Business', href: '/chat?subject=Business' },
     { name: 'Finance', href: '/chat?subject=Finance' },
   ];

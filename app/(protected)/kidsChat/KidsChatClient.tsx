@@ -350,7 +350,7 @@ export default function KidsChat() {
                 <div className="flex flex-wrap gap-1 items-start">
                   <strong className="shrink-0">{msg.sender}:</strong>
                   {msg.sender === 'AI' ? (
-                    <div className="flex-1 overflow-x-hidden break-words whitespace-pre-line">
+                    <div className="flex-1 overflow-x-hidden break-words">
                       <MarkdownRenderer content={msg.text} />
                     </div>
                   ) : (
@@ -396,7 +396,7 @@ export default function KidsChat() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 overflow-auto">
           <div className="bg-white p-6 rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
             <h3 className="text-2xl font-bold mb-4 text-green-700">📝 Your Quiz</h3>
-            <div className="bg-gray-100 p-4 mb-3 rounded break-words whitespace-pre-wrap">
+            <div className="bg-gray-100 p-4 mb-3 rounded break-words">
               <MarkdownRenderer content={quizText} />
             </div>
             {quizAnswers.map((answer, i) => (
@@ -423,13 +423,13 @@ export default function KidsChat() {
               <div className="mt-4 p-4 bg-green-100 rounded text-emerald-800 space-y-4">
                 <div>
                   <strong>Feedback:</strong>
-                  <div className="break-words whitespace-pre-line">
+                  <div className="break-words">
                     <MarkdownRenderer content={quizFeedback} />
                   </div>
                 </div>
                 <div>
                   <strong>Grade:</strong>
-                  <div className="break-words whitespace-pre-line">
+                  <div className="break-words">
                     <MarkdownRenderer content={quizGrade} />
                   </div>
                 </div>

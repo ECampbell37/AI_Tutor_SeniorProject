@@ -61,9 +61,9 @@ export default function TutorSelection() {
         href="/kidsTopics" 
         className="flex-none w-screen md:w-auto md:flex-1 snap-center group relative overflow-hidden hover:no-underline"
       >
-        <div className="h-full bg-gradient-to-br from-green-300 via-green-400 to-cyan-500 flex flex-col items-center justify-center text-white text-4xl font-bold transition duration-300 group-hover:from-green-400 group-hover:to-cyan-500">
+        <div className="h-full bg-gradient-to-br from-green-300 via-green-400 to-cyan-500 flex flex-col items-center justify-center text-white text-4xl 2xl:text-5xl font-bold transition duration-300 group-hover:from-green-400 group-hover:to-cyan-500">
           Kids
-          <span className="mt-4 text-base px-4 text-center transition-opacity duration-300 opacity-100 md:opacity-0 md:group-hover:opacity-100">
+          <span className="mt-4 text-base px-4 text-center 2xl:text-xl transition-opacity duration-300 opacity-100 md:opacity-0 md:group-hover:opacity-100">
             Fun and interactive lessons made just for kids!
           </span>
         </div>
@@ -73,9 +73,9 @@ export default function TutorSelection() {
         href="/topics" 
         className="flex-none w-screen md:w-auto md:flex-1 snap-center group relative overflow-hidden hover:no-underline"
       >
-        <div className="h-full bg-gradient-to-br from-cyan-500 via-blue-600 to-blue-700 flex flex-col items-center justify-center text-white text-4xl font-bold transition duration-300 group-hover:from-cyan-500 group-hover:to-blue-700">
+        <div className="h-full bg-gradient-to-br from-cyan-500 via-blue-600 to-blue-700 flex flex-col items-center justify-center text-white text-4xl 2xl:text-5xl font-bold transition duration-300 group-hover:from-cyan-500 group-hover:to-blue-700">
           Casual
-          <span className="mt-4 text-base px-4 text-center transition-opacity duration-300 opacity-100 md:opacity-0 md:group-hover:opacity-100">
+          <span className="mt-4 text-base 2xl:text-xl px-4 text-center transition-opacity duration-300 opacity-100 md:opacity-0 md:group-hover:opacity-100">
             Relaxed, friendly tutor in any subject you can think of!
           </span>
         </div>
@@ -85,9 +85,9 @@ export default function TutorSelection() {
         href="/professionalChat" 
         className="flex-none w-screen md:w-auto md:flex-1 snap-center group relative overflow-hidden hover:no-underline"
       >
-        <div className="h-full bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 flex flex-col items-center justify-center text-white text-4xl font-bold transition duration-300 group-hover:from-indigo-600 group-hover:to-purple-600">
+        <div className="h-full bg-gradient-to-br from-blue-500 via-indigo-500 to-purple-500 flex flex-col items-center justify-center text-white text-4xl 2xl:text-5xl font-bold transition duration-300 group-hover:from-indigo-600 group-hover:to-purple-600">
           Professional
-          <span className="mt-4 text-base px-4 text-center transition-opacity duration-300 opacity-100 md:opacity-0 md:group-hover:opacity-100">
+          <span className="mt-4 text-base 2xl:text-xl px-4 text-center transition-opacity duration-300 opacity-100 md:opacity-0 md:group-hover:opacity-100">
             Advanced guidance for college, careers, and coding!
           </span>
         </div>

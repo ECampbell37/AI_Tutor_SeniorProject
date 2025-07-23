@@ -81,18 +81,20 @@ export default function PDFUpload() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-6 bg-gradient-to-br from-blue-100 via-blue-200 to-cyan-100 text-gray-800">
-      <div className="bg-white bg-opacity-80 backdrop-blur-md p-12 rounded-2xl shadow-xl max-w-md w-full text-center animate-fadeInUp">
+    <div className="min-h-screen flex flex-col items-center justify-center px-6 2xl:px-10 bg-gradient-to-br from-blue-100 via-blue-200 to-cyan-100 text-gray-800">
+      <div className="bg-white bg-opacity-80 backdrop-blur-md p-12 2xl:p-16 rounded-2xl shadow-xl max-w-md 2xl:max-w-xl w-full text-center animate-fadeInUp">
         
         {/* Upload Icon & Heading */}
-        <Upload className="w-12 h-12 text-blue-500 mx-auto mb-5" />
-        <h1 className="text-3xl font-bold mb-2">Upload Your PDF</h1>
-        <p className="text-gray-600 mb-6">We&apos;ll help you understand and chat about it!</p>
+        <Upload className="w-12 h-12 2xl:w-14 2xl:h-14 text-blue-500 mx-auto mb-5" />
+        <h1 className="text-3xl 2xl:text-4xl font-bold mb-2">Upload Your PDF</h1>
+        <p className="text-gray-600 2xl:text-base mb-6">
+          We&apos;ll help you understand and chat about it!
+        </p>
 
         {/* Upload Area */}
         <label
           htmlFor="pdf-upload"
-          className="cursor-pointer border-2 border-dashed border-blue-400 p-6 rounded-xl hover:border-blue-500 transition duration-200 text-sm text-blue-600 font-medium mb-4 block"
+          className="cursor-pointer border-2 border-dashed border-blue-400 p-6 rounded-xl hover:border-blue-500 transition duration-200 text-sm 2xl:text-base text-blue-600 font-medium mb-4 block"
         >
           {file ? (
             <div className="text-gray-800 font-medium truncate">{file.name}</div>
@@ -117,7 +119,7 @@ export default function PDFUpload() {
         <button
           onClick={handleUpload}
           disabled={!file || loading}
-          className={`mt-4 w-full py-3 px-6 rounded-xl font-semibold transition duration-200 shadow-md ${
+          className={`mt-4 w-full py-3 px-6 rounded-xl font-semibold transition duration-200 shadow-md 2xl:text-lg ${
             loading || !file
               ? "bg-gray-300 text-gray-500 cursor-not-allowed"
               : "bg-blue-500 hover:bg-blue-600 text-white"

@@ -70,17 +70,17 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-100 via-purple-200 to-indigo-200 px-4">
-      <div className="relative bg-white shadow-xl rounded-2xl p-8 w-full max-w-md transform transition duration-300 hover:scale-[1.01]">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-100 via-purple-200 to-indigo-200 px-4 2xl:px-10">
+      <div className="relative bg-white shadow-xl rounded-2xl p-8 2xl:p-10 w-full max-w-md 2xl:max-w-lg transform transition duration-300 hover:scale-[1.01]">
         {/* Header Section */}
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Create an Account 🚀</h2>
+        <h2 className="text-3xl 2xl:text-4xl font-bold text-center text-gray-800 mb-6">Create an Account 🚀</h2>
 
         {/* Error/Success Messages */}
         {errorMsg && (
-          <p className="text-red-600 text-sm text-center mb-4 bg-red-100 rounded p-2">{errorMsg}</p>
+          <p className="text-red-600 text-sm 2xl:text-base text-center mb-4 bg-red-100 rounded p-2">{errorMsg}</p>
         )}
         {successMsg && (
-          <p className="text-green-600 text-sm text-center mb-4 bg-green-100 rounded p-2">
+          <p className="text-green-600 text-sm 2xl:text-base text-center mb-4 bg-green-100 rounded p-2">
             {successMsg}
           </p>
         )}
@@ -89,36 +89,36 @@ export default function SignUpPage() {
         <form onSubmit={handleSubmit} className="space-y-5">
           {/* Username Input */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
+            <label className="block text-sm 2xl:text-base font-medium text-gray-700 mb-1">Username</label>
             <input
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+              className="w-full px-4 py-2 2xl:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 2xl:text-lg"
               placeholder="Choose a username"
             />
           </div>
           {/* Password Input */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <label className="block text-sm 2xl:text-base font-medium text-gray-700 mb-1">Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+              className="w-full px-4 py-2 2xl:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 2xl:text-lg"
               placeholder="Create a password"
             />
           </div>
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 rounded-lg transition duration-200"
+            className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 2xl:py-3 rounded-lg transition duration-200 2xl:text-lg"
           >
             Sign Up
           </button>
         </form>
         {/* Link to Sign In */}
-        <p className="mt-6 text-sm text-center text-gray-600">
+        <p className="mt-6 text-sm 2xl:text-base text-center text-gray-600">
           Already have an account?{' '}
           <Link href="/signin" className="text-purple-500 hover:underline font-medium">
             Sign In

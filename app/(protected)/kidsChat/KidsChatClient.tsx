@@ -331,42 +331,44 @@ export default function KidsChat() {
 
   //Kids Learning UI
   return (
-    <div className="w-full min-h-screen flex flex-col items-center container mx-auto p-6 bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300">
-      <h2 className="text-4xl font-bold mb-6 text-gray-800">🌱 Kids Learning: {subject}</h2>
+    <div className="w-full min-h-screen flex flex-col items-center container mx-auto p-6 2xl:p-10">
+      <h2 className="text-4xl 2xl:text-5xl font-bold mb-6 2xl:mb-10 text-gray-800">
+        🌱 Kids Learning: {subject}
+      </h2>
 
       {/* Chat Interface */}
-      <div className="w-full max-w-3xl bg-white border-4 border-emerald-300 rounded-3xl shadow-xl p-6 flex flex-col flex-grow animate-fadeIn">
-        <div className="overflow-y-auto mb-4 flex-1 space-y-2" style={{ maxHeight: "60vh" }}>
+      <div className="w-full max-w-3xl 2xl:max-w-4xl bg-white border-4 border-emerald-300 rounded-3xl shadow-xl p-6 2xl:p-8 flex flex-col flex-grow animate-fadeIn">
+        <div className="overflow-y-auto mb-4 flex-1 space-y-2 2xl:space-y-3" style={{ maxHeight: "60vh" }}>
           {messages.map((msg, idx) =>
             msg.sender === "separator" ? (
-              <div key={idx} className="text-center text-green-500 py-2 font-semibold">{msg.text}</div>
+              <div key={idx} className="text-center text-green-500 py-2 font-semibold 2xl:text-lg">{msg.text}</div>
             ) : (
               <div
                 key={idx}
-                className={`p-3 rounded-xl shadow-sm ${
+                className={`p-3 2xl:p-4 rounded-xl shadow-sm 2xl:text-lg ${
                   msg.sender === "AI" ? "bg-green-50 text-emerald-600" : "bg-teal-50 text-gray-700"
                 }`}
               >
                 <div className="flex flex-wrap gap-1 items-start">
                   <strong className="shrink-0">{msg.sender}:</strong>
                   {msg.sender === 'AI' ? (
-                    <div className="flex-1 overflow-x-hidden break-words">
+                    <div className="flex-1 overflow-x-hidden break-words 2xl:text-lg">
                       <MarkdownRenderer content={msg.text} />
                     </div>
                   ) : (
-                    <span className="flex-1">{msg.text}</span>
+                    <span className="flex-1 2xl:text-lg">{msg.text}</span>
                   )}
                 </div>
               </div>
             )
           )}
-          {loading && <div className="text-emerald-600 animate-pulse">AI is typing...</div>}
+          {loading && <div className="text-emerald-600 animate-pulse 2xl:text-lg">AI is typing...</div>}
         </div>
 
         {/* Text Input */}
-        <div className="flex items-center">
+        <div className="flex items-center 2xl:mt-4">
           <textarea
-            className="flex-1 border border-gray-300 rounded-xl p-3 mr-2 shadow-sm resize-y overflow-y-auto"
+            className="flex-1 border border-gray-300 rounded-xl p-3 2xl:p-4 mr-2 shadow-sm resize-y overflow-y-auto 2xl:text-lg"
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && (e.preventDefault(), sendMessage())}
@@ -376,9 +378,9 @@ export default function KidsChat() {
           />
           <button
             onClick={sendMessage}
-            className="bg-green-500 text-white rounded-xl p-3 hover:bg-green-600 shadow-md transition duration-200 flex items-center"
+            className="bg-green-500 text-white rounded-xl p-3 2xl:p-4 hover:bg-green-600 shadow-md transition duration-200 flex items-center 2xl:text-base"
           >
-            Send <SendHorizonal className="ml-2 h-5 w-5" />
+            Send <SendHorizonal className="ml-2 h-5 w-5 2xl:h-6 2xl:w-6" />
           </button>
         </div>
       </div>
@@ -386,24 +388,24 @@ export default function KidsChat() {
       {/* Quiz Button */}
       <button
         onClick={startQuiz}
-        className="mt-6 bg-emerald-500 text-white rounded-xl py-3 px-5 hover:bg-emerald-600 shadow-lg flex items-center transition duration-200"
+        className="mt-6 2xl:mt-10 bg-emerald-500 text-white rounded-xl py-3 2xl:py-4 px-5 2xl:px-6 hover:bg-emerald-600 shadow-lg flex items-center transition duration-200 text-base 2xl:text-lg"
       >
-        Take Quiz <ClipboardCheck className="ml-2 h-5 w-5" />
+        Take Quiz <ClipboardCheck className="ml-2 h-5 w-5 2xl:h-6 2xl:w-6" />
       </button>
 
       {/* Quiz Pop Up */}
       {showQuizModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 overflow-auto">
-          <div className="bg-white p-6 rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
-            <h3 className="text-2xl font-bold mb-4 text-green-700">📝 Your Quiz</h3>
-            <div className="bg-gray-100 p-4 mb-3 rounded break-words">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 overflow-auto 2xl:p-6">
+          <div className="bg-white p-6 2xl:p-8 rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+            <h3 className="text-2xl 2xl:text-3xl font-bold mb-4 2xl:mb-6 text-green-700">📝 Your Quiz</h3>
+            <div className="bg-gray-100 p-4 2xl:p-5 mb-3 2xl:mb-4 rounded break-words">
               <MarkdownRenderer content={quizText} />
             </div>
             {quizAnswers.map((answer, i) => (
               <input
                 key={i}
                 type="text"
-                className="w-full border border-gray-300 rounded p-2 mb-4 mt-2"
+                className="w-full border border-gray-300 rounded p-2 2xl:p-3 mb-4 mt-2 2xl:text-base"
                 placeholder={`Answer for question ${i + 1}`}
                 value={answer}
                 onChange={(e) => {
@@ -415,12 +417,12 @@ export default function KidsChat() {
             ))}
             <button
               onClick={submitQuiz}
-              className="bg-emerald-500 text-white rounded-xl p-2 hover:bg-emerald-600 shadow-md mt-1"
+              className="bg-emerald-500 text-white rounded-xl p-2 2xl:p-3 hover:bg-emerald-600 shadow-md mt-1"
             >
               {quizLoading ? <Loader2 className="animate-spin h-5 w-5 mx-auto" /> : "Submit Answers"}
             </button>
             {quizFeedback && (
-              <div className="mt-4 p-4 bg-green-100 rounded text-emerald-800 space-y-4">
+              <div className="mt-4 p-4 2xl:p-5 bg-green-100 rounded text-emerald-800 space-y-4 2xl:text-base">
                 <div>
                   <strong>Feedback:</strong>
                   <div className="break-words">
@@ -437,9 +439,9 @@ export default function KidsChat() {
             )}
             <button
               onClick={continueLesson}
-              className="mt-5 bg-lime-500 text-white rounded-xl p-2 hover:bg-lime-600 shadow-md flex items-center"
+              className="mt-5 2xl:mt-6 bg-lime-500 text-white rounded-xl p-2 2xl:p-3 hover:bg-lime-600 shadow-md flex items-center 2xl:text-base"
             >
-              Close <X className="ml-2 h-5 w-5" />
+              Close <X className="ml-2 h-5 w-5 2xl:h-6 2xl:w-6" />
             </button>
           </div>
         </div>

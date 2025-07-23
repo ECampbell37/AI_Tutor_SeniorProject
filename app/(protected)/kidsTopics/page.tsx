@@ -44,13 +44,16 @@ export default function KidsTopics() {
 
   return (
     <div className="min-h-screen flex flex-col animate-fadeIn"> 
-      <div className="container mx-auto p-4 flex-grow">
-        <h2 className="text-center text-3xl font-semibold mb-6">Select a Topic</h2>
+      <div className="container mx-auto p-4 2xl:p-6 flex-grow">
+        <h2 className="text-center text-3xl 2xl:text-4xl font-semibold mb-6 2xl:mb-10">
+          Select a Topic
+        </h2>
+
         {/* Topic Buttons */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 2xl:gap-6">
           {kidsTopics.map((topic) => (
             <Link key={topic.name} href={topic.href}>
-              <button className="h-32 w-full bg-green-600 text-white rounded-3xl hover:bg-gray-800 text-lg font-bold">
+              <button className="h-32 2xl:h-36 w-full bg-green-600 text-white rounded-3xl hover:bg-gray-800 text-lg 2xl:text-xl font-bold">
                 {topic.name}
               </button>
             </Link>

@@ -222,96 +222,96 @@ export default function AccountPage() {
 
   // Render main account dashboard
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 flex items-center justify-center px-6 py-16">
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 flex items-center justify-center px-6 py-16 2xl:px-20 2xl:py-24">
       {/* Account Header */}
-      <div className="max-w-3xl w-full bg-white bg-opacity-90 p-10 rounded-2xl shadow-xl text-center animate-fadeIn">
+      <div className="max-w-3xl 2xl:max-w-4xl w-full bg-white bg-opacity-90 p-10 2xl:p-14 rounded-2xl shadow-xl text-center animate-fadeIn">
         <div className="inline-block mb-6 animate-bounce-slow">
-          <UserCircle className="text-blue-500 w-16 h-16" />
+          <UserCircle className="text-blue-500 w-16 h-16 2xl:w-20 2xl:h-20" />
         </div>
-        <h1 className="text-4xl font-bold text-gray-800 mb-2">Welcome back, {user?.name || 'Learner'}!</h1>
-        <p className="text-gray-600 mb-6">Here&apos;s a quick look at your usage and progress</p>
-  
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left mb-10">
-          <div className="bg-white bg-opacity-70 border border-blue-200 p-5 rounded-xl shadow-md">
-            <h2 className="text-lg font-semibold text-blue-600 mb-2">🗓️ Joined</h2>
-            <p className="text-sm text-gray-700">
+        <h1 className="text-4xl 2xl:text-5xl font-bold text-gray-800 mb-2">Welcome back, {user?.name || 'Learner'}!</h1>
+        <p className="text-gray-600 mb-6 2xl:mb-10 2xl:text-lg">Here&apos;s a quick look at your usage and progress</p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 2xl:gap-8 text-left mb-10">
+          <div className="bg-white bg-opacity-70 border border-blue-200 p-5 2xl:p-6 rounded-xl shadow-md">
+            <h2 className="text-lg 2xl:text-xl font-semibold text-blue-600 mb-2">🗓️ Joined</h2>
+            <p className="text-sm 2xl:text-base text-gray-700">
               {joinedAt ? new Date(joinedAt).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',
               }) : '—'}
             </p>
           </div>
-          <div className="bg-white bg-opacity-70 border border-purple-200 p-5 rounded-xl shadow-md">
-            <h2 className="text-lg font-semibold text-purple-600 mb-2">🎓 Role</h2>
-            <p className="text-sm text-gray-700">Student</p>
+          <div className="bg-white bg-opacity-70 border border-purple-200 p-5 2xl:p-6 rounded-xl shadow-md">
+            <h2 className="text-lg 2xl:text-xl font-semibold text-purple-600 mb-2">🎓 Role</h2>
+            <p className="text-sm 2xl:text-base text-gray-700">Student</p>
           </div>
         </div>
-        
+
         {/* Divider */}
         <div className="my-10 h-[1px] w-full bg-gradient-to-r from-transparent via-gray-400 to-transparent opacity-30" />
-  
+
         {/* --- USER STATS SECTION --- */}
         <div className="mb-10">
-          <h2 className="text-xl font-bold text-blue-700 mb-6 flex items-center justify-center gap-2">
+          <h2 className="text-xl 2xl:text-2xl font-bold text-blue-700 mb-6 flex items-center justify-center gap-2">
             <ChartNoAxesCombined className="text-sky-500" /> Your Stats
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 2xl:gap-8 text-center">
             {/* Daily Logins */}
-            <div className="bg-white bg-opacity-80 p-6 rounded-2xl shadow-lg flex flex-col items-center justify-center space-y-2 hover:scale-105 transition-transform duration-300">
+            <div className="bg-white bg-opacity-80 p-6 2xl:p-8 rounded-2xl shadow-lg flex flex-col items-center justify-center space-y-2 hover:scale-105 transition-transform duration-300">
               <div className="bg-blue-100 p-3 rounded-full">
-                <UserCheck className="text-blue-500 w-7 h-7" />
+                <UserCheck className="text-blue-500 w-7 h-7 2xl:w-8 2xl:h-8" />
               </div>
-              <h3 className="text-blue-700 font-semibold text-md">Daily Logins</h3>
-              <p className="text-2xl font-bold text-gray-800">{stats.total_logins}</p>
+              <h3 className="text-blue-700 font-semibold text-md 2xl:text-lg">Daily Logins</h3>
+              <p className="text-2xl 2xl:text-3xl font-bold text-gray-800">{stats.total_logins}</p>
             </div>
 
             {/* Quizzes Taken */}
-            <div className="bg-white bg-opacity-80 p-6 rounded-2xl shadow-lg flex flex-col items-center justify-center space-y-2 hover:scale-105 transition-transform duration-300">
+            <div className="bg-white bg-opacity-80 p-6 2xl:p-8 rounded-2xl shadow-lg flex flex-col items-center justify-center space-y-2 hover:scale-105 transition-transform duration-300">
               <div className="bg-purple-100 p-3 rounded-full">
-                <NotebookPen className="text-purple-500 w-7 h-7" />
+                <NotebookPen className="text-purple-500 w-7 h-7 2xl:w-8 2xl:h-8" />
               </div>
-              <h3 className="text-purple-700 font-semibold text-md">Quizzes Taken</h3>
-              <p className="text-2xl font-bold text-gray-800">{stats.quizzes_taken}</p>
+              <h3 className="text-purple-700 font-semibold text-md 2xl:text-lg">Quizzes Taken</h3>
+              <p className="text-2xl 2xl:text-3xl font-bold text-gray-800">{stats.quizzes_taken}</p>
             </div>
 
             {/* Topics Explored */}
-            <div className="bg-white bg-opacity-80 p-6 rounded-2xl shadow-lg flex flex-col items-center justify-center space-y-2 hover:scale-105 transition-transform duration-300">
+            <div className="bg-white bg-opacity-80 p-6 2xl:p-8 rounded-2xl shadow-lg flex flex-col items-center justify-center space-y-2 hover:scale-105 transition-transform duration-300">
               <div className="bg-green-100 p-3 rounded-full">
-                <Sparkles className="text-green-500 w-7 h-7" />
+                <Sparkles className="text-green-500 w-7 h-7 2xl:w-8 2xl:h-8" />
               </div>
-              <h3 className="text-green-700 font-semibold text-md">Topics Explored</h3>
-              <p className="text-2xl font-bold text-gray-800">{stats.topics?.length || 0}</p>
+              <h3 className="text-green-700 font-semibold text-md 2xl:text-lg">Topics Explored</h3>
+              <p className="text-2xl 2xl:text-3xl font-bold text-gray-800">{stats.topics?.length || 0}</p>
             </div>
           </div>
         </div>
 
-  
+
         {/* Divider */}
         <div className="my-10 h-[1px] w-full bg-gradient-to-r from-transparent via-gray-400 to-transparent opacity-30" />
-  
+
         {/* --- BADGES SECTION --- */}
         {badges.length > 0 ? (
           <div className="mb-10">
-            <h2 className="text-xl font-bold text-blue-700 mb-4 flex items-center justify-center gap-2">
+            <h2 className="text-xl 2xl:text-2xl font-bold text-blue-700 mb-4 flex items-center justify-center gap-2">
               <Trophy className="text-yellow-400" /> Your Badges
             </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 2xl:gap-6">
               {badges.map((badge) => (
                 <div
                   key={badge.id}
-                  className="bg-white bg-opacity-80 border border-yellow-300 rounded-xl p-4 shadow hover:scale-105 transition-transform duration-200 text-center"
+                  className="bg-white bg-opacity-80 border border-yellow-300 rounded-xl p-4 2xl:p-5 shadow hover:scale-105 transition-transform duration-200 text-center"
                 >
-                  <div className="text-3xl mb-1">{badge.icon}</div>
-                  <div className="font-semibold text-gray-800 text-sm">{badge.name}</div>
-                  <div className="text-xs text-gray-500">{badge.description}</div>
+                  <div className="text-3xl 2xl:text-4xl mb-1">{badge.icon}</div>
+                  <div className="font-semibold text-gray-800 text-sm 2xl:text-base">{badge.name}</div>
+                  <div className="text-xs 2xl:text-sm text-gray-500">{badge.description}</div>
                 </div>
               ))}
             </div>
           </div>
         ) : (
           <div className="mb-10 text-center">
-            <h2 className="text-xl font-bold text-blue-700 mb-2">🏅 No Badges Yet</h2>
-            <p className="text-sm text-gray-600">Complete quizzes to start earning badges!</p>
+            <h2 className="text-xl 2xl:text-2xl font-bold text-blue-700 mb-2">🏅 No Badges Yet</h2>
+            <p className="text-sm 2xl:text-base text-gray-600">Complete quizzes to start earning badges!</p>
           </div>
         )}
 
@@ -323,7 +323,7 @@ export default function AccountPage() {
         <div className="mb-10">
           <div className="flex items-center justify-center gap-2 mb-2">
             <GaugeCircle className="text-blue-600" size={20} />
-            <h2 className="text-md font-semibold text-blue-700">Daily Usage Limit</h2>
+            <h2 className="text-md 2xl:text-lg font-semibold text-blue-700">Daily Usage Limit</h2>
           </div>
           <div className="relative w-full h-5 rounded-full bg-gray-200 overflow-hidden shadow-inner">
             <div
@@ -344,16 +344,16 @@ export default function AccountPage() {
               {Math.floor(usagePercent)}%
             </div>
           </div>
-          <p className="text-sm text-gray-600 mt-2">
+          <p className="text-sm 2xl:text-base text-gray-600 mt-2">
             {`${usage} / ${DAILY_LIMIT} AI Messages used today`}
           </p>
         </div>
-  
+
         {/* Button Row */}
-        <div className="mt-12 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div className="mt-12 flex flex-col sm:flex-row justify-between items-center gap-4 2xl:gap-6">
           {/* Back to Home */}
           <Link href="/" className="hover:no-underline">
-            <button className="bg-transparent text-sky-600 hover:bg-gradient-to-r hover:from-sky-300 hover:via-cyan-400 hover:to-sky-500 hover:text-white font-medium py-2 px-6 rounded-full flex items-center transition-all duration-300 hover:scale-105">
+            <button className="2xl:text-lg bg-transparent text-sky-600 hover:bg-gradient-to-r hover:from-sky-300 hover:via-cyan-400 hover:to-sky-500 hover:text-white font-medium py-2 px-6 2xl:px-8 2xl:py-3 rounded-full flex items-center transition-all duration-300 hover:scale-105">
               <Undo2 className="mr-2 h-5 w-5" />
               Back to Home
             </button>
@@ -362,7 +362,7 @@ export default function AccountPage() {
           {/* Sign Out */}
           <button
             onClick={() => signOut()}
-            className="bg-transparent text-rose-600 hover:bg-gradient-to-r hover:from-rose-500 hover:via-red-500 hover:to-rose-700 hover:text-white font-semibold py-2 px-6 rounded-full flex items-center transition-all duration-300 hover:scale-105"
+            className="2xl:text-lg bg-transparent text-rose-600 hover:bg-gradient-to-r hover:from-rose-500 hover:via-red-500 hover:to-rose-700 hover:text-white font-semibold py-2 px-6 2xl:px-8 2xl:py-3 rounded-full flex items-center transition-all duration-300 hover:scale-105"
           >
             <LogOut className="mr-2 h-5 w-5" />
             Sign Out

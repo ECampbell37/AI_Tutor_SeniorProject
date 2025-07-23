@@ -142,39 +142,41 @@ export default function ProfessionalChat() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300">
-      <div className="w-full max-w-4xl flex flex-col flex-grow p-6">
-        <h2 className="text-4xl font-semibold mb-6 text-gray-800 text-center">🎓 Professional Tutor</h2>
-  
+    <div className="min-h-screen flex flex-col items-center">
+      <div className="w-full max-w-4xl 2xl:max-w-5xl flex flex-col flex-grow p-6 2xl:p-10">
+        <h2 className="text-4xl 2xl:text-5xl font-semibold mb-6 2xl:mb-10 text-gray-800 text-center">
+          🎓 Professional Tutor
+        </h2>
+
         {/* Chat Interface */}
-        <div className="flex flex-col bg-white bg-opacity-95 border border-gray-200 rounded-2xl shadow-xl p-6 flex-grow overflow-hidden animate-fadeIn">
-          <div className="overflow-y-auto mb-4 flex-1 space-y-2" style={{ maxHeight: '60vh' }}>
+        <div className="flex flex-col bg-white bg-opacity-95 border border-gray-200 rounded-2xl shadow-xl p-6 2xl:p-8 flex-grow overflow-hidden animate-fadeIn">
+          <div className="overflow-y-auto mb-4 flex-1 space-y-2 2xl:space-y-3" style={{ maxHeight: '60vh' }}>
             {messages.map((msg, idx) => (
               <div
                 key={idx}
-                className={`p-3 rounded-xl shadow-sm ${
+                className={`p-3 2xl:p-4 rounded-xl shadow-sm 2xl:text-lg ${
                   msg.sender === 'AI' ? 'bg-purple-50 text-purple-800' : 'bg-teal-50 text-gray-700'
                 }`}
               >
                 <div className="flex flex-wrap gap-1 items-start">
                   <strong className="shrink-0">{msg.sender}:</strong>
                   {msg.sender === 'AI' ? (
-                    <div className="flex-1 overflow-x-hidden break-words space-y-2">
+                    <div className="flex-1 overflow-x-hidden break-words space-y-2 2xl:text-lg">
                       <MarkdownRenderer content={msg.text} />
                     </div>
                   ) : (
-                    <span className="flex-1">{msg.text}</span>
+                    <span className="flex-1 2xl:text-lg">{msg.text}</span>
                   )}
                 </div>
               </div>
             ))}
-            {loading && <div className="text-purple-600 animate-pulse">AI is typing...</div>}
+            {loading && <div className="text-purple-600 animate-pulse 2xl:text-lg">AI is typing...</div>}
           </div>
-  
+
           {/* Text Input */}
-          <div className="flex items-center mt-2">
+          <div className="flex items-center mt-2 2xl:my-auto">
             <textarea
-              className="flex-1 border border-gray-300 rounded-xl p-3 mr-2 shadow-sm resize-y overflow-y-auto"
+              className="flex-1 border border-gray-300 rounded-xl p-3 2xl:p-4 mr-2 shadow-sm resize-y overflow-y-auto 2xl:text-lg"
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), sendMessage())}
@@ -184,9 +186,9 @@ export default function ProfessionalChat() {
             />
             <button
               onClick={sendMessage}
-              className="bg-purple-500 text-white rounded-xl p-3 hover:bg-purple-600 shadow-md transition duration-200 flex items-center"
+              className="bg-purple-500 text-white rounded-xl p-3 2xl:p-4 hover:bg-purple-600 shadow-md transition duration-200 flex items-center 2xl:text-base"
             >
-              Send <SendHorizonal className="ml-2 h-5 w-5" />
+              Send <SendHorizonal className="ml-2 h-5 w-5 2xl:h-6 2xl:w-6" />
             </button>
           </div>
         </div>

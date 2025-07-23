@@ -50,7 +50,7 @@ export default function NavBar() {
         {/* App Logo and Name */}
         <Link
           href="/"
-          className="flex items-center text-xl font-bold text-white hover:no-underline"
+          className="flex items-center text-xl 2xl:text-2xl font-bold text-white hover:no-underline"
         >
           <BotMessageSquare size={28} />
           <span className="ml-2">AI Tutor</span>
@@ -76,7 +76,7 @@ export default function NavBar() {
           {/* Top Section: Menu Header + Links */}
           <div className="space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold">Menu</h2>
+              <h2 className="text-2xl font-bold 2xl:text-3xl">Menu</h2>
               <button
                 onClick={() => setIsMenuOpen(false)}
                 className="focus:outline-none hover:text-gray-300 transition"
@@ -93,7 +93,7 @@ export default function NavBar() {
                   key={item.href}
                   href={item.href}
                   onClick={() => setIsMenuOpen(false)}
-                  className="block px-4 py-2 rounded-lg bg-gray-700 text-white hover:text-white hover:no-underline hover:bg-gradient-to-r hover:from-indigo-500 hover:to-purple-500 transition-all duration-200"
+                  className="block px-4 py-2 rounded-lg bg-gray-700 text-white 2xl:text-xl hover:text-white hover:no-underline hover:bg-gradient-to-r hover:from-indigo-500 hover:to-purple-500 transition-all duration-200"
                 >
                   {item.label}
                 </Link>
@@ -104,8 +104,8 @@ export default function NavBar() {
           {/* Footer Section: Authentication Control */}
           <div className="pt-6 border-t border-gray-700">
             {session ? (
-              <div className="flex flex-col items-center space-y-4">
-                <p className="text-lg">Welcome, {session.user?.name}</p>
+              <div className="flex flex-col items-center space-y-4 2xl:text-xl">
+                <p className="text-lg 2xl:text-xl">Welcome, {session.user?.name}</p>
                 <button
                   onClick={() => {
                     signOut();

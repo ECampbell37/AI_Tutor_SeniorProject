@@ -100,24 +100,24 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
   if (showLoadingScreen) {
     return (
       <div className="flex flex-col items-center justify-center h-screen text-center bg-gradient-to-br from-blue-100 via-blue-200 to-cyan-200 animate-pulse-slow px-6">
-        <BotMessageSquare className="w-16 h-16 text-blue-500 animate-bounce mb-6" />
-        <h1 className="text-3xl font-extrabold text-gray-800 mb-2 tracking-tight animate-fadeInUp">
+        <BotMessageSquare className="w-16 h-16 2xl:w-20 2xl:h-20 text-blue-500 animate-bounce mb-6" />
+        <h1 className="text-3xl 2xl:text-4xl font-extrabold text-gray-800 mb-2 tracking-tight animate-fadeInUp">
           Initializing AI Tutor...
         </h1>
-        <p className="text-md text-gray-600 max-w-md">
+        <p className="text-md 2xl:text-lg text-gray-600 max-w-md">
           {status === 'loading'
             ? 'Checking your session...'
             : 'Waking up the AI server. This may take up to a minute if the server was asleep.'}
         </p>
 
         {showProgressBar ? (
-          <div className="w-full max-w-md mt-8">
+          <div className="w-full max-w-md 2xl:max-w-lg mt-8">
             <div className="h-2 bg-blue-300 rounded-full overflow-hidden">
               <div className="h-full bg-blue-600 animate-progress-60s" />
             </div>
           </div>
         ) : (
-          <Loader2 className="w-8 h-8 text-blue-600 animate-spin mt-6" />
+          <Loader2 className="w-8 h-8 2xl:w-10 2xl:h-10 text-blue-600 animate-spin mt-6" />
         )}
       </div>
     );

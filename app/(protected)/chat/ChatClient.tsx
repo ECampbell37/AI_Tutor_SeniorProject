@@ -356,42 +356,44 @@ export default function Chat() {
 
   // Casual Learning UI
   return (
-    <div className="min-h-screen flex flex-col items-center container mx-auto p-6 bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300">
-      <h2 className="text-4xl font-semibold mb-6 text-gray-800">📖 Casual Learning: {subject}</h2>
+    <div className="min-h-screen flex flex-col items-center container mx-auto p-6 2xl:p-10">
+      <h2 className="text-4xl 2xl:text-5xl font-semibold mb-6 2xl:mb-10 text-gray-800">
+        📖 Casual Learning: {subject}
+      </h2>
 
       {/* Chat Interface */}
-      <div className="w-full max-w-4xl bg-white bg-opacity-95 border border-gray-200 rounded-2xl shadow-xl p-6 flex flex-col flex-grow animate-fadeIn">
-        <div className="overflow-y-auto mb-4 flex-1 space-y-2" style={{ maxHeight: '60vh' }}>
-        {messages.map((msg, idx) =>
-          msg.sender === 'separator' ? (
-            <div key={idx} className="text-center text-gray-400 py-2">{msg.text}</div>
-          ) : (
-            <div
-              key={idx}
-              className={`p-3 rounded-xl shadow-sm ${
-                msg.sender === 'AI' ? 'bg-blue-50 text-blue-700' : 'bg-teal-50 text-gray-700'
-              }`}
-            >
-              <div className="flex flex-row gap-3 items-start">
-                <strong className="shrink-0">{msg.sender}:</strong>
-                {msg.sender === 'AI' ? (
-                  <div className="flex-1 overflow-x-hidden break-words">
-                    <MarkdownRenderer content={msg.text} />
-                  </div>
-                ) : (
-                  <span className="flex-1">{msg.text}</span>
-                )}
+      <div className="w-full max-w-4xl 2xl:max-w-5xl bg-white bg-opacity-95 border border-gray-200 rounded-2xl shadow-xl p-6 2xl:p-8 flex flex-col flex-grow animate-fadeIn">
+        <div className="overflow-y-auto mb-4 flex-1 space-y-2 2xl:space-y-3" style={{ maxHeight: '60vh' }}>
+          {messages.map((msg, idx) =>
+            msg.sender === 'separator' ? (
+              <div key={idx} className="text-center text-gray-400 py-2 2xl:text-lg">{msg.text}</div>
+            ) : (
+              <div
+                key={idx}
+                className={`p-3 2xl:p-4 rounded-xl shadow-sm 2xl:text-lg ${
+                  msg.sender === 'AI' ? 'bg-blue-50 text-blue-700' : 'bg-teal-50 text-gray-700'
+                }`}
+              >
+                <div className="flex flex-row gap-3 items-start">
+                  <strong className="shrink-0">{msg.sender}:</strong>
+                  {msg.sender === 'AI' ? (
+                    <div className="flex-1 overflow-x-hidden break-words 2xl:text-lg">
+                      <MarkdownRenderer content={msg.text} />
+                    </div>
+                  ) : (
+                    <span className="flex-1 2xl:text-lg">{msg.text}</span>
+                  )}
+                </div>
               </div>
-            </div>
-          )
-        )}
-          {loading && <div className="text-blue-600 animate-pulse">AI is typing...</div>}
+            )
+          )}
+          {loading && <div className="text-blue-600 animate-pulse 2xl:text-lg">AI is typing...</div>}
         </div>
 
         {/* Text Input */}
-        <div className="flex items-center">
+        <div className="flex items-center 2xl:my-auto">
           <textarea
-            className="flex-1 border border-gray-300 rounded-xl p-3 mr-2 shadow-sm resize-y overflow-y-auto"
+            className="flex-1 border border-gray-300 rounded-xl p-3 2xl:p-4 mr-2 shadow-sm resize-y overflow-y-auto 2xl:text-lg"
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), sendMessage())}
@@ -401,9 +403,9 @@ export default function Chat() {
           />
           <button
             onClick={sendMessage}
-            className="bg-blue-500 text-white rounded-xl p-3 hover:bg-blue-600 shadow-md transition duration-200 flex items-center"
+            className="bg-blue-500 text-white rounded-xl p-3 2xl:p-4 hover:bg-blue-600 shadow-md transition duration-200 flex items-center 2xl:text-base"
           >
-            Send <SendHorizonal className="ml-2 h-5 w-5" />
+            Send <SendHorizonal className="ml-2 h-5 w-5 2xl:h-6 2xl:w-6" />
           </button>
         </div>
       </div>
@@ -411,24 +413,24 @@ export default function Chat() {
       {/* Quiz Button */}
       <button
         onClick={openQuizModal}
-        className="mt-6 bg-cyan-500 text-white rounded-xl py-3 px-5 hover:bg-cyan-600 shadow-lg flex items-center transition duration-200"
+        className="mt-6 2xl:mt-10 bg-cyan-500 text-white rounded-xl py-3 2xl:py-4 px-5 2xl:px-6 hover:bg-cyan-600 shadow-lg flex items-center transition duration-200 2xl:text-lg"
       >
-        Take Quiz <ClipboardCheck className="ml-2 h-5 w-5" />
+        Take Quiz <ClipboardCheck className="ml-2 h-5 w-5 2xl:h-6 2xl:w-6" />
       </button>
 
       {/* Quiz Pop Up */}
       {showQuizModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 overflow-auto">
-          <div className="bg-white p-6 rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
-            <h3 className="text-2xl font-semibold mb-4">Quiz</h3>
-            <div className="bg-gray-100 p-4 mb-3 rounded overflow-x-hidden">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 overflow-auto 2xl:p-6">
+          <div className="bg-white p-6 2xl:p-8 rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+            <h3 className="text-2xl 2xl:text-3xl font-semibold mb-4 2xl:mb-6">Quiz</h3>
+            <div className="bg-gray-100 p-4 2xl:p-5 mb-3 2xl:mb-4 rounded overflow-x-hidden">
               <MarkdownRenderer content={quizText} />
             </div>
             {quizAnswers.map((answer, i) => (
               <input
                 key={i}
                 type="text"
-                className="w-full border border-gray-300 rounded p-2 mb-4 mt-2"
+                className="w-full border border-gray-300 rounded p-2 2xl:p-3 mb-4 mt-2 2xl:text-base"
                 placeholder={`Answer for question ${i + 1}`}
                 value={answer}
                 onChange={(e) => {
@@ -440,12 +442,12 @@ export default function Chat() {
             ))}
             <button
               onClick={submitQuiz}
-              className="bg-blue-500 text-white rounded-xl p-2 hover:bg-blue-600 shadow-md mt-1"
+              className="bg-blue-500 text-white rounded-xl p-2 2xl:p-3 hover:bg-blue-600 shadow-md mt-1"
             >
               {quizLoading ? <Loader2 className="animate-spin h-5 w-5 mx-auto" /> : 'Submit Answers'}
             </button>
             {quizFeedback && (
-              <div className="mt-4 p-4 bg-blue-100 rounded space-y-4">
+              <div className="mt-4 p-4 2xl:p-5 bg-blue-100 rounded space-y-4 2xl:text-base">
                 <div>
                   <strong>Feedback:</strong>
                   <div className="break-words">
@@ -462,9 +464,9 @@ export default function Chat() {
             )}
             <button
               onClick={closeQuizModal}
-              className="mt-5 bg-red-500 text-white rounded-xl p-2 hover:bg-red-600 shadow-md flex items-center"
+              className="mt-5 2xl:mt-6 bg-red-500 text-white rounded-xl p-2 2xl:p-3 hover:bg-red-600 shadow-md flex items-center 2xl:text-base"
             >
-              Close <X className="ml-2 h-5 w-5" />
+              Close <X className="ml-2 h-5 w-5 2xl:h-6 2xl:w-6" />
             </button>
           </div>
         </div>

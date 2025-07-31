@@ -155,7 +155,7 @@ export default function AboutPage() {
           <h2 className="text-3xl 2xl:text-4xl font-bold text-gray-800 mb-4">🎓 Our Mission</h2>
           <p className="text-gray-700 text-lg 2xl:text-xl">
             AI Tutor was created to make education more accessible, engaging, and personalized. We believe learning
-            should feel like a conversation — not a chore. By combining powerful AI with intuitive design, we aim to
+            should feel like a conversation, not a chore. By combining powerful AI with intuitive design, we aim to
             encourage people of all ages to expand thier minds and enjoy the learning process. It&apos;s time to reimagine 
             what education can be ✨ 
           </p>

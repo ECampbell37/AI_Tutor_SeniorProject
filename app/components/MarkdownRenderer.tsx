@@ -84,7 +84,7 @@ export default function MarkdownRenderer({ content }: { content: string }) {
                 <h1 className="text-xl font-bold mb-4" {...props} />
               ),
               h2: (props) => (
-                <h2 className="text-xl font-semibold mt-8 mb-4 border-b pb-1" {...props} />
+                <h2 className="text-xl font-semibold mb-4 border-b pb-1" {...props} />
               ),
               h3: (props) => (
                 <h3 className="text-lg font-semibold mb-4" {...props} />
@@ -93,7 +93,7 @@ export default function MarkdownRenderer({ content }: { content: string }) {
                 <h3 className="text-md font-semibold mb-4" {...props} />
               ),
               p: ({ children }) => (
-                <p className="leading-relaxed mb-4">{children}</p>
+                <p className="leading-relaxed mb-6">{children}</p>
               ),
               ul: (props) => (
                 <ul className="list-disc ml-6 space-y-4 mb-6" {...props} />
@@ -105,7 +105,7 @@ export default function MarkdownRenderer({ content }: { content: string }) {
                 <li className="leading-normal mb-4" {...props} />
               ),
               hr: (props) => ( 
-                <hr className="mb-4" {...props} />
+                <hr className="mb-2" {...props} />
               ),
             }}
       >

@@ -362,7 +362,7 @@ export default function KidsChat() {
               </div>
             )
           )}
-          {loading && <div className="text-emerald-600 animate-pulse 2xl:text-lg">AI is typing...</div>}
+          {loading && <div className="text-emerald-600 animate-pulse mt-1 ml-2 2xl:text-lg">AI is typing...</div>}
         </div>
 
         {/* Text Input */}

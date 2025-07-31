@@ -178,7 +178,7 @@ export default function PDFChat() {
             )
           )}
           {loading && (
-            <div className="text-blue-600 animate-pulse 2xl:text-lg">AI is typing...</div>
+            <div className="text-blue-600 animate-pulse mt-1 ml-2 2xl:text-lg">AI is typing...</div>
           )}
         </div>
 

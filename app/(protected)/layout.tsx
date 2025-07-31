@@ -24,6 +24,25 @@ import { useEffect, useState } from 'react';
 import { Loader2, BotMessageSquare } from 'lucide-react';
 
 
+// Tips to be displayed in long loading sessions
+const loadingTips = [
+  "⏳ \"The good life is a process, not a state of being. It is a direction, not a destination.\" – Bruce Lee",
+  "🎯 Tip: Be specific in your questions. The more context you give AI, the better your results!",
+  "🔍 \"He who has a why can bear almost any how.\" – Friedrich Nietzsche",
+  "📌 Confused? Try asking the AI Tutor \"Can you explain that using simple language?\". Works every time!",
+  "🚀 Professional Mode is great for coding help, interview prep, or deep technical questions.",
+  "💡 \"Knowledge speaks, but wisdom listens.\" – Jimi Hendrix",
+  "💡 Fun Fact: The \"GPT\" in ChatGPT stands for \"Generative Pretrained Transformer\". Fancy, huh?",
+  "🧠 \"Until you make the unconscious conscious, it will direct your life and you will call it fate.\" – Carl Jung",
+  "🌍 Fun Fact: Carl Jung’s ideas on archetypes still influence AI design and storytelling models today.",
+  "🔁 \"I do not fear the man who has practiced 1000 kicks. I fear the man who has practiced one kick 1000 times.\" - Bruce Lee",
+  "🧭 Fun Fact: The human brain has more synapses than stars in the Milky Way — and you’re using them right now.",
+  "🧘‍♂️ \"Trying to define yourself is like trying to bite your own teeth.\" – Alan Watts",
+  "💬 Tip: Ask the AI Tutor to simplify a concept, or explain it using real-life examples.",
+];
+
+
+
 /**
  * Layout wrapper for all pages under `/app/(protected)/`.
  *
@@ -40,6 +59,9 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
   const [apiReady, setApiReady] = useState(false);
   const [delayPassed, setDelayPassed] = useState(false);
   const [showProgressBar, setShowProgressBar] = useState(false);
+  const [tipIndex, setTipIndex] = useState(0);
+  const [isTipVisible, setIsTipVisible] = useState(true);
+
 
   
   // Short delay to prevent UI flickering when loading is too fast
@@ -91,6 +113,25 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
   }, [status, router]);
 
 
+  // Display Tips
+  useEffect(() => {
+    if (!showProgressBar) return;
+
+    const interval = setInterval(() => {
+      setIsTipVisible(false); // Trigger fade-out
+
+      setTimeout(() => {
+        setTipIndex((prevIndex) => (prevIndex + 1) % loadingTips.length);
+        setIsTipVisible(true); // Trigger fade-in
+      }, 750); // Delay matches exit fade duration
+    }, 7000);
+
+    return () => clearInterval(interval);
+}, [showProgressBar]);
+
+
+
+
 
   // Determine whether to show the loading screen
   const showLoadingScreen = !authReady || !apiReady || !delayPassed;
@@ -118,6 +159,16 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
           </div>
         ) : (
           <Loader2 className="w-8 h-8 2xl:w-10 2xl:h-10 text-blue-600 animate-spin mt-6" />
+        )}
+        {showProgressBar && (
+          <p
+            key={tipIndex} // forces re-render to trigger animation
+            className={`mt-8 text-sm 2xl:text-base text-gray-700 italic animate-fadeInUp transition-opacity duration-700 ${
+              isTipVisible ? 'opacity-100 animate-fade-in' : 'opacity-0'
+            }`}
+          >
+            {loadingTips[tipIndex]}
+          </p>
         )}
       </div>
     );

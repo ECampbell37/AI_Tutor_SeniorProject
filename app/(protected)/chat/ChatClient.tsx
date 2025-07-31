@@ -387,7 +387,7 @@ export default function Chat() {
               </div>
             )
           )}
-          {loading && <div className="text-blue-600 animate-pulse 2xl:text-lg">AI is typing...</div>}
+          {loading && <div className="text-blue-600 animate-pulse mt-1 ml-2 2xl:text-lg">AI is typing...</div>}
         </div>
 
         {/* Text Input */}

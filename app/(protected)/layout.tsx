@@ -28,7 +28,7 @@ import { Loader2, BotMessageSquare } from 'lucide-react';
 const loadingTips = [
   "⏳ \"The good life is a process, not a state of being. It is a direction, not a destination.\" – Bruce Lee",
   "🎯 Tip: Be specific in your questions. The more context you give AI, the better your results!",
-  "🔍 \"He who has a why can bear almost any how.\" – Friedrich Nietzsche",
+  "🔍 \"We are what we repeatedly do. Excellence, then, is not an act, but a habit.\" – Aristotle",
   "📌 Confused? Try asking the AI Tutor \"Can you explain that using simple language?\". Works every time!",
   "🚀 Professional Mode is great for coding help, interview prep, or deep technical questions.",
   "💡 \"Knowledge speaks, but wisdom listens.\" – Jimi Hendrix",

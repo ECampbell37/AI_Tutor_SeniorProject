@@ -23,6 +23,7 @@ import './globals.css';
 import NavBar from './components/NavBar';
 import Providers from './components/Providers';
 import { Inter } from 'next/font/google';
+import WakeBackend from "./wakeBackend";
 
 // Load Inter font for body
 const inter = Inter({ subsets: ['latin'] });
@@ -47,6 +48,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
+          <WakeBackend />
           <NavBar />
           <main className="pt-[64px]">{children}</main>
         </Providers>
